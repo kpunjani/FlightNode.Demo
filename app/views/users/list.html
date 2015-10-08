@@ -1,0 +1,9 @@
+<div class="row">
+	<div class="col-sm-12">
+		<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+
+		<pre ng-model="userList.data">
+		</pre>
+	</div>
+</div>
+<loading></loading>
