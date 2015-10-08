@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name flightNodedemoApp.controller:LoginController
+ * @name flightNodeDemo.controller:LoginController
  * @description
  * # LoginController
  * Controller for the login page
  */
-angular.module('flightNodedemoApp')
+angular.module('flightNodeDemo')
 	.controller('LoginController', function ($scope, $http, $log) {
 
 		$scope.response = 'doesn\'t work yet.';
@@ -29,20 +29,19 @@ angular.module('flightNodedemoApp')
 						for (var p in obj) {
 							str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
 						}
-						return str.join("&");
+						return str.join('&');
 					},
 					data: $scope.loginForm.data,
 					headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
 				})
-					.success(function (data) {
+				.then(function success(response) {
 						$scope.showSuccessMessage('Login successful.');
-						localStorage.setItem('jwt', JSON.stringify(data || {}));
-					})
-					.error(function (data, status) {
-						$log.error('Status code: ', status);
-						$log.error('Data: ', data);
+						localStorage.setItem('jwt', JSON.stringify(response || {}));
+					}, function error(response) {
+						$log.error('Status code: ', response.status);
+						$log.error('Data: ', response.data);
 						
-						data = data || { error: 'Status Code: ' + status};
+						var data =  { error: 'Status Code: ' + status + ', Message: ' + response.data};
 						
 						$scope.showErrorMessage(data);
 					})
@@ -53,11 +52,13 @@ angular.module('flightNodedemoApp')
 			data: {}
 		};
 
+		// TODO: move these functions somewhere so 
+		// that they can be re-used
 		$scope.showErrorMessage = function (data) {
 			var msg = data.error;
 			
 			if (data.error_description) {
-				msg += ": " + data.error_description;
+				msg += ': ' + data.error_description;
 			}
 			
 			$scope.alerts = [

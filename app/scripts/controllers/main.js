@@ -2,16 +2,15 @@
 
 /**
  * @ngdoc function
- * @name flightNodedemoApp.controller:MainCtrl
+ * @name flightNodeDemo.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the flightNodedemoApp
+ * Controller of the flightNodeDemo
  */
-angular.module('flightNodedemoApp')
+angular.module('flightNodeDemo')
   .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  
+		$scope.loading = true;
+
+		$scope.loading = false;
   });

@@ -3,14 +3,14 @@
 
 /**
  * @ngdoc overview
- * @name flightNodedemoApp
+ * @name flightNodeDemo
  * @description
- * # flightNodedemoApp
+ * # flightNodeDemo
  *
  * Main module of the application.
  */
 angular
-  .module('flightNodedemoApp', [
+  .module('flightNodeDemo', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -24,13 +24,13 @@ angular
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
-      })
       .when('/login', {
         templateUrl: 'views/login.html',
         controller: 'LoginController'
+      })
+      .when('/users', {
+          templateUrl: 'views/users/list.html',
+          controller: 'UserController'
       })
       .otherwise({
         redirectTo: '/'
@@ -51,5 +51,5 @@ angular
                 }
             });
         }
-    }
+    };
 });
