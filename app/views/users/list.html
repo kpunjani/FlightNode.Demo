@@ -2,8 +2,8 @@
 	<div class="col-sm-12">
 		<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
 
-		<pre ng-model="userList.data">
-		</pre>
+		<div ui-grid="{ data: userList.data }" id="user-grid" style="height: 20em; width: 50em;"></div>
 	</div>
+</div>
 </div>
 <loading></loading>
