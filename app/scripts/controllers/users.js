@@ -14,15 +14,18 @@ angular.module('flightNodeDemo')
 
 		$scope.userList = {};
 
-		var token = localStorage.getItem('jwt');
-		if (token) {
+		var jwt = localStorage.getItem('jwt');
+
+		if (jwt) {
 			// TODO: validate that the user administration claim is present.
+			// TODO: validate the expiration date.
+			var access_token = (JSON.parse(jwt)).data.access_token;
 			
 			$http({
 				url: 'http://localhost:50323/api/v1/user',
 				method: 'GET',
 				headers: {
-					Authorization: "bearer " + token
+					Authorization: 'bearer ' + access_token
 				}
 			})
 				.then(function success(response) {
@@ -46,7 +49,7 @@ angular.module('flightNodeDemo')
 
 		$scope.unauthorized = function () {
 			$scope.showErrorMessage({ error: 'Must be logged in to use this page.'});
-		}
+		};
 
 		// TODO: move these functions somewhere so 
 		// that they can be re-used
