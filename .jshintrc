@@ -20,6 +20,8 @@
   "trailing": true,
   "smarttabs": true,
   "globals": {
-    "angular": true
+    "angular": true,
+    "moment": true,
+    "_": true
   }
 }

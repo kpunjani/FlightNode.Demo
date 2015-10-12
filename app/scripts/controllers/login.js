@@ -36,7 +36,13 @@ angular.module('flightNodeDemo')
 				})
 				.then(function success(response) {
 						$scope.showSuccessMessage('Login successful.');
-						localStorage.setItem('jwt', JSON.stringify(response || {}));
+												
+						// response.data has the the access_token and expires_in (seconds).
+						// Need to record the actual expiration timestamp, not just the duration.
+						var expiresAt = moment().add(response.data.expires_in, 's');
+						
+						localStorage.setItem('jwt', JSON.stringify({ expiresAt: expiresAt, access_token: response.data.access_token }) );
+						
 					}, function error(response) {
 						$log.error('Status code: ', response.status);
 						$log.error('Data: ', response.data);
