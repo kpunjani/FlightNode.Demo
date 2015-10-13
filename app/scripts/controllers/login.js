@@ -36,19 +36,19 @@ angular.module('flightNodeDemo')
 				})
 				.then(function success(response) {
 						$scope.showSuccessMessage('Login successful.');
-												
+
 						// response.data has the the access_token and expires_in (seconds).
 						// Need to record the actual expiration timestamp, not just the duration.
 						var expiresAt = moment().add(response.data.expires_in, 's');
-						
+
 						localStorage.setItem('jwt', JSON.stringify({ expiresAt: expiresAt, access_token: response.data.access_token }) );
-						
+
 					}, function error(response) {
 						$log.error('Status code: ', response.status);
 						$log.error('Data: ', response.data);
-						
+
 						var data =  { error: 'Status Code: ' + status + ', Message: ' + response.data};
-						
+
 						$scope.showErrorMessage(data);
 					})
 					.finally(function () {
@@ -58,17 +58,21 @@ angular.module('flightNodeDemo')
 			data: {}
 		};
 
-		// TODO: move these functions somewhere so 
+
+		// TODO: move these functions somewhere so
 		// that they can be re-used
 		$scope.showErrorMessage = function (data) {
-			var msg = data.error;
-			
+			var msg = data;
+			if (data.error) {
+				msg = data.error;
+			}
+
 			if (data.error_description) {
 				msg += ': ' + data.error_description;
 			}
-			
+
 			$scope.alerts = [
-				{ type: 'danger', msg: msg}
+				{ type: 'danger', msg: msg }
 			];
 		};
 
@@ -77,7 +81,6 @@ angular.module('flightNodeDemo')
 				{ type: 'success', msg: msg }
 			];
 		};
-
 
 		$scope.loading = false;
 
