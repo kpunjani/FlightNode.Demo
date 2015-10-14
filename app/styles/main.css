@@ -95,3 +95,7 @@ body {
 .footer {
   margin-top: 1em;
 }
+
+form {
+  margin-top: 2em;
+}

@@ -8,7 +8,7 @@
  * Controller for the login page
  */
 angular.module('flightNodeDemo')
-	.controller('LoginController', function ($scope, $http, $log) {
+	.controller('LoginController', ['$scope', '$http', '$log', 'messenger', function ($scope, $http, $log, messenger) {
 
 		$scope.response = 'doesn\'t work yet.';
 
@@ -35,7 +35,7 @@ angular.module('flightNodeDemo')
 					headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
 				})
 				.then(function success(response) {
-						$scope.showSuccessMessage('Login successful.');
+						messenger.showSuccessMessage($scope, 'Login successful.');
 
 						// response.data has the the access_token and expires_in (seconds).
 						// Need to record the actual expiration timestamp, not just the duration.
@@ -47,9 +47,9 @@ angular.module('flightNodeDemo')
 						$log.error('Status code: ', response.status);
 						$log.error('Data: ', response.data);
 
-						var data =  { error: 'Status Code: ' + status + ', Message: ' + response.data};
+						var data =  { error: response.data.error_description };
 
-						$scope.showErrorMessage(data);
+						messenger.showErrorMessage($scope, data);
 					})
 					.finally(function () {
 						$scope.loading = false;
@@ -59,29 +59,6 @@ angular.module('flightNodeDemo')
 		};
 
 
-		// TODO: move these functions somewhere so
-		// that they can be re-used
-		$scope.showErrorMessage = function (data) {
-			var msg = data;
-			if (data.error) {
-				msg = data.error;
-			}
-
-			if (data.error_description) {
-				msg += ': ' + data.error_description;
-			}
-
-			$scope.alerts = [
-				{ type: 'danger', msg: msg }
-			];
-		};
-
-		$scope.showSuccessMessage = function (msg) {
-			$scope.alerts = [
-				{ type: 'success', msg: msg }
-			];
-		};
-
 		$scope.loading = false;
 
-	});
+	}]);

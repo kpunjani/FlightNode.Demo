@@ -17,7 +17,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.grid'
+    'ui.grid',
+    'userMessage'
   ])
   .config(function ($routeProvider) {
     $routeProvider

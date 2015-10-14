@@ -1,8 +1,8 @@
 <div class="row">
 
-	<div class="col-sm-4 col-sm-offset-4" id="login">
+	<div class="col-sm-6 col-sm-offset-3" id="login">
 
-		<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+		<alert class="alert alert-{{alert.type}}" ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
 
 		<form>
 			<div class="form-group">
