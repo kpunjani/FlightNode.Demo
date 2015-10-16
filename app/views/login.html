@@ -1,9 +1,8 @@
+<alert>
+</alert>
+
 <div class="row">
-
-	<div class="col-sm-4 col-sm-offset-4" id="login">
-
-		<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
-
+	<div class="col-sm-6 col-sm-offset-3" id="login">
 		<form>
 			<div class="form-group">
 				<label for="userName">User Name</label>
@@ -16,6 +15,6 @@
 			<button type="submit" ng-click="loginForm.submit()" class="btn btn-default">Sign In</button>
 		</form>
 	</div>
-    <loading></loading>
-
 </div>
+
+<loading></loading>
