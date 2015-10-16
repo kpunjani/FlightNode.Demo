@@ -22,6 +22,19 @@ angular.module('userMessage', [])
 				$scope.alerts = [
 					{ type: 'success', msg: msg }
 				];
+			},
+
+			unauthorized: function ($scope) {
+				
+				$scope.alerts = [
+					{ type: 'warning', msg: 'Must be logged in to use this page.' }
+				];
+			},
+			
+			closeAlert: function($index) {
+				var a = 2/0; // This function is not firing :`(
+				alert('#alert-'+$index.toString());
+				angular.remove( document.querySelector( '#alert-'+$index.toString() ) );
 			}
 		};
 	});

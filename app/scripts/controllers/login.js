@@ -34,20 +34,24 @@ angular.module('flightNodeDemo')
 					data: $scope.loginForm.data,
 					headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
 				})
-				.then(function success(response) {
+					.then(function success(response) {
 						messenger.showSuccessMessage($scope, 'Login successful.');
 
 						// response.data has the the access_token and expires_in (seconds).
 						// Need to record the actual expiration timestamp, not just the duration.
 						var expiresAt = moment().add(response.data.expires_in, 's');
 
-						localStorage.setItem('jwt', JSON.stringify({ expiresAt: expiresAt, access_token: response.data.access_token }) );
+						localStorage.setItem('jwt', JSON.stringify({ expiresAt: expiresAt, access_token: response.data.access_token }));
 
 					}, function error(response) {
-						$log.error('Status code: ', response.status);
-						$log.error('Data: ', response.data);
 
-						var data =  { error: response.data.error_description };
+						var data = null;
+						if (response.status === -1) {
+							data = { error: 'Back-end service is currently offline.' };
+						} else {
+							$log.error('Status code: ', response.status);
+							data = { error: response.data.error_description };
+						}
 
 						messenger.showErrorMessage($scope, data);
 					})

@@ -99,3 +99,8 @@ body {
 form {
   margin-top: 2em;
 }
+
+
+.hover-pointer:hover {
+  cursor: pointer;
+}
