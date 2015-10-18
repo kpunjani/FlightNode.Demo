@@ -14,53 +14,58 @@ angular.module('flightNodeDemo')
 
 		$scope.loading = true;
 
-		$scope.loginForm = {
-			submit: function () {
+		$scope.submit = function () {
+				
+				 if ($scope.loginForm.$valid) {
+					$scope.loading = true;
 
-				$scope.loading = true;
+					var data = {
+						grant_type: 'password', // jshint ignore:line
+						userName: $scope.userName,
+						password: $scope.password
+					};
 
-				$scope.loginForm.data.grant_type = 'password'; // jshint ignore:line
-
-				$http({
-					url: 'http://localhost:50323/oauth/token',
-					method: 'POST',
-					transformRequest: function (obj) {
-						var str = [];
-						for (var p in obj) {
-							str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
-						}
-						return str.join('&');
-					},
-					data: $scope.loginForm.data,
-					headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-				})
-					.then(function success(response) {
-						messenger.showSuccessMessage($scope, 'Login successful.');
-
-						// response.data has the the access_token and expires_in (seconds).
-						// Need to record the actual expiration timestamp, not just the duration.
-						var expiresAt = moment().add(response.data.expires_in, 's');
-
-						localStorage.setItem('jwt', JSON.stringify({ expiresAt: expiresAt, access_token: response.data.access_token }));
-
-					}, function error(response) {
-
-						var data = null;
-						if (response.status === -1) {
-							data = { error: 'Back-end service is currently offline.' };
-						} else {
-							$log.error('Status code: ', response.status);
-							data = { error: response.data.error_description };
-						}
-
-						messenger.showErrorMessage($scope, data);
+					$http({
+						url: 'http://localhost:50323/oauth/token',
+						method: 'POST',
+						transformRequest: function (obj) {
+							var str = [];
+							for (var p in obj) {
+								str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+							}
+							return str.join('&');
+						},
+						data: data,
+						headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
 					})
-					.finally(function () {
-						$scope.loading = false;
-					});
-			},
-			data: {}
-		};
+						.then(function success(response) {
+							messenger.showSuccessMessage($scope, 'Login successful.');
+
+							// response.data has the the access_token and expires_in (seconds).
+							// Need to record the actual expiration timestamp, not just the duration.
+							var expiresAt = moment().add(response.data.expires_in, 's');
+
+							localStorage.setItem('jwt', JSON.stringify({ expiresAt: expiresAt, access_token: response.data.access_token }));
+
+						}, function error(response) {
+
+							var data = null;
+							if (response.status === -1) {
+								data = { error: 'Back-end service is currently offline.' };
+							} else {
+								$log.error('Status code: ', response.status);
+								data = { error: response.data.error_description };
+							}
+
+							messenger.showErrorMessage($scope, data);
+						})
+						.finally(function () {
+							$scope.loading = false;
+						});
+				} else {
+					messenger.showErrorMessage($scope, { error: 'Invalid fields.'});
+				}
+			};
 
 
 		$scope.loading = false;
