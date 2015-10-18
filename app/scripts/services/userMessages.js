@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('userMessage', [])
-	.factory('messenger', function () {
+	.factory('messenger', function ($log) {
 		return {
 			showErrorMessage: function ($scope, data) {
 				var msg = data;
@@ -29,12 +29,6 @@ angular.module('userMessage', [])
 				$scope.alerts = [
 					{ type: 'warning', msg: 'Must be logged in to use this page.' }
 				];
-			},
-			
-			closeAlert: function($index) {
-				var a = 2/0; // This function is not firing :`(
-				alert('#alert-'+$index.toString());
-				angular.remove( document.querySelector( '#alert-'+$index.toString() ) );
 			}
 		};
 	});
