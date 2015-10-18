@@ -55,11 +55,11 @@ angular
       }
     };
   })
-  .directive('alert', ['messenger', function (messenger) {
+  .directive('alert', [function () {
     return {
       restrict: 'E',
       replace: true,
-      template: '<div class="row"><div class="col-sm-8 col-sm-offset-2" id="login"><div class="alert alert-{{alert.type}}" ng-repeat="alert in alerts" type="{{alert.type}}" id="alert-{{$index}}">{{alert.msg}}<div class="pull-right hover-pointer" ng-click="messenger.closeAlert({{$index}})"><span class="glyphicon glyphicon-remove-circle"></span></span></div></div></div>', 
-    };   
+      templateUrl: 'views/alert.html'
+    };
   }]);
     
