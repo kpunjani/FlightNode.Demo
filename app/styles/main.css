@@ -104,3 +104,10 @@ form {
 .hover-pointer:hover {
   cursor: pointer;
 }
+
+.validator {
+  padding-top: 2.25em;
+}
+span.error.bg-danger {
+  padding: 7px;
+}

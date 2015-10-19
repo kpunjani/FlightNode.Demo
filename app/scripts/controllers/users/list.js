@@ -2,24 +2,25 @@
 
 /**
  * @ngdoc function
- * @name flightNodeDemo.controller:LoginController
+ * @name flightNodeDemo.controller:UserListController
  * @description
- * # LoginController
- * Controller for the login page
+ * # UserListController
+ * Controller for the user list page.
  */
 angular.module('flightNodeDemo')
-	.controller('UserController', ['$scope', '$http', '$log', 'messenger',
+	.controller('UserListController', ['$scope', '$http', '$log', 'messenger',
 	 function ($scope, $http, $log, messenger) {
 
 		$scope.loading = true;
 
 		$scope.userList = [];
 
+		// TODO: extract the jwt handling to a service factory,
+		// then inject the "interior" function into the service method.
 		var jwt = JSON.parse(localStorage.getItem('jwt'));
 
 		if (jwt) {
 			// TODO: validate that the user administration claim is present.
-			// TODO: validate the expiration date.
 			if (moment() < moment(jwt.expiresAt)) {
 
 				$http({
@@ -35,7 +36,7 @@ angular.module('flightNodeDemo')
 							return {
 								fullName: user.givenName + ' ' + user.familyName,
 								email: user.email,
-								phone: (user.mobilePhoneNumber || user.phoneNumber),
+								phone: (user.phoneNumber || user.mobilePhoneNumber),
 								userId: user.userId
 							};
 						});

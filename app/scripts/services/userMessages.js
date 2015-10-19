@@ -1,21 +1,29 @@
 'use strict';
 
 angular.module('userMessage', [])
-	.factory('messenger', function ($log) {
+	.factory('messenger', function () {
 		return {
 			showErrorMessage: function ($scope, data) {
-				var msg = data;
-				if (data.error) {
-					msg = data.error;
+
+				if (!Array.isArray(data)) {
+					data = [data];
 				}
 
-				if (data.error_description) {
-					msg += ': ' + data.error_description;
-				}
+				$scope.alerts = [];
 
-				$scope.alerts = [
-					{ type: 'danger', msg: msg }
-				];
+				_.forEach(data, function (d) {
+					var msg = d;
+					if (d.error) {
+						msg = d.error;
+					}
+
+					if (d.error_description) {
+						msg += ': ' + d.error_description;
+					}
+
+					$scope.alerts.push({ type: 'danger', msg: msg });
+				});
+
 			},
 
 			showSuccessMessage: function ($scope, msg) {
@@ -25,7 +33,7 @@ angular.module('userMessage', [])
 			},
 
 			unauthorized: function ($scope) {
-				
+
 				$scope.alerts = [
 					{ type: 'warning', msg: 'Must be logged in to use this page.' }
 				];

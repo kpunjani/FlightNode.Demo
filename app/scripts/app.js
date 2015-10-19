@@ -32,10 +32,14 @@ angular
       })
       .when('/users', {
         templateUrl: 'views/users/list.html',
-        controller: 'UserController'
+        controller: 'UserListController'
+      })
+      .when('/users/:userId', {
+        templateUrl: 'views/users/edit.html',
+        controller: 'UserEditController'
       })
       .otherwise({
-        redirectTo: '/'
+        templateUrl: 'views/404.html'
       });
   })
   .directive('loading', function () {
