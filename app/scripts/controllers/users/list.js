@@ -8,8 +8,8 @@
  * Controller for the user list page.
  */
 angular.module('flightNodeDemo')
-	.controller('UserListController', ['$scope', '$http', '$log', 'messenger',
-	 function ($scope, $http, $log, messenger) {
+	.controller('UserListController', ['$scope', '$http', '$log', 'messenger', '$location',
+	 function ($scope, $http, $log, messenger, $location) {
 
 		$scope.loading = true;
 
@@ -36,7 +36,7 @@ angular.module('flightNodeDemo')
 							return {
 								fullName: user.givenName + ' ' + user.familyName,
 								email: user.email,
-								phone: (user.phoneNumber || user.mobilePhoneNumber),
+								phone: user.primaryPhoneNumber,
 								userId: user.userId
 							};
 						});
@@ -76,6 +76,10 @@ angular.module('flightNodeDemo')
 				{ name: 'userId', displayName: '', cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a href="/#/users/{{row.entity.userId}}">Edit</a></div>' }
 			]
 		};
+		
+		$scope.createUser = function() {
+			$location.path("/users/new");
+		}
 
 		$scope.loading = false;
 

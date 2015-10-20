@@ -34,6 +34,10 @@ angular
         templateUrl: 'views/users/list.html',
         controller: 'UserListController'
       })
+      .when('/users/new', {
+        templateUrl: 'views/users/create.html',
+        controller: 'UserCreateController'
+      })
       .when('/users/:userId', {
         templateUrl: 'views/users/edit.html',
         controller: 'UserEditController'
