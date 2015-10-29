@@ -18,7 +18,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'ui.grid',
-    'userMessage'
+    'userMessage',
+    'roleProxy'
   ])
   .config(function ($routeProvider) {
     $routeProvider

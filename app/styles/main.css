@@ -107,6 +107,7 @@ body {
 span.error.bg-danger {
   padding: 7px;
   display: inline-block;
+  width: 100%;
 }
 
 

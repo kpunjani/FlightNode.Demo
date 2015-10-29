@@ -16,7 +16,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="form-group">
 		<div class="row">
 			<div class="col-sm-8">
@@ -29,7 +29,21 @@
 			</div>
 		</div>
 	</div>
-	
+
+	<div class="form-group">
+		<div class="row">
+			<div class="col-sm-8">
+				<label for="roles">Roles</label>
+				<select name="roles" class="form-control" ng-model="user.role" required multiple>-->
+					<option ng-repeat="option in data.roles" value="{{option.id}}">{{option.description}}</option>
+				</select>
+			</div>
+			<div role="alert" class="validator col-sm-4">
+				<span class="error bg-danger" ng-show="userForm.roles.$error.required">Required</span>
+			</div>
+		</div>
+	</div>
+
 	<h2>Name</h2>
 	<div class="form-group">
 		<div class="row">
@@ -57,7 +71,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<h2>Contact Information</h2>
 	<div class="form-group">
 		<div class="row">
@@ -82,8 +96,8 @@
 				<label for="primaryPhoneNumber">Primary Phone Number</label>
 				<div class="input-group">
 					<span class="input-group-addon">#</span>
-					<input type="text" ng-model="user.primaryPhoneNumber" class="form-control" name="primaryPhoneNumber" placeholder="Primary Phone Number" ng-pattern="/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/"
-					required>
+					<input type="text" ng-model="user.primaryPhoneNumber" class="form-control" name="primaryPhoneNumber" placeholder="Primary Phone Number"
+					ng-pattern="/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/" required>
 				</div>
 			</div>
 			<div role="alert" class="validator col-sm-4">
@@ -98,7 +112,8 @@
 				<label for="secondaryPhoneNumber">Secondary Phone Number</label>
 				<div class="input-group">
 					<span class="input-group-addon">#</span>
-					<input type="text" ng-model="user.secondaryPhoneNumber" class="form-control" name="secondaryPhoneNumber" placeholder="Secondary Phone Number" ng-pattern="/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/">
+					<input type="text" ng-model="user.secondaryPhoneNumber" class="form-control" name="secondaryPhoneNumber" placeholder="Secondary Phone Number"
+					ng-pattern="/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/">
 				</div>
 			</div>
 			<div role="alert" class="validator col-sm-4">
