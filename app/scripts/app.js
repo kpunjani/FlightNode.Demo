@@ -19,7 +19,8 @@ angular
     'ngTouch',
     'ui.grid',
     'userMessage',
-    'roleProxy'
+    'roleProxy',
+    'ui.bootstrap.datepicker'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -42,6 +43,10 @@ angular
       .when('/users/:userId', {
         templateUrl: 'views/users/edit.html',
         controller: 'UserEditController'
+      })
+      .when('/datacollection/workday', {
+        templateUrl: 'views/dataCollection/workday.html',
+        controller: 'WorkdayController'
       })
       .otherwise({
         templateUrl: 'views/404.html'
@@ -70,5 +75,46 @@ angular
       replace: true,
       templateUrl: 'views/alert.html'
     };
-  }]);
-    
+  }])
+  .directive('date', function () {
+    return {
+      require: 'ngModel',
+      link: function (scope, elm, attrs, ctrl) {
+        ctrl.$validators.date = function (modelValue, viewValue) {
+          if (ctrl.$isEmpty(modelValue)) {
+            // consider empty models to be valid
+            return true;
+          }
+
+          if ((new Date(viewValue))) {
+            // it is valid
+            return true;
+          }
+
+          // it is invalid
+          return false;
+        };
+      }
+    };
+  })
+  .directive('time', function () {
+    return {
+      require: 'ngModel',
+      link: function (scope, elm, attrs, ctrl) {
+        ctrl.$validators.time = function (modelValue, viewValue) {
+          if (ctrl.$isEmpty(modelValue)) {
+            // consider empty models to be valid
+            return true;
+          }
+
+          if ((new Date('2015-10-29 ' + viewValue))) {
+            // it is valid
+            return true;
+          }
+
+          // it is invalid
+          return false;
+        };
+      }
+    };
+  });

@@ -5,7 +5,7 @@
  * @name flightNodeDemo.controller:UserCreateController
  * @description
  * # UserCreateController
- * Controller for the ecreatedit user page.
+ * Controller for the create user page.
  */
 angular.module('flightNodeDemo')
 	.controller('UserCreateController',

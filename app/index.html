@@ -48,6 +48,7 @@
             <li class="active"><a href="#/">Home</a></li>
             <li><a ng-href="#/login">Login</a></li>
             <li><a ng-href="#/users">User</a></li>
+            <li><a ng-href="#/datacollection/workday">Work Day</a></li>
             <li><a ng-href="https://github.com/FlightNode/flightnode.github.io/issues/new">Contact</a></li>
           </ul>
         </div>
@@ -95,7 +96,26 @@
   <script src="bower_components/lodash/lodash.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
-
+  <!-- build:js(.) scripts/ui.bootstrap.js -->
+  <script src="bower_components/ui.bootstrap/src/position/position.js"></script>
+  <script src="bower_components/ui.bootstrap/src/stackedMap/stackedMap.js"></script>
+  <script src="bower_components/ui.bootstrap/src/dateparser/dateparser.js"></script>
+  <script src="bower_components/ui.bootstrap/src/datepicker/datepicker.js"></script>
+  <script src="bower_components/ui.bootstrap/src/collapse/collapse.js"></script>
+  <script src="bower_components/ui.bootstrap/src/tooltip/tooltip.js"></script>
+  <script src="bower_components/ui.bootstrap/src/accordion/accordion.js"></script>
+  <script src="bower_components/ui.bootstrap/src/popover/popover.js"></script>
+  <script src="bower_components/ui.bootstrap/src/typeahead/typeahead.js"></script>
+  <script src="bower_components/ui.bootstrap/src/tabs/tabs.js"></script>
+  <script src="bower_components/ui.bootstrap/src/timepicker/timepicker.js"></script>
+  <script src="bower_components/ui.bootstrap/src/modal/modal.js"></script>
+  <script src="bower_components/ui.bootstrap/src/alert/alert.js"></script>
+  <script src="bower_components/ui.bootstrap/src/buttons/buttons.js"></script>
+  <script src="bower_components/ui.bootstrap/src/carousel/carousel.js"></script>
+  <script src="bower_components/ui.bootstrap/src/pagination/pagination.js"></script>
+  <script src="bower_components/ui.bootstrap/src/progressbar/progressbar.js"></script>
+  <script src="bower_components/ui.bootstrap/src/rating/rating.js"></script>
+  <!-- endbuild -->
   <!-- build:js({.tmp,app}) scripts/scripts.js -->
   <script src="scripts/app.js"></script>
   <script src="scripts/controllers/main.js"></script>
@@ -103,6 +123,7 @@
   <script src="scripts/controllers/users/list.js"></script>
   <script src="scripts/controllers/users/edit.js"></script>
   <script src="scripts/controllers/users/create.js"></script>
+  <script src="scripts/controllers/dataCollection/workday.js"></script>
   <script src="scripts/services/userMessages.js"></script>
   <script src="scripts/services/roleProxy.js"></script>
   <!-- endbuild -->
