@@ -96,11 +96,26 @@ body {
   margin-top: 1em;
 }
 
-form {
-  margin-top: 2em;
-}
-
 
 .hover-pointer:hover {
   cursor: pointer;
+}
+
+.validator {
+  padding-top: 2.25em;
+}
+span.error.bg-danger {
+  padding: 7px;
+  display: inline-block;
+  width: 100%;
+}
+
+
+form {
+  margin-top: 2em;
+}
+form h2 {
+  font-size: 1.5em;
+  border-bottom: 1px inset silver;
+  margin-top: 2em;
 }
