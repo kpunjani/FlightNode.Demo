@@ -5,7 +5,7 @@
  * @ngdoc function
  * @name flightNodeDemo.controller:WorkdayController
  * @description
- * # UserCreateController
+ * # WorkdayController
  * Controller for the workday logging page.
  */
 angular.module('flightNodeDemo')

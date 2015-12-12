@@ -20,7 +20,8 @@ angular
     'ui.grid',
     'userMessage',
     'roleProxy',
-    'ui.bootstrap.datepicker'
+    'ui.bootstrap.datepicker',
+    'oauthRequest',
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -44,9 +45,17 @@ angular
         templateUrl: 'views/users/edit.html',
         controller: 'UserEditController'
       })
-      .when('/datacollection/workday', {
-        templateUrl: 'views/dataCollection/workday.html',
+      .when('/workday', {
+        templateUrl: 'views/workday/create.html',
         controller: 'WorkdayController'
+      })
+      .when('/worktype', {
+        templateUrl: 'views/worktype/list.html',
+        controller: 'WorktypeListController'
+      })
+      .when('/logout', {
+        templateUrl: 'views/main.html',
+        controller: 'LogoutController'
       })
       .otherwise({
         templateUrl: 'views/404.html'

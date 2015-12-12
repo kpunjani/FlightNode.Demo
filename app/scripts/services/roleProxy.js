@@ -16,7 +16,7 @@ angular.module('roleProxy', [])
 					done(null, response);
 				}, function error(response) {
 					done(response);
-				});				
+				});
 			}
 
 		};
