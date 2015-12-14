@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name flightNodeDemo.controller:UserEditController
+ * @name flightNodeApp.controller:UserEditController
  * @description
  * # UserEditController
  * Controller for the edit user page.
  */
-angular.module('flightNodeDemo')
+angular.module('flightNodeApp')
 	.controller('UserEditController', ['$scope', '$http', '$log', '$location', '$routeParams', 'messenger',
 		function ($scope, $http, $log, $location, $routeParams, messenger) {
 

@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name flightNodeDemo.controller:LoginController
+ * @name flightNodeApp.controller:LoginController
  * @description
  * # LoginController
  * Controller that  handles user logout
  */
-angular.module('flightNodeDemo')
+angular.module('flightNodeApp')
 	.controller('LogoutController',
 		['$log', 'oauthRequest', '$location',
 		function ($log, oauthRequest, $location) {

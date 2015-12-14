@@ -119,3 +119,7 @@ form h2 {
   border-bottom: 1px inset silver;
   margin-top: 2em;
 }
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}

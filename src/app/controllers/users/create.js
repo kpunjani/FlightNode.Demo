@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name flightNodeDemo.controller:UserCreateController
+ * @name flightNodeApp.controller:UserCreateController
  * @description
  * # UserCreateController
  * Controller for the create user page.
  */
-angular.module('flightNodeDemo')
+angular.module('flightNodeApp')
 	.controller('UserCreateController',
 		['$scope', '$http', '$log', '$location', 'messenger', 'roleProxy',
 			function ($scope, $http, $log, $location, messenger, roleProxy) {

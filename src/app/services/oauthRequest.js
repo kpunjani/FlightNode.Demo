@@ -26,7 +26,7 @@ angular.module('oauthRequest', [])
 				$cookies.remove(TOKEN_KEY);
 			},
 
-			_request: function(url, verb) {
+			_request: function(url, verb, data) {
 				var $this = this;
 
 				var token = $this.getToken();
@@ -42,6 +42,7 @@ angular.module('oauthRequest', [])
 				return $http({
 					url: url,
 					method: verb,
+					data: data,
 					headers: {
 						Authorization: 'bearer ' + $this.getToken()
 					}
@@ -55,7 +56,19 @@ angular.module('oauthRequest', [])
 				return $this._request(url, 'GET');
 			},
 
-			delete: function(url, body) {
+			post: function(url, data) {
+				var $this = this;
+
+				return $this._request(url, 'POST', data);
+			},
+
+			put: function(url, data) {
+				var $this = this;
+
+				return $this._request(url, 'PUT', data);
+			},
+
+			delete: function(url, data) {
 				var $this = this;
 
 				return $this._request(url, 'DELETE');

@@ -1,0 +1,31 @@
+<h1>Create Work Type</h1>
+
+<alert>
+</alert>
+
+<form ng-submit="submit()" name="workTypeForm">
+	<div class="form-group">
+		<div class="row">
+			<div class="col-sm-8">
+				<label for="description">Description</label>
+				<input type="text" class="form-control" ng-model="worktype.description" name="description" placeholder="Description" required ng-maxlength="1000">
+			</div>
+			<div role="alert" class="validator col-sm-4">
+				<span class="error bg-danger" ng-show="workTypeForm.description.$error.required">Required</span>
+				<span class="error bg-danger" ng-show="workTypeForm.description.$error.maxlength">Max 100 characters</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-8 text-right">
+			<input type="hidden" ng-model="worktype.id" name="id">
+			<button type="submit" class="btn btn-primary">Save</button>
+			<button type="button" class="btn btn-secondary" ng-click="cancel()">Cancel</button>
+		</div>
+	</div>
+</form>
+
+
+
+<loading></loading>

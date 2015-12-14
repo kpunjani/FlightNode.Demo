@@ -3,12 +3,12 @@
 
 /**
  * @ngdoc function
- * @name flightNodeDemo.controller:WorkdayController
+ * @name flightNodeApp.controller:WorkdayController
  * @description
  * # WorkdayController
  * Controller for the workday logging page.
  */
-angular.module('flightNodeDemo')
+angular.module('flightNodeApp')
     .controller('WorkdayController',
         ['$scope', '$http', '$log', 'messenger',
             function ($scope, $http, $log, messenger) {
