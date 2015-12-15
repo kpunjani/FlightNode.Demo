@@ -37,9 +37,9 @@ angular
         templateUrl: 'app/views/users/edit.html',
         controller: 'UserEditController'
       })
-      .when('/workday', {
+      .when('/workday/create', {
         templateUrl: 'app/views/workday/create.html',
-        controller: 'WorkdayController'
+        controller: 'WorkdayCreateController'
       })
       .when('/worktypes', {
         templateUrl: 'app/views/worktype/list.html',

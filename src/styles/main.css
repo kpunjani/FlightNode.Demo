@@ -110,7 +110,13 @@ span.error.bg-danger {
   width: 100%;
 }
 
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
 
+/*
+ Form customizations
+ */
 form {
   margin-top: 2em;
 }
@@ -120,6 +126,11 @@ form h2 {
   margin-top: 2em;
 }
 
-.dropdown:hover .dropdown-menu {
-  display: block;
+input.form-inline-small {
+  display: inline;
+  width: 4em;
+}
+select.form-inline-small {
+  display: inline;
+  width: 5em;
 }
