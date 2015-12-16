@@ -8,9 +8,16 @@
  * Controller for the edit user page.
  */
 angular.module('flightNodeApp')
-	.controller('UserEditController', 
+	.controller('UserEditController',
 		['$scope', '$http', '$log', '$location', '$routeParams', 'messenger', 'oauthRequest',
 		function ($scope, $http, $log, $location, $routeParams, messenger, oauthRequest) {
+
+			if (!(oauthRequest.isAdministrator() ||
+				  oauthRequest.isCoordinator())) {
+				$log.warn('not authorized to access this path');
+				$location.path('/');
+				return;
+			}
 
 			$scope.loading = true;
 

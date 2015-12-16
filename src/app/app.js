@@ -14,6 +14,7 @@ angular
     'roleProxy',
     'ui.bootstrap.datepicker',
     'oauthRequest',
+    'angular-jwt'
   ])
   .config(function ($routeProvider) {
     $routeProvider

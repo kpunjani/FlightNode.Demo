@@ -12,6 +12,18 @@ angular.module('flightNodeApp')
 	 ['$scope', '$http', '$log', 'messenger', '$location', 'oauthRequest',
 		function ($scope, $http, $log, messenger, $location, oauthRequest) {
 
+			// TODO: when not authorized, an error about uiGrid will
+			// appear on the screen, probably because it tries to load
+			//  the view before changing the location path. Is there a
+			//  better place to put this? Perhaps something in the routing
+			//  to intercept the route and direct traffic by permission?
+			if (!(oauthRequest.isAdministrator() ||
+				  oauthRequest.isCoordinator())) {
+				$log.warn('not authorized to access this path');
+				$location.path('/');
+				return;
+			}
+
 			$scope.loading = true;
 
 			$scope.list = [];

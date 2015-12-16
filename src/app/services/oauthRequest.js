@@ -3,15 +3,18 @@
 
 /**
  * @ngdoc function
- * @name flightNodeDemo.services:oauthRequest
+ * @name flightNodeApp.services:oauthRequest
  * @description
  * # oauthRequest
  * Service for making HTTP request using a JSON Web Token (jwt).
  */
 angular.module('oauthRequest', [])
-	.factory('oauthRequest', ['$cookies', '$http', function ($cookies, $http) {
+	.factory('oauthRequest',
+		['$cookies', '$http', 'jwtHelper', '$log',
+		 function ($cookies, $http, jwtHelper, $log) {
 
 		var TOKEN_KEY = 'org.flightnode.jwt';
+		var roles;
 
 		return {
 			getToken: function() {
@@ -24,6 +27,19 @@ angular.module('oauthRequest', [])
 
 			clearToken: function() {
 				$cookies.remove(TOKEN_KEY);
+			},
+
+			_getRoles: function() {
+			    var $this = this;
+
+			    if (!$this.roles) {
+			    	$this.roles = jwtHelper.decodeToken($this.getToken()).role || '';
+					if (!_.isArray(roles)) {
+						$this.roles = [ $this.roles ];
+					}
+			    }
+
+			    return $this.roles;
 			},
 
 			_request: function(url, verb, data) {
@@ -72,6 +88,18 @@ angular.module('oauthRequest', [])
 				var $this = this;
 
 				return $this._request(url, 'DELETE');
+			},
+
+			isAdministrator: function() {
+				var $this = this;
+$log.info('Roles: ', $this._getRoles());
+				return _.includes($this._getRoles(), 'Administrator');
+			},
+
+			isCoordinator: function() {
+				var $this = this;
+
+				return _.includes($this._getRoles(), 'Coordinator');
 			}
 
 		};

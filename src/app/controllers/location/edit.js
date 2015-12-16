@@ -12,6 +12,13 @@ angular.module('flightNodeApp')
 		['$scope', '$http', '$log', '$location', 'messenger', 'oauthRequest', '$routeParams',
 			function ($scope, $http, $log, $location, messenger, oauthRequest, $routeParams) {
 
+				if (!(oauthRequest.isAdministrator() ||
+					  oauthRequest.isCoordinator())) {
+					$log.warn('not authorized to access this path');
+					$location.path('/');
+					return;
+				}
+
 				$scope.loading = true;
 
 				var id = $routeParams.id;

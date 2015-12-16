@@ -12,6 +12,14 @@ angular.module('flightNodeApp')
 		['$scope', '$http', '$log', '$location', 'messenger', 'roleProxy', 'oauthRequest',
 			function ($scope, $http, $log, $location, messenger, roleProxy, oauthRequest) {
 
+
+				if (!(oauthRequest.isAdministrator() ||
+					  oauthRequest.isCoordinator())) {
+					$log.warn('not authorized to access this path');
+					$location.path('/');
+					return;
+				}
+
 				$scope.loading = true;
 				$scope.data = {};
 

@@ -12,10 +12,16 @@ angular.module('flightNodeApp')
 	 ['$scope', '$http', '$log', 'messenger', '$location', 'oauthRequest',
 		function ($scope, $http, $log, messenger, $location, oauthRequest) {
 
+			if (!(oauthRequest.isAdministrator() ||
+				  oauthRequest.isCoordinator())) {
+				$log.warn('not authorized to access this path');
+				$location.path('/');
+				return;
+			}
+
 			$scope.loading = true;
 
 			$scope.userList = [];
-
 
 			oauthRequest.get('http://localhost:50323/api/v1/user')
 						.then(function success(response) {
