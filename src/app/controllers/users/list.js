@@ -2,36 +2,28 @@
 
 /**
  * @ngdoc function
- * @name flightNodeDemo.controller:UserListController
+ * @name flightNodeApp.controller:UserListController
  * @description
  * # UserListController
  * Controller for the user list page.
  */
-angular.module('flightNodeDemo')
+angular.module('flightNodeApp')
 	.controller('UserListController',
-	 ['$scope', '$http', '$log', 'messenger', '$location',
-		function ($scope, $http, $log, messenger, $location) {
+	 ['$scope', '$http', '$log', 'messenger', '$location', 'oauthRequest',
+		function ($scope, $http, $log, messenger, $location, oauthRequest) {
+
+			if (!(oauthRequest.isAdministrator() ||
+				  oauthRequest.isCoordinator())) {
+				$log.warn('not authorized to access this path');
+				$location.path('/');
+				return;
+			}
 
 			$scope.loading = true;
 
 			$scope.userList = [];
 
-			// TODO: extract the jwt handling to a service factory,
-			// then inject the "interior" function into the service method.
-			// TODO: use a cookie instead of Web Storage, as it is more secure
-			var jwt = JSON.parse(localStorage.getItem('jwt'));
-
-			if (jwt) {
-				// TODO: validate that the user administration claim is present.
-				if (moment() < moment(jwt.expiresAt)) {
-
-					$http({
-						url: 'http://localhost:50323/api/v1/user',
-						method: 'GET',
-						headers: {
-							Authorization: 'bearer ' + jwt.access_token
-						}
-					})
+			oauthRequest.get('http://localhost:50323/api/v1/user')
 						.then(function success(response) {
 
 							$scope.userList = _.map(response.data, function (user) {
@@ -53,20 +45,10 @@ angular.module('flightNodeDemo')
 								messenger.showErrorMessage($scope, { error: response });
 							}
 						});
-				} else {
-					messenger.unauthorized($scope);
-				}
-			} else {
-				messenger.unauthorized($scope);
-			}
 
-
-			$scope.gridRowClick = function (row) {
-				$log.info(row);
-			};
 			$scope.gridOptions = {
 				enableFiltering: true,
-				rowTemplate: 'views/users/row.html',
+				rowTemplate: 'app/views/row.html',
 				onRegisterApi: function (gridApi) {
 					$scope.gridApi = gridApi;
 				},
@@ -75,7 +57,11 @@ angular.module('flightNodeDemo')
 					{ name: 'fullName', displayName: 'Full Name' },
 					{ name: 'email', displayName: 'E-mail Address' },
 					{ name: 'phone', displayName: 'Phone Number' },
-					{ name: 'userId', displayName: '', cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a href="/#/users/{{row.entity.userId}}">Edit</a></div>' }
+					{
+						name: 'userId',
+						displayName: '',
+						cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a href="/#/users/{{row.entity.userId}}">Edit</a></div>' 
+					}
 				]
 			};
 

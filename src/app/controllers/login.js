@@ -2,20 +2,22 @@
 
 /**
  * @ngdoc function
- * @name flightNodeDemo.controller:LoginController
+ * @name flightNodeApp.controller:LoginController
  * @description
  * # LoginController
  * Controller for the login page
  */
-angular.module('flightNodeDemo')
-	.controller('LoginController', ['$scope', '$http', '$log', 'messenger', function ($scope, $http, $log, messenger) {
+angular.module('flightNodeApp')
+	.controller('LoginController',
+		['$scope', '$http', '$log', 'messenger', 'oauthRequest',
+		function ($scope, $http, $log, messenger, oauthRequest) {
 
 		$scope.response = 'doesn\'t work yet.';
 
 		$scope.loading = true;
 
 		$scope.submit = function () {
-				
+
 				 if ($scope.loginForm.$valid) {
 					$scope.loading = true;
 
@@ -26,6 +28,7 @@ angular.module('flightNodeDemo')
 					};
 
 					$http({
+						// TODO: move this string into a config file
 						url: 'http://localhost:50323/oauth/token',
 						method: 'POST',
 						transformRequest: function (obj) {
@@ -43,9 +46,8 @@ angular.module('flightNodeDemo')
 
 							// response.data has the the access_token and expires_in (seconds).
 							// Need to record the actual expiration timestamp, not just the duration.
-							var expiresAt = moment().add(response.data.expires_in, 's');
-
-							localStorage.setItem('jwt', JSON.stringify({ expiresAt: expiresAt, access_token: response.data.access_token }));
+							var expiresAt = moment().add(response.data.expires_in, 's').toDate();
+							oauthRequest.setToken(response.data.access_token, expiresAt);
 
 						}, function error(response) {
 

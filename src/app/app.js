@@ -1,16 +1,8 @@
 /* global $ */
 'use strict';
 
-/**
- * @ngdoc overview
- * @name flightNodeDemo
- * @description
- * # flightNodeDemo
- *
- * Main module of the application.
- */
 angular
-  .module('flightNodeDemo', [
+  .module('flightNodeApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -20,36 +12,66 @@ angular
     'ui.grid',
     'userMessage',
     'roleProxy',
-    'ui.bootstrap.datepicker'
+    'ui.bootstrap.datepicker',
+    'oauthRequest',
+    'angular-jwt'
   ])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        templateUrl: 'app/views/main.html',
+        controller: 'MainController'
       })
       .when('/login', {
-        templateUrl: 'views/login.html',
+        templateUrl: 'app/views/login.html',
         controller: 'LoginController'
       })
       .when('/users', {
-        templateUrl: 'views/users/list.html',
+        templateUrl: 'app/views/users/list.html',
         controller: 'UserListController'
       })
       .when('/users/new', {
-        templateUrl: 'views/users/create.html',
+        templateUrl: 'app/views/users/create.html',
         controller: 'UserCreateController'
       })
       .when('/users/:userId', {
-        templateUrl: 'views/users/edit.html',
+        templateUrl: 'app/views/users/edit.html',
         controller: 'UserEditController'
       })
-      .when('/datacollection/workday', {
-        templateUrl: 'views/dataCollection/workday.html',
-        controller: 'WorkdayController'
+      .when('/workday/create', {
+        templateUrl: 'app/views/workday/create.html',
+        controller: 'WorkdayCreateController'
+      })
+      .when('/worktypes', {
+        templateUrl: 'app/views/worktype/list.html',
+        controller: 'WorktypeListController'
+      })
+      .when('/worktypes/new', {
+        templateUrl: 'app/views/worktype/create.html',
+        controller: 'WorktypeCreateController'
+      })
+      .when('/worktypes/:id', {
+        templateUrl: 'app/views/worktype/edit.html',
+        controller: 'WorktypeEditController'
+      })
+      .when('/locations', {
+        templateUrl: 'app/views/location/list.html',
+        controller: 'LocationListController'
+      })
+      .when('/locations/new', {
+        templateUrl: 'app/views/location/create.html',
+        controller: 'LocationCreateController'
+      })
+      .when('/locations/:id', {
+        templateUrl: 'app/views/location/edit.html',
+        controller: 'LocationEditController'
+      })
+      .when('/logout', {
+        templateUrl: 'app/views/main.html',
+        controller: 'LogoutController'
       })
       .otherwise({
-        templateUrl: 'views/404.html'
+        templateUrl: 'app/views/404.html'
       });
   })
   .directive('loading', function () {
@@ -73,7 +95,7 @@ angular
     return {
       restrict: 'E',
       replace: true,
-      templateUrl: 'views/alert.html'
+      templateUrl: 'app/views/alert.html'
     };
   }])
   .directive('date', function () {

@@ -2,14 +2,22 @@
 
 /**
  * @ngdoc function
- * @name flightNodeDemo.controller:UserEditController
+ * @name flightNodeApp.controller:UserEditController
  * @description
  * # UserEditController
  * Controller for the edit user page.
  */
-angular.module('flightNodeDemo')
-	.controller('UserEditController', ['$scope', '$http', '$log', '$location', '$routeParams', 'messenger',
-		function ($scope, $http, $log, $location, $routeParams, messenger) {
+angular.module('flightNodeApp')
+	.controller('UserEditController',
+		['$scope', '$http', '$log', '$location', '$routeParams', 'messenger', 'oauthRequest',
+		function ($scope, $http, $log, $location, $routeParams, messenger, oauthRequest) {
+
+			if (!(oauthRequest.isAdministrator() ||
+				  oauthRequest.isCoordinator())) {
+				$log.warn('not authorized to access this path');
+				$location.path('/');
+				return;
+			}
 
 			$scope.loading = true;
 
@@ -21,19 +29,7 @@ angular.module('flightNodeDemo')
 
 			$scope.action = 'Edit';
 
-			var jwt = JSON.parse(localStorage.getItem('jwt'));
-
-			if (jwt) {
-				// TODO: validate that the user administration claim is present.
-				if (moment() < moment(jwt.expiresAt)) {
-
-					$http({
-						url: 'http://localhost:50323/api/v1/user/' + userId,
-						method: 'GET',
-						headers: {
-							Authorization: 'bearer ' + jwt.access_token
-						}
-					})
+			oauthRequest.get('http://localhost:50323/api/v1/user/' + userId)
 						.then(function success(response) {
 
 							$scope.user = response.data;
@@ -51,13 +47,6 @@ angular.module('flightNodeDemo')
 
 							$scope.loading = false;
 						});
-				} else {
-					messenger.unauthorized($scope);
-				}
-			} else {
-				messenger.unauthorized($scope);
-			}
-
 
 			$scope.cancel = function () {
 				$location.path('/users');
@@ -65,21 +54,9 @@ angular.module('flightNodeDemo')
 
 			$scope.submit = function () {
 				$scope.loading = true;
-				var jwt = JSON.parse(localStorage.getItem('jwt'));
 
-
-				if (jwt) {
-			
-					// TODO: validate that the user administration claim is present.
-					if (moment() < moment(jwt.expiresAt)) {
-						$http({
-							url: 'http://localhost:50323/api/v1/user/' + userId,
-							method: 'PUT',
-							data: $scope.user,
-							headers: {
-								Authorization: 'bearer ' + jwt.access_token
-							}
-						}).then(function success(response) {
+				oauthRequest.put('http://localhost:50323/api/v1/user/' + userId, $scope.user)
+						.then(function success(response) {
 							messenger.showSuccessMessage($scope, 'Saved');
 							$scope.loading = false;
 						}, function error(response) {
@@ -102,13 +79,6 @@ angular.module('flightNodeDemo')
 							}
 							$scope.loading = false;
 						});
-					} else {
-						$log.info('Token expired');
-						messenger.unauthorized($scope);
-					}
-				} else {
-					messenger.unauthorized($scope);
-				}
 			};
 
 

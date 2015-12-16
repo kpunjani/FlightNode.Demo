@@ -2,22 +2,29 @@
 
 /**
  * @ngdoc function
- * @name flightNodeDemo.controller:UserCreateController
+ * @name flightNodeApp.controller:UserCreateController
  * @description
  * # UserCreateController
  * Controller for the create user page.
  */
-angular.module('flightNodeDemo')
+angular.module('flightNodeApp')
 	.controller('UserCreateController',
-		['$scope', '$http', '$log', '$location', 'messenger', 'roleProxy',
-			function ($scope, $http, $log, $location, messenger, roleProxy) {
+		['$scope', '$http', '$log', '$location', 'messenger', 'roleProxy', 'oauthRequest',
+			function ($scope, $http, $log, $location, messenger, roleProxy, oauthRequest) {
+
+
+				if (!(oauthRequest.isAdministrator() ||
+					  oauthRequest.isCoordinator())) {
+					$log.warn('not authorized to access this path');
+					$location.path('/');
+					return;
+				}
 
 				$scope.loading = true;
 				$scope.data = {};
 
-				var jwt = JSON.parse(localStorage.getItem('jwt'));
 
-				roleProxy.getAll(jwt.access_token, function (error, response) {
+				roleProxy.getAll( function (error, response) {
 					if (error) {
 						$log.error('Failed to retrieve roles: ' + error);
 					} else {
@@ -37,17 +44,8 @@ angular.module('flightNodeDemo')
 				$scope.submit = function () {
 					$scope.loading = true;
 
-					if (jwt) {
-						// TODO: validate that the user administration claim is present.
-						if (moment() < moment(jwt.expiresAt)) {
-							$http({
-								url: 'http://localhost:50323/api/v1/user/',
-								method: 'POST',
-								data: $scope.user,
-								headers: {
-									Authorization: 'bearer ' + jwt.access_token
-								}
-							}).then(function success(response) {
+					oauthRequest.post('http://localhost:50323/api/v1/user/', $scope.user)
+							.then(function success(response) {
 								messenger.showSuccessMessage($scope, 'Saved');
 								$scope.loading = false;
 							}, function error(response) {
@@ -73,14 +71,9 @@ angular.module('flightNodeDemo')
 								}
 								$scope.loading = false;
 							});
-						} else {
-							$log.info('Token expired');
-							messenger.unauthorized($scope);
-						}
-					} else {
-						messenger.unauthorized($scope);
-					}
-				};
 
 				$scope.loading = false;
-			}]);
+			};
+
+			$scope.loading = false;
+		}]);
