@@ -9,11 +9,11 @@
  */
 angular.module('flightNodeApp')
 	.controller('WorktypeEditController',
-		['$scope', '$http', '$log', '$location', 'messenger', 'oauthRequest', '$routeParams',
-			function ($scope, $http, $log, $location, messenger, oauthRequest, $routeParams) {
+		['$scope', '$http', '$log', '$location', 'messenger', 'authService', '$routeParams',
+			function ($scope, $http, $log, $location, messenger, authService, $routeParams) {
 
-				if (!(oauthRequest.isAdministrator() ||
-					  oauthRequest.isCoordinator())) {
+				if (!(authService.isAdministrator() ||
+					  authService.isCoordinator())) {
 					$log.warn('not authorized to access this path');
 					$location.path('/');
 					return;
@@ -29,7 +29,7 @@ angular.module('flightNodeApp')
 
 				var url = 'http://localhost:50323/api/v1/worktypes/' +id;
 
-				oauthRequest.get(url)
+				authService.get(url)
 					.then(function success(response) {
 						$scope.worktype = response.data;
 
@@ -61,7 +61,7 @@ angular.module('flightNodeApp')
 				$scope.submit = function () {
 					$scope.loading = true;
 
-					oauthRequest.put(url, $scope.worktype)
+					authService.put(url, $scope.worktype)
 						.then(function success(response) {
 
 							messenger.showSuccessMessage($scope, 'Saved');

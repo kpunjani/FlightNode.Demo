@@ -9,11 +9,11 @@
  */
 angular.module('flightNodeApp')
 	.controller('UserEditController',
-		['$scope', '$http', '$log', '$location', '$routeParams', 'messenger', 'oauthRequest',
-		function ($scope, $http, $log, $location, $routeParams, messenger, oauthRequest) {
+		['$scope', '$http', '$log', '$location', '$routeParams', 'messenger', 'authService',
+		function ($scope, $http, $log, $location, $routeParams, messenger, authService) {
 
-			if (!(oauthRequest.isAdministrator() ||
-				  oauthRequest.isCoordinator())) {
+			if (!(authService.isAdministrator() ||
+				  authService.isCoordinator())) {
 				$log.warn('not authorized to access this path');
 				$location.path('/');
 				return;
@@ -29,7 +29,7 @@ angular.module('flightNodeApp')
 
 			$scope.action = 'Edit';
 
-			oauthRequest.get('http://localhost:50323/api/v1/user/' + userId)
+			authService.get('http://localhost:50323/api/v1/user/' + userId)
 						.then(function success(response) {
 
 							$scope.user = response.data;
@@ -55,7 +55,7 @@ angular.module('flightNodeApp')
 			$scope.submit = function () {
 				$scope.loading = true;
 
-				oauthRequest.put('http://localhost:50323/api/v1/user/' + userId, $scope.user)
+				authService.put('http://localhost:50323/api/v1/user/' + userId, $scope.user)
 						.then(function success(response) {
 							messenger.showSuccessMessage($scope, 'Saved');
 							$scope.loading = false;

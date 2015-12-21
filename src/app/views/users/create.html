@@ -34,8 +34,8 @@
 		<div class="row">
 			<div class="col-sm-8">
 				<label for="roles">Roles</label>
-				<select name="roles" class="form-control" ng-model="user.role" required multiple>
-					<option ng-repeat="option in data.roles" value="{{option.id}}">{{option.description}}</option>
+				<select name="roles" class="form-control" ng-model="user.roles" required multiple>
+					<option ng-repeat="option in data.roles">{{option.description}}</option>
 				</select>
 			</div>
 			<div role="alert" class="validator col-sm-4">

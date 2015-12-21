@@ -9,11 +9,11 @@
  */
 angular.module('flightNodeApp')
 	.controller('LocationCreateController',
-		['$scope', '$http', '$log', '$location', 'messenger', 'oauthRequest',
-			function ($scope, $http, $log, $location, messenger, oauthRequest) {
+		['$scope', '$http', '$log', '$location', 'messenger', 'authService',
+			function ($scope, $http, $log, $location, messenger, authService) {
 
-				if (!(oauthRequest.isAdministrator() ||
-					  oauthRequest.isCoordinator())) {
+				if (!(authService.isAdministrator() ||
+					  authService.isCoordinator())) {
 					$log.warn('not authorized to access this path');
 					$location.path('/');
 					return;
@@ -28,7 +28,7 @@ angular.module('flightNodeApp')
 				$scope.submit = function () {
 					$scope.loading = true;
 
-					oauthRequest.post('http://localhost:50323/api/v1/locations', $scope.location)
+					authService.post('http://localhost:50323/api/v1/locations', $scope.location)
 						.then(function success(response) {
 
 							messenger.showSuccessMessage($scope, 'Saved');

@@ -9,12 +9,12 @@
  */
 angular.module('flightNodeApp')
 	.controller('UserCreateController',
-		['$scope', '$http', '$log', '$location', 'messenger', 'roleProxy', 'oauthRequest',
-			function ($scope, $http, $log, $location, messenger, roleProxy, oauthRequest) {
+		['$scope', '$http', '$log', '$location', 'messenger', 'roleProxy', 'authService',
+			function ($scope, $http, $log, $location, messenger, roleProxy, authService) {
 
 
-				if (!(oauthRequest.isAdministrator() ||
-					  oauthRequest.isCoordinator())) {
+				if (!(authService.isAdministrator() ||
+					  authService.isCoordinator())) {
 					$log.warn('not authorized to access this path');
 					$location.path('/');
 					return;
@@ -44,7 +44,7 @@ angular.module('flightNodeApp')
 				$scope.submit = function () {
 					$scope.loading = true;
 
-					oauthRequest.post('http://localhost:50323/api/v1/user/', $scope.user)
+					authService.post('http://localhost:50323/api/v1/user/', $scope.user)
 							.then(function success(response) {
 								messenger.showSuccessMessage($scope, 'Saved');
 								$scope.loading = false;

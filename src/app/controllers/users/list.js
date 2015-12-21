@@ -9,11 +9,11 @@
  */
 angular.module('flightNodeApp')
 	.controller('UserListController',
-	 ['$scope', '$http', '$log', 'messenger', '$location', 'oauthRequest',
-		function ($scope, $http, $log, messenger, $location, oauthRequest) {
+	 ['$scope', '$http', '$log', 'messenger', '$location', 'authService',
+		function ($scope, $http, $log, messenger, $location, authService) {
 
-			if (!(oauthRequest.isAdministrator() ||
-				  oauthRequest.isCoordinator())) {
+			if (!(authService.isAdministrator() ||
+				  authService.isCoordinator())) {
 				$log.warn('not authorized to access this path');
 				$location.path('/');
 				return;
@@ -23,7 +23,7 @@ angular.module('flightNodeApp')
 
 			$scope.userList = [];
 
-			oauthRequest.get('http://localhost:50323/api/v1/user')
+			authService.get('http://localhost:50323/api/v1/user')
 						.then(function success(response) {
 
 							$scope.userList = _.map(response.data, function (user) {

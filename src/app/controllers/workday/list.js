@@ -3,13 +3,13 @@
 
 /**
  * @ngdoc function
- * @name flightNodeApp.controller:WorktypeListController
+ * @name flightNodeApp.controller:WorkdayListController
  * @description
- * # WorktypeListController
+ * # WorkdayListController
  * Controller for the user list page.
  */
 angular.module('flightNodeApp')
-	.controller('WorktypeListController',
+	.controller('WorkdayListController',
 	 ['$scope', '$http', '$log', 'messenger', '$location', 'authService',
 		function ($scope, $http, $log, messenger, $location, authService) {
 
@@ -24,48 +24,10 @@ angular.module('flightNodeApp')
 
 			$scope.list = [];
 
-			authService.get('http://localhost:50323/api/v1/worktypes')
-						.then(function success(response) {
 
-							$scope.list = response.data;
-
-						}, function error(response) {
-
-							$log.error(response);
-
-							if (response.status === 401) {
-								messenger.unauthorized($scope);
-							} else {
-								messenger.showErrorMessage($scope, { error: response });
-							}
-
-						});
-
-			$scope.gridOptions = {
-				enableFiltering: true,
-				rowTemplate: 'app/views/row.html',
-				onRegisterApi: function (gridApi) {
-					$scope.gridApi = gridApi;
-				},
-				data: 'list',
-				columnDefs: [
-					{ name: 'description', displayName: 'Description' },
-					{
-						name: 'id',
-						displayName: '',
-						cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a href="/#/worktypes/{{row.entity.id}}">Edit</a></div>' 
-					}
-				]
-			};
-
-			$scope.creatWorkType = function () {
-				$location.path("/worktypes/new");
-			}
-
-			$scope.exportData = function() {
-				authService.Get('http://localhost:50323/api/v1/worktypes/export')
+			authService.get('http://localhost:50323/api/v1/worklogs/export')
 				.then(function success(response) {
-					console.info(response.data);
+					$scope.list = response.data;
 
 				}, function error(response) {
 
@@ -76,9 +38,42 @@ angular.module('flightNodeApp')
 							} else {
 								messenger.showErrorMessage($scope, { error: response });
 							}
+						return null;
+				});
 
-				})
-			}
+
+			$scope.gridOptions = {
+				enableFiltering: true,
+				rowTemplate: 'app/views/row.html',
+				onRegisterApi: function (gridApi) {
+					$scope.gridApi = gridApi;
+				},
+				data: 'list',
+				columnDefs: [
+					{ name: 'locationName', displayName: 'Location' },
+					{ name: 'workDate', display: 'Date' },
+					{ name: 'person', displayName: 'Person' },
+					{ name: 'workHours', displayName: 'Work Hours' },
+					{ name: 'travelTimeHours', displayName: 'Travel Hours' },
+					{
+						name: 'id',
+						displayName: '',
+						cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a href="/#/workday/{{row.entity.id}}">Edit</a></div>'
+					}
+				]
+			};
+
+			$scope.creatWorkType = function () {
+				$location.path("/worktypes/new");
+			};
+
+			$scope.exportData = function() {
+				return $scope.list;
+			};
+
+			$scope.getHeader = function() {
+				return [ 'Id', 'WorkDate', 'WorkHours', 'TravelTimeHours', 'WorkTypeId', 'WorkType', 'LocationId', 'Location', "Longitude", 'Latitude', 'UserId', 'Person' ];
+			};
 
 			$scope.loading = false;
 

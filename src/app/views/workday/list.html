@@ -9,6 +9,9 @@
 <div class="row" style="margin-top: 1em;">
 	<div class="col-sm-12 text-right">
 		<button class="btn btn-primary" ng-click="createWorkType()"><span class="glyphicon glyphicon-plus"></span> New Work Type</button>
+		<button class="btn btn-secondary" ng-csv="exportData()" filename="workDayReport.csv" field-separator="," add-bom="true"
+		  csv-header="getHeader()" ><span class="glyphicon glyphicon-download-alt"></span> Export Data</button>
+		<!-- ng-click="exportData()" -->
 	</div>
 </div>
 
