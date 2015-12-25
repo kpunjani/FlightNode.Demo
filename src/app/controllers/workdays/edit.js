@@ -79,14 +79,7 @@ var loadLocations = function($scope, $log, messenger, authService) {
             $scope.data.locations = response.data;
 
         }, function error(response) {
-
-            $log.error(response);
-
-            if (response.status === 401) {
-                messenger.unauthorized($scope);
-            } else {
-                messenger.showErrorMessage($scope, { error: response });
-            }
+            messenger.displayErrorResponse($scope, response);
         });
 }
 
@@ -97,19 +90,11 @@ var loadWorkTypes = function($scope, $log, messenger, authService) {
             $scope.data.worktypes = response.data;
 
         }, function error(response) {
-
-            $log.error(response);
-
-            if (response.status === 401) {
-                messenger.unauthorized($scope);
-            } else {
-                messenger.showErrorMessage($scope, { error: response });
-            }
-
+            messenger.displayErrorResponse($scope, response);
         });
 }
 
-var configureSubmit = function($scope, $log, messenger, authService) {
+var configureSubmit = function(id, $scope, $log, messenger, authService) {
 
     $scope.submit = function() {
         $scope.loading = true;
@@ -120,30 +105,18 @@ var configureSubmit = function($scope, $log, messenger, authService) {
             workDate: $scope.workday.workDate,
             workHours: $scope.workday.workHours,
             workTypeId: $scope.workday.workType,
-            userId: authService.getUserId()
+            userId: $scope.workday.userId,
+            id: $scope.workday.id
         };
 
-        authService.post('http://localhost:50323/api/v1/worklogs', msg)
+        authService.put('http://localhost:50323/api/v1/worklogs/' + id, msg)
            .then(function success(response){
                 messenger.showSuccessMessage($scope, 'Saved');
                 $scope.loading = false;
            }, function error(response) {
-                switch (response.status) {
-                    case 400:
-                        var messages = [{ error: response.data.message }];
-                        if (response.data.modelState) {
-                            _.forIn(response.data.modelState, function (value, key) {
-                                messages.push({ error: value.toString() });
-                            });
-                        }
-                        messenger.showErrorMessage($scope, messages);
-                        break;
-                    case 401:
-                        messenger.unauthorized($scope);
-                        break;
-                    default:
-                        messenger.showErrorMessage($scope, { error: response });
-                }
+                messenger.displayErrorResponse($scope, response);
+           })
+           .finally(function(){
                 $scope.loading = false;
            });
     }
@@ -151,25 +124,52 @@ var configureSubmit = function($scope, $log, messenger, authService) {
     return $scope;
 }
 
+var loadRecord = function(id, $scope, $log, messenger, authService) {
+
+    authService.get('http://localhost:50323/api/v1/worklogs/' + id)
+        .then(function success(response) {
+            $scope.workday = {
+                location: response.data.locationId,
+                travelHours: response.data.travelTimeHours,
+                workDate: response.data.workDate,
+                workHours: response.data.workHours,
+                workType: response.data.workTypeId,
+                id: response.data.id,
+                userId: response.data.userId
+            };
+
+        }, function error(response) {
+            messenger.displayErrorResponse($scope, response);
+        });
+}
+
 /**
  * @ngdoc function
- * @name flightNodeApp.controller:WorkdayCreateController
+ * @name flightNodeApp.controller:WorkdayEditController
  * @description
  * # WorkdayController
  * Controller for the workday logging page.
  */
 angular.module('flightNodeApp')
-    .controller('WorkdayCreateController',
-        ['$scope', '$location', '$http', '$log', 'messenger', 'authService',
-            function ($scope, $location, $http, $log, messenger, authService) {
+    .controller('WorkdayEditController',
+        ['$scope', '$location', '$http', '$log', 'messenger', 'authService', '$routeParams',
+            function ($scope, $location, $http, $log, messenger, authService, $routeParams) {
                 $scope.loading = true;
                 $scope.data = {};
 
-                $scope = configureDateField($scope);
+                var id = $routeParams.id;
+                if (!isFinite(id)) {
+                    // garbage input
+                    return;
+                }
+
+
+                configureDateField($scope);
                 loadLocations($scope, $log, messenger, authService);
                 loadWorkTypes($scope, $log, messenger, authService);
+                loadRecord(id, $scope, $log, messenger, authService);
 
-                $scope = configureSubmit($scope, $log, messenger, authService);
+                $scope = configureSubmit(id, $scope, $log, messenger, authService);
 
                 $scope.cancel = function() {
                     $location.path('/');

@@ -7,23 +7,27 @@ angular.module('navigationService', [])
         var KEY = 'NAVIGATION_TREE';
 
         return {
-            getTree: function() {
+            getTree: function(callback) {
                 var tree = sessionStorage.getItem(KEY);
 
-                if (tree === "null") {
+                if (tree === null || tree === "null") {
                     authService.get('http://localhost:50323/api/v1/nav')
                         .then(function success(response) {
                             tree = response.data;
 
                             sessionStorage.setItem(KEY, JSON.stringify(tree));
+
+                            tree = tree ||  { children: [] };
+                            callback(tree.children);
+
                         }, function error(response) {
                             $log.error(response);
                         });
                 } else {
                     tree = JSON.parse(tree);
+                    tree = tree ||  { children: [] };
+                    callback(tree.children);
                 }
-
-                return tree.children;
             },
             resetTree: function() {
                 sessionStorage[KEY] = null;
@@ -36,7 +40,6 @@ angular.module('navigationService', [])
                 var topLevel = true;
 
                 var build = function(top) {
-                    $log.info(JSON.stringify(top));
                     if (top) {
                         nav += '<ul class="';
 
@@ -72,9 +75,12 @@ angular.module('navigationService', [])
                     }
                 };
 
-              build($this.getTree());
+              $this.getTree(function(top) {
 
-              $rootScope.navigation = nav;
+                build(top);
+
+                $rootScope.navigation = nav;
+              });
             }
         }
     }]);

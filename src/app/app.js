@@ -45,48 +45,48 @@ angular
         controller: 'UserEditController',
         title: 'Users - Edit'
       })
-      .when('/workday/', {
-        templateUrl: 'app/views/workday/list.html',
+      .when('/workdays/', {
+        templateUrl: 'app/views/workdays/list.html',
         controller: 'WorkdayListController',
         title: 'Work Day - List'
       })
-      .when('/workday/create', {
-        templateUrl: 'app/views/workday/create.html',
+      .when('/workdays/new', {
+        templateUrl: 'app/views/workdays/create.html',
         controller: 'WorkdayCreateController',
         title: 'Work Day - New Log'
       })
-      .when('/workday/:id', {
-        templateUrl: 'app/views/workday/edit.html',
+      .when('/workdays/:id', {
+        templateUrl: 'app/views/workdays/edit.html',
         controller: 'WorkdayEditController',
         title: 'Work Day - Edit'
       })
       .when('/worktypes', {
-        templateUrl: 'app/views/worktype/list.html',
+        templateUrl: 'app/views/worktypes/list.html',
         controller: 'WorktypeListController',
         title: 'Work Types - List'
       })
       .when('/worktypes/new', {
-        templateUrl: 'app/views/worktype/create.html',
+        templateUrl: 'app/views/worktypes/create.html',
         controller: 'WorktypeCreateController',
         title: 'Work Types - New'
       })
       .when('/worktypes/:id', {
-        templateUrl: 'app/views/worktype/edit.html',
+        templateUrl: 'app/views/worktypes/edit.html',
         controller: 'WorktypeEditController',
         title: 'Work Types - Edit'
       })
       .when('/locations', {
-        templateUrl: 'app/views/location/list.html',
+        templateUrl: 'app/views/locations/list.html',
         controller: 'LocationListController',
         title: 'Locations - List'
       })
       .when('/locations/new', {
-        templateUrl: 'app/views/location/create.html',
+        templateUrl: 'app/views/locations/create.html',
         controller: 'LocationCreateController',
         title: 'Locations - New'
       })
       .when('/locations/:id', {
-        templateUrl: 'app/views/location/edit.html',
+        templateUrl: 'app/views/locations/edit.html',
         controller: 'LocationEditController',
         title: 'Locations - Edit'
       })

@@ -38,34 +38,6 @@
           </div>
           <div ng-bind-html="navigation" class="collapse navbar-collapse" id="js-navbar-collapse">
           </div>
-<!--
-          <div class="collapse navbar-collapse" id="js-navbar-collapse">
-            <ul class="nav navbar-nav">
-              <li class="dropdown"><a href="#/"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Home</a>
-              <ul class="dropdown-menu">
-                <li><a ng-href="#/login">Login</a></li>
-                <li><a ng-href="#/logout">Logout</a></li>
-              </ul>
-            </li>
-            <li class="dropdown"><a href="#/"class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User</a>
-            <ul class="dropdown-menu">
-              <li><a ng-href="#/users">Manage Users</a></li>
-              <li><a ng-href="#/users/new">New User</a></li>
-            </ul>
-          </li>
-          <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Work Tracking</a>
-          <ul class="dropdown-menu">
-            <li><a ng-href="#/workday/create">Log Work Day</a></li>
-            <li><a ng-href="#/workday">Manage Work Days</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a ng-href="#/locations">Manage Locations</a></li>
-            <li><a ng-href="#/worktypes">Manage Work Types</a></li>
-          </ul>
-        </li>
-        <li><a ng-href="https://github.com/FlightNode/flightnode.github.io/issues/new">Contact</a></li>
-      </ul>
-    </div>
--->    
     <div class="display-name">{{ display_name }}</div>
   </div>
 </div>
@@ -137,17 +109,16 @@ ga('send', 'pageview');
 <script src="app/controllers/users/list.js"></script>
 <script src="app/controllers/users/create.js"></script>
 <script src="app/controllers/users/edit.js"></script>
-<script src="app/controllers/workday/create.js"></script>
-<script src="app/controllers/workday/edit.js"></script>
-<script src="app/controllers/workday/list.js"></script>
-<script src="app/controllers/worktype/list.js"></script>
-<script src="app/controllers/worktype/create.js"></script>
-<script src="app/controllers/worktype/edit.js"></script>
-<script src="app/controllers/location/list.js"></script>
-<script src="app/controllers/location/create.js"></script>
-<script src="app/controllers/location/edit.js"></script>
+<script src="app/controllers/workdays/create.js"></script>
+<script src="app/controllers/workdays/edit.js"></script>
+<script src="app/controllers/workdays/list.js"></script>
+<script src="app/controllers/worktypes/list.js"></script>
+<script src="app/controllers/worktypes/create.js"></script>
+<script src="app/controllers/worktypes/edit.js"></script>
+<script src="app/controllers/locations/list.js"></script>
+<script src="app/controllers/locations/create.js"></script>
+<script src="app/controllers/locations/edit.js"></script>
 <script src="app/controllers/logout.js"></script>
-<script src="app/controllers/navigation.js"></script>
 <script src="app/services/userMessages.js"></script>
 <script src="app/services/roleProxy.js"></script>
 <script src="app/services/authService.js"></script>

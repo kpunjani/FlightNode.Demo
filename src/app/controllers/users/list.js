@@ -37,13 +37,7 @@ angular.module('flightNodeApp')
 
 						}, function error(response) {
 
-							$log.error(response);
-
-							if (response.status === 401) {
-								messenger.unauthorized($scope);
-							} else {
-								messenger.showErrorMessage($scope, { error: response });
-							}
+                            messenger.displayErrorResponse($scope, response);
 						});
 
 			$scope.gridOptions = {

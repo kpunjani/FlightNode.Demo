@@ -8,150 +8,151 @@
  * Service for handling authentication and authorization-related functionality.
  */
 angular.module('authService', [])
-	.factory('authService',
-		['$cookies', '$http', 'jwtHelper', '$log',
-		 function ($cookies, $http, jwtHelper, $log) {
+    .factory('authService',
+        ['$cookies', '$http', 'jwtHelper', '$log', '$rootScope', 'messenger',
+         function ($cookies, $http, jwtHelper, $log, $rootScope, messenger) {
 
-		var TOKEN_KEY = 'org.flightnode.jwt';
-		var roles;
-		var userId;
-		var userName;
-		var displayName;
-		var payload;
+        var TOKEN_KEY = 'org.flightnode.jwt';
+        var roles;
+        var userId;
+        var userName;
+        var displayName;
+        var payload;
 
-		return {
-			getToken: function() {
-				return $cookies.get(TOKEN_KEY);
-			},
+        return {
+            getToken: function() {
+                return $cookies.get(TOKEN_KEY);
+            },
 
-			setToken: function(accessToken, expiresAt) {
-				$cookies.put(TOKEN_KEY, accessToken, { expires: expiresAt});
-			},
+            setToken: function(accessToken, expiresAt) {
+                $cookies.put(TOKEN_KEY, accessToken, { expires: expiresAt});
+            },
 
-			clearToken: function() {
-				roles = null;
-				userId = null;
-				userName = null;
-				displayName = null;
-				payload = null;
-				$cookies.remove(TOKEN_KEY);
-			},
+            clearToken: function() {
+                roles = null;
+                userId = null;
+                userName = null;
+                displayName = null;
+                payload = null;
+                $cookies.remove(TOKEN_KEY);
+                $rootScope.display_name = '';
+            },
 
-			_getPayload: function() {
-				var $this = this;
+            _getPayload: function() {
+                var $this = this;
 
-				if (!$this.payload) {
-					var token = $this.getToken();
-					if (token) {
-						$this.payload = jwtHelper.decodeToken(token);
-					} else {
-						return {};
-					}
-				}
+                if (!$this.payload) {
+                    var token = $this.getToken();
+                    if (token) {
+                        $this.payload = jwtHelper.decodeToken(token);
+                    } else {
+                        return {};
+                    }
+                }
 
-				return $this.payload;
-			},
+                return $this.payload;
+            },
 
-			_getRoles: function() {
-			    var $this = this;
+            _getRoles: function() {
+                var $this = this;
 
-		    	var roles = $this._getPayload().role || '';
-				if (!_.isArray(roles)) {
-					roles = [ roles ];
-				}
+                var roles = $this._getPayload().role || '';
+                if (!_.isArray(roles)) {
+                    roles = [ roles ];
+                }
 
-			    return roles;
-			},
+                return roles;
+            },
 
-			_request: function(url, verb, data) {
-				var $this = this;
+            _request: function(url, verb, data) {
+                var $this = this;
 
-				var token = $this.getToken();
+                var token = $this.getToken();
 
-				var headers;
-				if (token) {
-					headers = { Authorization: 'bearer ' + token };
-				}
+                var headers;
+                if (token) {
+                    headers = { Authorization: 'bearer ' + token };
+                }
 
-				return $http({
-					url: url,
-					method: verb,
-					data: data,
-					headers: headers
-				});
+                return $http({
+                    url: url,
+                    method: verb,
+                    data: data,
+                    headers: headers
+                });
 
-			},
+            },
 
-			get: function(url) {
-				var $this = this;
+            get: function(url) {
+                var $this = this;
 
-				return $this._request(url, 'GET');
-			},
+                return $this._request(url, 'GET');
+            },
 
-			post: function(url, data) {
-				var $this = this;
+            post: function(url, data) {
+                var $this = this;
 
-				return $this._request(url, 'POST', data);
-			},
+                return $this._request(url, 'POST', data);
+            },
 
-			put: function(url, data) {
-				var $this = this;
+            put: function(url, data) {
+                var $this = this;
 
-				return $this._request(url, 'PUT', data);
-			},
+                return $this._request(url, 'PUT', data);
+            },
 
-			delete: function(url, data) {
-				var $this = this;
+            delete: function(url, data) {
+                var $this = this;
 
-				return $this._request(url, 'DELETE');
-			},
+                return $this._request(url, 'DELETE');
+            },
 
-			// There is a good argument that this service is not doing "just one thing"...
-			// 1) parsing data from the token, and 2) mediating requests
-			//  Long term, consider splitting this in two or moving the request handling
-			//  to some type of interceptor.
+            // There is a good argument that this service is not doing "just one thing"...
+            // 1) parsing data from the token, and 2) mediating requests
+            //  Long term, consider splitting this in two or moving the request handling
+            //  to some type of interceptor.
 
-			getDisplayName: function() {
-				var $this = this;
+            getDisplayName: function() {
+                var $this = this;
 
-				if (!$this.displayName) {
-					$this.displayName = $this._getPayload().displayName;
-				}
+                if (!$this.displayName) {
+                    $this.displayName = $this._getPayload().displayName;
+                }
 
-				return $this.displayName;
-			},
+                return $this.displayName;
+            },
 
-			getUserId: function() {
-				var $this = this;
+            getUserId: function() {
+                var $this = this;
 
-				if (!$this.userId) {
-					$this.userId = $this._getPayload().nameid;
-				}
+                if (!$this.userId) {
+                    $this.userId = $this._getPayload().nameid;
+                }
 
-				return $this.userId;
-			},
+                return $this.userId;
+            },
 
-			getUserName: function() {
-				var $this = this;
+            getUserName: function() {
+                var $this = this;
 
-				if (!$this.userName) {
-					$this.userName = $this._getPayload().unique_name;
-				}
+                if (!$this.userName) {
+                    $this.userName = $this._getPayload().unique_name;
+                }
 
-				return $this.userName;
-			},
+                return $this.userName;
+            },
 
-			isAdministrator: function() {
-				var $this = this;
+            isAdministrator: function() {
+                var $this = this;
 
-				return _.includes($this._getRoles(), 'Administrator');
-			},
+                return _.includes($this._getRoles(), 'Administrator');
+            },
 
-			isCoordinator: function() {
-				var $this = this;
+            isCoordinator: function() {
+                var $this = this;
 
-				return _.includes($this._getRoles(), 'Coordinator');
-			}
+                return _.includes($this._getRoles(), 'Coordinator');
+            }
 
-		};
-	}]);
+        };
+    }]);

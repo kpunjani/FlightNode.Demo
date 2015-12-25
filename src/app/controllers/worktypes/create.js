@@ -35,23 +35,9 @@ angular.module('flightNodeApp')
 							$scope.loading = false;
 
 						}, function error(response) {
-
-							switch (response.status) {
-								case 400:
-									var messages = [{ error: response.data.message }];
-									if (response.data.modelState) {
-										_.forIn(response.data.modelState, function (value, key) {
-											messages.push({ error: value.toString() });
-										});
-									}
-									messenger.showErrorMessage($scope, messages);
-									break;
-								case 401:
-									messenger.unauthorized($scope);
-									break;
-								default:
-									messenger.showErrorMessage($scope, { error: response });
-							}
+                			messenger.displayErrorResponse($scope, response);
+						})
+						.finally(function(){
 							$scope.loading = false;
 						});
 				};

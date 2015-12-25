@@ -1,0 +1,21 @@
+<div class="row">
+	<div class="col-sm-12">
+		Work Days
+	</div>
+</div>
+<alert>
+</alert>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="grid" ui-grid="gridOptions" id="worktype-grid" style="height: 20em; width: 50em;"></div>
+	</div>
+</div>
+<div class="row" style="margin-top: 1em;">
+	<div class="col-sm-12 text-right">
+		<button class="btn btn-primary" ng-click="createWorkDay()"><span class="glyphicon glyphicon-plus"></span> Log a Work Day</button>
+		<button class="btn btn-secondary" ng-csv="exportData()" filename="workDayReport.csv"
+		field-separator="," add-bom="true"
+		csv-header="getHeader()"><span class="glyphicon glyphicon-download-alt"></span> Export Data</button>
+	</div>
+</div>
+<loading></loading>
