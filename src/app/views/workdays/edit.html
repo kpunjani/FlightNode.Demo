@@ -6,8 +6,18 @@
 <alert>
 </alert>
 <form ng-submit="submit()" name="workdayForm">
-    <!-- TODO: need to pull the userid from jwt -->
-    <!-- when adding time, try adding next to the Date. Just use smaller columns. -->
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-8">
+                <label for="user">User</label>
+                <div class="input-group">
+                    <input type="text" readonly name="user" class="form-control"
+                    value="{{person}}">
+                    </input>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="form-group">
         <div class="row">
             <div class="col-sm-8">
@@ -61,12 +71,9 @@
         <div class="row">
             <div class="col-sm-8">
                 <label for="location">Location</label>
-                <select name="location" class="form-control" ng-model="workday.location" required>
-                    <option ng-repeat="option in data.locations"
-                        ng-selected="{{option.id == workday.location}}"
-                        value="{{option.id}}">
-                        {{option.value}}
-                    </option>
+                <select class="form-control" required name="location"
+                  ng-model="workday.location"
+                  ng-options="item.id as item.value for item in data.locations">
                 </select>
             </div>
             <div role="alert" class="validator col-sm-4">
@@ -78,12 +85,9 @@
         <div class="row">
             <div class="col-sm-8">
                 <label for="workType">Work Type</label>
-                <select name="workType" class="form-control" ng-model="workday.workType" required>
-                    <option ng-repeat="option in data.worktypes"
-                        ng-selected="{{option.id == workday.workType}}"
-                        value="{{option.id}}">
-                        {{option.value}}
-                    </option>
+                <select class="form-control" required name="workType"
+                  ng-model="workday.workType"
+                  ng-options="item.id as item.value for item in data.worktypes">
                 </select>
             </div>
             <div role="alert" class="validator col-sm-4">

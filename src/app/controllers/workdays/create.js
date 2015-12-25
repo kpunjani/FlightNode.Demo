@@ -1,6 +1,7 @@
 'use strict';
 
-var configureDateField = function($scope) {
+var workDayCreate = {
+  configureDateField: function($scope) {
     $scope.workday = {}
     $scope.today = moment().format("MM/DD/YY");
 
@@ -70,9 +71,9 @@ var configureDateField = function($scope) {
         return '';
     };
     return $scope;
-};
+  },
 
-var loadLocations = function($scope, $log, messenger, authService) {
+  loadLocations: function($scope, $log, messenger, authService) {
     authService.get('http://localhost:50323/api/v1/locations/simple')
         .then(function success(response) {
 
@@ -82,9 +83,9 @@ var loadLocations = function($scope, $log, messenger, authService) {
 
             messenger.displayErrorResponse($scope, response);
         });
-}
+  },
 
-var loadWorkTypes = function($scope, $log, messenger, authService) {
+  loadWorkTypes: function($scope, $log, messenger, authService) {
     authService.get('http://localhost:50323/api/v1/worktypes/simple')
         .then(function success(response) {
 
@@ -95,13 +96,13 @@ var loadWorkTypes = function($scope, $log, messenger, authService) {
             messenger.displayErrorResponse($scope, response);
 
         });
-}
+  },
 
-var configureSubmit = function($scope, $log, messenger, authService) {
+  configureSubmit: function($scope, $log, messenger, authService) {
 
     $scope.submit = function() {
         $scope.loading = true;
-$log.info('here I am');
+
         var msg = {
             locationId: $scope.workday.location,
             travelTimeHours: $scope.workday.travelHours,
@@ -124,6 +125,7 @@ $log.info('here I am');
     }
 
     return $scope;
+  }
 }
 
 /**
@@ -140,11 +142,11 @@ angular.module('flightNodeApp')
                 $scope.loading = true;
                 $scope.data = {};
 
-                $scope = configureDateField($scope);
-                loadLocations($scope, $log, messenger, authService);
-                loadWorkTypes($scope, $log, messenger, authService);
+                $scope = workDayCreate.configureDateField($scope);
+                workDayCreate.loadLocations($scope, $log, messenger, authService);
+                workDayCreate.loadWorkTypes($scope, $log, messenger, authService);
 
-                $scope = configureSubmit($scope, $log, messenger, authService);
+                $scope = workDayCreate.configureSubmit($scope, $log, messenger, authService);
 
                 $scope.cancel = function() {
                     $location.path('/');

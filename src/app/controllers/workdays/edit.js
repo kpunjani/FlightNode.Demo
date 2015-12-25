@@ -1,6 +1,7 @@
 'use strict';
 
-var configureDateField = function($scope) {
+var workDayEdit = {
+  configureDateField: function($scope) {
     $scope.workday = {}
     $scope.today = moment().format("MM/DD/YY");
 
@@ -70,32 +71,39 @@ var configureDateField = function($scope) {
         return '';
     };
     return $scope;
-};
+  },
 
-var loadLocations = function($scope, $log, messenger, authService) {
-    authService.get('http://localhost:50323/api/v1/locations/simple')
-        .then(function success(response) {
+  loadLocations: function($scope, $log, messenger, authService, next) {
+      return function() {
+        authService.get('http://localhost:50323/api/v1/locations/simple')
+            .then(function success(response) {
 
-            $scope.data.locations = response.data;
+                $scope.data.locations = response.data;
 
-        }, function error(response) {
-            messenger.displayErrorResponse($scope, response);
-        });
-}
+                next();
 
-var loadWorkTypes = function($scope, $log, messenger, authService) {
-    authService.get('http://localhost:50323/api/v1/worktypes/simple')
-        .then(function success(response) {
+            }, function error(response) {
+                messenger.displayErrorResponse($scope, response);
+            });
+      };
+    },
 
-            $scope.data.worktypes = response.data;
+  loadWorkTypes: function($scope, $log, messenger, authService, next) {
+      return function() {
+        authService.get('http://localhost:50323/api/v1/worktypes/simple')
+            .then(function success(response) {
 
-        }, function error(response) {
-            messenger.displayErrorResponse($scope, response);
-        });
-}
+                $scope.data.worktypes = response.data;
 
-var configureSubmit = function(id, $scope, $log, messenger, authService) {
+                next();
 
+            }, function error(response) {
+                messenger.displayErrorResponse($scope, response);
+            });
+      };
+    },
+
+  configureSubmit: function(id, $scope, $log, messenger, authService) {
     $scope.submit = function() {
         $scope.loading = true;
 
@@ -122,25 +130,27 @@ var configureSubmit = function(id, $scope, $log, messenger, authService) {
     }
 
     return $scope;
-}
+  },
 
-var loadRecord = function(id, $scope, $log, messenger, authService) {
+  loadRecord: function(id, $scope, $log, messenger, authService) {
+      return function() {
+        authService.get('http://localhost:50323/api/v1/worklogs/' + id)
+            .then(function success(response) {
+                $scope.workday = {
+                    location: response.data.locationId,
+                    travelHours: response.data.travelTimeHours,
+                    workDate: response.data.workDate,
+                    workHours: response.data.workHours,
+                    workType: response.data.workTypeId,
+                    id: response.data.id,
+                    userId: response.data.userId
+                };
 
-    authService.get('http://localhost:50323/api/v1/worklogs/' + id)
-        .then(function success(response) {
-            $scope.workday = {
-                location: response.data.locationId,
-                travelHours: response.data.travelTimeHours,
-                workDate: response.data.workDate,
-                workHours: response.data.workHours,
-                workType: response.data.workTypeId,
-                id: response.data.id,
-                userId: response.data.userId
-            };
-
-        }, function error(response) {
-            messenger.displayErrorResponse($scope, response);
-        });
+            }, function error(response) {
+                messenger.displayErrorResponse($scope, response);
+            });
+      };
+  }
 }
 
 /**
@@ -163,13 +173,14 @@ angular.module('flightNodeApp')
                     return;
                 }
 
+                $scope.person = decodeURIComponent($location.search().p);
 
-                configureDateField($scope);
-                loadLocations($scope, $log, messenger, authService);
-                loadWorkTypes($scope, $log, messenger, authService);
-                loadRecord(id, $scope, $log, messenger, authService);
+                workDayEdit.configureDateField($scope);
+                var lr = workDayEdit.loadRecord(id, $scope, $log, messenger, authService);
+                var ll = workDayEdit.loadLocations($scope, $log, messenger, authService, lr);
+                workDayEdit.loadWorkTypes($scope, $log, messenger, authService, ll)();
 
-                $scope = configureSubmit(id, $scope, $log, messenger, authService);
+                $scope = workDayEdit.configureSubmit(id, $scope, $log, messenger, authService);
 
                 $scope.cancel = function() {
                     $location.path('/');

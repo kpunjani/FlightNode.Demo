@@ -51,7 +51,7 @@ angular.module('flightNodeApp')
                     {
                         name: 'id',
                         displayName: '',
-                        cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a href="/#/workdays/{{row.entity.id}}">Edit</a></div>'
+                        cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a ng-href="/#/workdays/{{row.entity.id}}?p={{row.entity.person | htmlEncode}}">Edit</a></div>'
                     }
                 ]
             };

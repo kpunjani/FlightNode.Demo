@@ -177,4 +177,7 @@ angular
         };
       }
     };
+  })
+  .filter('htmlEncode', function(){
+    return window.encodeURIComponent;
   });
