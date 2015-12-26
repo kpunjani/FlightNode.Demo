@@ -51,7 +51,7 @@ angular.module('userMessage', [])
                     case 400:
                         var messages = [{ error: response.data.message }];
                         if (response.data.modelState) {
-                            _.forIn(response.data.modelState, function (value, key) {
+                            _.forIn(response.data.modelState, function (value) {
                                 messages.push({ error: value.toString() });
                             });
                         }

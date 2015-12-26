@@ -1,5 +1,39 @@
 'use strict';
 
+flnd.locationEdit = {
+    retrieveRecord: function(url, $scope, messenger, authService) {
+
+        authService.get(url)
+            .then(function success(response) {
+                $scope.location = response.data;
+
+            }, function error(response) {
+
+                 messenger.displayErrorResponse($scope, response);
+
+            });
+    },
+
+    configureSubmit: function(url, $scope, messenger, authService){
+        return function() {
+            $scope.loading = true;
+
+            authService.put(url, $scope.location)
+                .then(function success() {
+
+                    messenger.showSuccessMessage($scope, 'Saved');
+
+                }, function error(response) {
+
+                    messenger.displayErrorResponse($scope, response);
+                })
+                .finally(function() {
+                    $scope.loading = false;
+                });
+        };
+    }
+};
+
 /**
  * @ngdoc function
  * @name flightNodeApp.controller.location:LocationEditController
@@ -9,8 +43,8 @@
  */
 angular.module('flightNodeApp')
     .controller('LocationEditController',
-        ['$scope', '$http', '$log', '$location', 'messenger', 'authService', '$routeParams',
-            function ($scope, $http, $log, $location, messenger, authService, $routeParams) {
+        ['$scope', '$http', '$log', '$location', 'messenger', 'authService', '$routeParams', 'config',
+            function ($scope, $http, $log, $location, messenger, authService, $routeParams, config) {
 
                 if (!(authService.isAdministrator() ||
                       authService.isCoordinator())) {
@@ -27,39 +61,15 @@ angular.module('flightNodeApp')
                     return;
                 }
 
-                var url = 'http://localhost:50323/api/v1/locations/' +id;
+                var url = config.locations + id;
 
-                authService.get(url)
-                    .then(function success(response) {
-                        $scope.location = response.data;
-
-                    }, function error(response) {
-
-                         messenger.displayErrorResponse($scope, response);
-
-                    });
-
+                flnd.locationEdit.retrieveRecord(url, $scope, messenger, authService);
 
                 $scope.cancel = function () {
                     $location.path('/locations');
-                }
-
-                $scope.submit = function () {
-                    $scope.loading = true;
-
-                    authService.put(url, $scope.location)
-                        .then(function success(response) {
-
-                            messenger.showSuccessMessage($scope, 'Saved');
-
-                        }, function error(response) {
-
-                            messenger.displayErrorResponse($scope, response);
-                        })
-                        .finally(function() {
-                            $scope.loading = false;
-                        });
                 };
+
+                $scope.submit = flnd.locationEdit.configureSubmit(url, $scope, messenger, authService);
 
                 $scope.loading = false;
             }]);

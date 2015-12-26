@@ -1,9 +1,10 @@
 'use strict';
 
-var workDayCreate = {
+flnd.workDayCreate = {
   configureDateField: function($scope) {
-    $scope.workday = {}
-    $scope.today = moment().format("MM/DD/YY");
+    $scope.workday = {};
+
+    $scope.today = moment().format('MM/DD/YY');
 
     $scope.clear = function () {
         $scope.workday.workDate = null;
@@ -20,7 +21,7 @@ var workDayCreate = {
     $scope.toggleMin();
     $scope.maxDate = new Date(2020, 5, 22);
 
-    $scope.open = function ($event) {
+    $scope.open = function () {
         $scope.status.opened = true;
     };
 
@@ -113,20 +114,19 @@ var workDayCreate = {
         };
 
         authService.post('http://localhost:50323/api/v1/worklogs', msg)
-           .then(function success(response){
+           .then(function success(){
                 messenger.showSuccessMessage($scope, 'Saved');
-                $scope.loading = false;
            }, function error(response) {
                 messenger.displayErrorResponse($scope, response);
            })
            .finally(function() {
                 $scope.loading = false;
            });
-    }
+    };
 
     return $scope;
   }
-}
+};
 
 /**
  * @ngdoc function
@@ -142,11 +142,11 @@ angular.module('flightNodeApp')
                 $scope.loading = true;
                 $scope.data = {};
 
-                $scope = workDayCreate.configureDateField($scope);
-                workDayCreate.loadLocations($scope, $log, messenger, authService);
-                workDayCreate.loadWorkTypes($scope, $log, messenger, authService);
+                $scope = flnd.workDayCreate.configureDateField($scope);
+                flnd.workDayCreate.loadWorkTypes($scope, $log, messenger, authService);
+                flnd.workDayCreate.loadLocations($scope, $log, messenger, authService);
 
-                $scope = workDayCreate.configureSubmit($scope, $log, messenger, authService);
+                $scope = flnd.workDayCreate.configureSubmit($scope, $log, messenger, authService);
 
                 $scope.cancel = function() {
                     $location.path('/');

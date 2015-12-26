@@ -2,16 +2,16 @@
 
 angular.module('navigationService', [])
     .factory('navigationService', 
-      ['authService', '$log', '$rootScope',
-       function (authService, $log, $rootScope) {
+      ['authService', '$log', '$rootScope', 'config',
+       function (authService, $log, $rootScope, config ) {
         var KEY = 'NAVIGATION_TREE';
 
         return {
             getTree: function(callback) {
                 var tree = sessionStorage.getItem(KEY);
 
-                if (tree === null || tree === "null") {
-                    authService.get('http://localhost:50323/api/v1/nav')
+                if (tree === null || tree === 'null') {
+                    authService.get(config.navigation)
                         .then(function success(response) {
                             tree = response.data;
 
@@ -51,7 +51,7 @@ angular.module('navigationService', [])
                         }
 
 
-                        top.forEach(function(child, i) {
+                        top.forEach(function(child) {
                           var hasChildren = (_.isArray(child.children) && child.children.length > 0);
 
                           nav += '\r<li class="';
@@ -82,5 +82,5 @@ angular.module('navigationService', [])
                 $rootScope.navigation = nav;
               });
             }
-        }
+        };
     }]);

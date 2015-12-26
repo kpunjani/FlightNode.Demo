@@ -1,5 +1,29 @@
 'use strict';
 
+flnd.userCreate = {
+  configureSubmit: function(config, $scope, messenger, authService) {
+    return function() {
+        $scope.loading = true;
+
+        authService.post(config.users, $scope.user)
+            .then(function success() {
+
+                messenger.showSuccessMessage($scope, 'Saved');
+
+            }, function error(response) {
+
+                messenger.displayErrorResponse($scope, response);
+
+            })
+            .finally(function() {
+                $scope.loading = false;
+            });
+
+        $scope.loading = false;
+    };
+  }
+};
+
 /**
  * @ngdoc function
  * @name flightNodeApp.controller:UserCreateController
@@ -9,8 +33,8 @@
  */
 angular.module('flightNodeApp')
     .controller('UserCreateController',
-        ['$scope', '$http', '$log', '$location', 'messenger', 'roleProxy', 'authService',
-            function ($scope, $http, $log, $location, messenger, roleProxy, authService) {
+        ['$scope', '$http', '$log', '$location', 'messenger', 'roleProxy', 'authService', 'config',
+            function ($scope, $http, $log, $location, messenger, roleProxy, authService, config) {
 
 
                 if (!(authService.isAdministrator() ||
@@ -26,7 +50,7 @@ angular.module('flightNodeApp')
 
                 roleProxy.getAll( function (error, response) {
                     if (error) {
-                        $log.error('Failed to retrieve roles: ' + error);
+                        $log.error('Failed to retrieve roles: ', JSON.stringify(error));
                     } else {
                         if (response.status === 200) {
                             $scope.data.roles = response.data;
@@ -35,30 +59,13 @@ angular.module('flightNodeApp')
                             $log.info('Roles: ', response);
                         }
                     }
-                })
+                });
 
                 $scope.cancel = function () {
                     $location.path('/users');
-                }
+                };
 
-                $scope.submit = function () {
-                    $scope.loading = true;
-
-                    authService.post('http://localhost:50323/api/v1/user/', $scope.user)
-                            .then(function success(response) {
-                                messenger.showSuccessMessage($scope, 'Saved');
-                                $scope.loading = false;
-                            }, function error(response) {
-
-                                messenger.displayErrorResponse($scope, response);
-
-                            })
-                            .finally(function() {
-                                $scope.loading = false;
-                            });
-
-                $scope.loading = false;
-            };
+                $scope.submit = flnd.userCreate.configureSubmit(config, $scope, messenger, authService);
 
             $scope.loading = false;
         }]);

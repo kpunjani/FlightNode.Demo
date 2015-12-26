@@ -8,8 +8,11 @@
  * Controller for the default/main page
  */
 angular.module('flightNodeApp')
-	.controller('MainController', function ($scope) {
-	$scope.loading = true;
+    .controller('MainController',
+      ['$scope',
+        function ($scope) {
+            $scope.loading = true;
 
-	$scope.loading = false;
-  });
+            $scope.loading = false;
+        }
+      ]);

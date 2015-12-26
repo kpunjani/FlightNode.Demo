@@ -1,5 +1,26 @@
 'use strict';
 
+flnd.workTypeCreate = {
+	configureSubmit: function(config, $scope, messenger, authService) {
+		return function () {
+					$scope.loading = true;
+
+					authService.post(config.workTypes, $scope.worktype)
+						.then(function success() {
+
+							messenger.showSuccessMessage($scope, 'Saved');
+							$scope.loading = false;
+
+						}, function error(response) {
+                			messenger.displayErrorResponse($scope, response);
+						})
+						.finally(function(){
+							$scope.loading = false;
+						});
+				};
+	}
+};
+
 /**
  * @ngdoc function
  * @name flightNodeApp.controller.worktype:WorktypeCreateController
@@ -9,8 +30,8 @@
  */
 angular.module('flightNodeApp')
 	.controller('WorktypeCreateController',
-		['$scope', '$http', '$log', '$location', 'messenger', 'authService',
-			function ($scope, $http, $log, $location, messenger, authService) {
+		['$scope', '$http', '$log', '$location', 'messenger', 'authService', 'config',
+			function ($scope, $http, $log, $location, messenger, authService, config) {
 
 				if (!(authService.isAdministrator() ||
 					  authService.isCoordinator())) {
@@ -23,24 +44,9 @@ angular.module('flightNodeApp')
 
 				$scope.cancel = function () {
 					$location.path('/worktypes');
-				}
-
-				$scope.submit = function () {
-					$scope.loading = true;
-
-					authService.post('http://localhost:50323/api/v1/worktypes', $scope.worktype)
-						.then(function success(response) {
-
-							messenger.showSuccessMessage($scope, 'Saved');
-							$scope.loading = false;
-
-						}, function error(response) {
-                			messenger.displayErrorResponse($scope, response);
-						})
-						.finally(function(){
-							$scope.loading = false;
-						});
 				};
+
+				$scope.submit = flnd.workTypeCreate.configureSubmit(config, $scope, messenger, authService);
 
 				$scope.loading = false;
 			}]);

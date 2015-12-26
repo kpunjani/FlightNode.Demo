@@ -1,5 +1,27 @@
 'use strict';
 
+flnd.locationCreate = {
+    configureSubmit: function($scope, config, messenger, authService) {
+        return function() {
+            $scope.loading = true;
+
+            authService.post(config.locations, $scope.location)
+                .then(function success() {
+
+                    messenger.showSuccessMessage($scope, 'Saved');
+
+                }, function error(response) {
+
+                    messenger.displayErrorResponse($scope, response);
+
+                })
+                .finally(function() {
+                    $scope.loading = false;
+                });
+        };
+    }
+};
+
 /**
  * @ngdoc function
  * @name flightNodeApp.controller.location:LocationCreateController
@@ -9,39 +31,23 @@
  */
 angular.module('flightNodeApp')
     .controller('LocationCreateController',
-        ['$scope', '$http', '$log', '$location', 'messenger', 'authService',
-            function ($scope, $http, $log, $location, messenger, authService) {
+        ['$scope', '$http', '$log', '$location', 'messenger', 'authService', 'config',
+            function ($scope, $http, $log, $location, messenger, authService, config) {
 
-                // if (!(authService.isAdministrator() ||
-                //    authService.isCoordinator())) {
-                //  $log.warn('not authorized to access this path');
-                //  $location.path('/');
-                //  return;
-                // }
+                if (!(authService.isAdministrator() ||
+                   authService.isCoordinator())) {
+                 $log.warn('not authorized to access this path');
+                 $location.path('/');
+                 return;
+                }
 
                 $scope.loading = true;
 
                 $scope.cancel = function () {
                     $location.path('/locations');
-                }
-
-                $scope.submit = function () {
-                    $scope.loading = true;
-
-                    authService.post('http://localhost:50323/api/v1/locations', $scope.location)
-                        .then(function success(response) {
-
-                            messenger.showSuccessMessage($scope, 'Saved');
-
-                        }, function error(response) {
-
-                            messenger.displayErrorResponse($scope, response);
-
-                        })
-                        .finally(function() {
-                            $scope.loading = false;
-                        });
                 };
+
+                $scope.submit = flnd.locationCreate.configureSubmit($scope, config, messenger, authService);
 
                 $scope.loading = false;
             }]);

@@ -1,6 +1,8 @@
 /* global $ */
 'use strict';
 
+var flnd = {}; // jshint ignore:line
+
 angular
   .module('flightNodeApp', [
     'ngAnimate',
@@ -181,3 +183,6 @@ angular
   .filter('htmlEncode', function(){
     return window.encodeURIComponent;
   });
+  // .constant('config', {
+  //   a: 'b'
+  // });

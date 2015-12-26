@@ -9,12 +9,12 @@
  */
 angular.module('flightNodeApp')
     .controller('LogoutController',
-        ['$log', 'authService', '$location', 'navigationService',
-        function ($log, authService, $location, navigationService) {
+        ['$log', 'authService', '$location', 'navigationService', 'config',
+        function ($log, authService, $location, navigationService, config) {
             authService.clearToken();
             navigationService.resetTree();
 
-            authService.delete('http://localhost:50323/oauth/token')
+            authService.delete(config.token)
             .then(function success(response){
                 if (response) {
                     $log.info(response);

@@ -1,5 +1,26 @@
 'use strict';
 
+flnd.userList = {
+  retrieve: function(authService, config, $scope, messenger) {
+		authService.get(config.users)
+			.then(function success(response) {
+
+				$scope.userList = _.map(response.data, function (user) {
+					return {
+						fullName: user.givenName + ' ' + user.familyName,
+						email: user.email,
+						phone: user.primaryPhoneNumber,
+						userId: user.userId
+					};
+				});
+
+			}, function error(response) {
+
+                messenger.displayErrorResponse($scope, response);
+			});
+  }
+};
+
 /**
  * @ngdoc function
  * @name flightNodeApp.controller:UserListController
@@ -9,8 +30,8 @@
  */
 angular.module('flightNodeApp')
 	.controller('UserListController',
-	 ['$scope', '$http', '$log', 'messenger', '$location', 'authService',
-		function ($scope, $http, $log, messenger, $location, authService) {
+	 ['$scope', '$http', '$log', 'messenger', '$location', 'authService', 'config',
+		function ($scope, $http, $log, messenger, $location, authService, config) {
 
 			if (!(authService.isAdministrator() ||
 				  authService.isCoordinator())) {
@@ -23,22 +44,7 @@ angular.module('flightNodeApp')
 
 			$scope.userList = [];
 
-			authService.get('http://localhost:50323/api/v1/user')
-						.then(function success(response) {
-
-							$scope.userList = _.map(response.data, function (user) {
-								return {
-									fullName: user.givenName + ' ' + user.familyName,
-									email: user.email,
-									phone: user.primaryPhoneNumber,
-									userId: user.userId
-								};
-							});
-
-						}, function error(response) {
-
-                            messenger.displayErrorResponse($scope, response);
-						});
+			flnd.userList.retrieve(authService, config, $scope, messenger);
 
 			$scope.gridOptions = {
 				enableFiltering: true,
@@ -60,8 +66,8 @@ angular.module('flightNodeApp')
 			};
 
 			$scope.createUser = function () {
-				$location.path("/users/new");
-			}
+				$location.path('/users/new');
+			};
 
 			$scope.loading = false;
 

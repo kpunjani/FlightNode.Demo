@@ -1,9 +1,10 @@
 'use strict';
 
-var workDayEdit = {
+flnd.workDayEdit = {
   configureDateField: function($scope) {
-    $scope.workday = {}
-    $scope.today = moment().format("MM/DD/YY");
+    $scope.workday = {};
+
+    $scope.today = moment().format('MM/DD/YY');
 
     $scope.clear = function () {
         $scope.workday.workDate = null;
@@ -20,7 +21,7 @@ var workDayEdit = {
     $scope.toggleMin();
     $scope.maxDate = new Date(2020, 5, 22);
 
-    $scope.open = function ($event) {
+    $scope.open = function () {
         $scope.status.opened = true;
     };
 
@@ -118,7 +119,7 @@ var workDayEdit = {
         };
 
         authService.put('http://localhost:50323/api/v1/worklogs/' + id, msg)
-           .then(function success(response){
+           .then(function success(){
                 messenger.showSuccessMessage($scope, 'Saved');
                 $scope.loading = false;
            }, function error(response) {
@@ -127,7 +128,7 @@ var workDayEdit = {
            .finally(function(){
                 $scope.loading = false;
            });
-    }
+    };
 
     return $scope;
   },
@@ -151,7 +152,7 @@ var workDayEdit = {
             });
       };
   }
-}
+};
 
 /**
  * @ngdoc function
@@ -175,12 +176,12 @@ angular.module('flightNodeApp')
 
                 $scope.person = decodeURIComponent($location.search().p);
 
-                workDayEdit.configureDateField($scope);
-                var lr = workDayEdit.loadRecord(id, $scope, $log, messenger, authService);
-                var ll = workDayEdit.loadLocations($scope, $log, messenger, authService, lr);
-                workDayEdit.loadWorkTypes($scope, $log, messenger, authService, ll)();
+                flnd.workDayEdit.configureDateField($scope);
+                var lr = flnd.workDayEdit.loadRecord(id, $scope, $log, messenger, authService);
+                var ll = flnd.workDayEdit.loadLocations($scope, $log, messenger, authService, lr);
+                flnd.workDayEdit.loadWorkTypes($scope, $log, messenger, authService, ll)();
 
-                $scope = workDayEdit.configureSubmit(id, $scope, $log, messenger, authService);
+                $scope = flnd.workDayEdit.configureSubmit(id, $scope, $log, messenger, authService);
 
                 $scope.cancel = function() {
                     $location.path('/');

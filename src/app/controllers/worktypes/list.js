@@ -1,5 +1,19 @@
 'use strict';
 
+flnd.workTypeList = {
+    retrieveRecord: function(config, $scope, messenger, authService) {
+        $scope.list = [];
+
+        authService.get('http://localhost:50323/api/v1/worktypes')
+            .then(function success(response) {
+
+                $scope.list = response.data;
+
+            }, function error(response) {
+                messenger.displayErrorResponse($scope, response);
+            });
+    }
+};
 
 /**
  * @ngdoc function
@@ -10,8 +24,8 @@
  */
 angular.module('flightNodeApp')
     .controller('WorktypeListController',
-     ['$scope', '$http', '$log', 'messenger', '$location', 'authService',
-        function ($scope, $http, $log, messenger, $location, authService) {
+     ['$scope', '$http', '$log', 'messenger', '$location', 'authService', 'config',
+        function ($scope, $http, $log, messenger, $location, authService, config) {
 
             if (!(authService.isAdministrator() ||
                   authService.isCoordinator())) {
@@ -22,16 +36,7 @@ angular.module('flightNodeApp')
 
             $scope.loading = true;
 
-            $scope.list = [];
-
-            authService.get('http://localhost:50323/api/v1/worktypes')
-                        .then(function success(response) {
-
-                            $scope.list = response.data;
-
-                        }, function error(response) {
-                            messenger.displayErrorResponse($scope, response);
-                        });
+            flnd.workTypeList.retrieveRecord(config, $scope, messenger, authService);
 
             $scope.gridOptions = {
                 enableFiltering: true,
@@ -51,8 +56,8 @@ angular.module('flightNodeApp')
             };
 
             $scope.creatWorkType = function () {
-                $location.path("/worktypes/new");
-            }
+                $location.path('/worktypes/new');
+            };
 
             $scope.loading = false;
 
