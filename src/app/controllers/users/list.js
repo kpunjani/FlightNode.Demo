@@ -30,8 +30,8 @@ flnd.userList = {
  */
 angular.module('flightNodeApp')
 	.controller('UserListController',
-	 ['$scope', '$http', '$log', 'messenger', '$location', 'authService', 'config',
-		function ($scope, $http, $log, messenger, $location, authService, config) {
+	 ['$scope', '$http', '$log', 'messenger', '$location', 'authService', 'config', '$uibModal',
+		function ($scope, $http, $log, messenger, $location, authService, config, $uibModal) {
 
 			if (!(authService.isAdministrator() ||
 				  authService.isCoordinator())) {
@@ -54,20 +54,60 @@ angular.module('flightNodeApp')
 				},
 				data: 'userList',
 				columnDefs: [
-					{ name: 'fullName', displayName: 'Full Name' },
-					{ name: 'email', displayName: 'E-mail Address' },
-					{ name: 'phone', displayName: 'Phone Number' },
+					{ field: 'fullName', displayName: 'Full Name' },
+					{ field: 'email', displayName: 'E-mail Address' },
+					{ field: 'phone', displayName: 'Phone Number' },
 					{
-						name: 'userId',
+						field: 'userId',
 						displayName: '',
-						cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a href="/#/users/{{row.entity.userId}}">Edit</a></div>' 
+                        cellTemplate: '\
+                        <div class="ui-grid-cell-contents" title="Edit">\
+                          <button class="btn btn-primary btn-xs" ng-click="grid.appScope.editLocation(\'{{row.entity.id}}\')" \
+                           aria-label="edit">\
+                              <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>\
+                          </button>\
+                        </div>',
+                        width: '10%'
 					}
 				]
 			};
 
 			$scope.createUser = function () {
-				$location.path('/users/new');
+                var modal = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/views/users/create.html',
+                    controller: 'UserCreateController',
+                    size: 'lg'
+                });
+                modal.result.then(function ok() {
+                    // Re-load the grid
+					flnd.userList.retrieve(authService, config, $scope, messenger);
+                	messenger.showSuccessMessage($scope, 'Saved');
+                }, function dismissed() {
+                    // no action required
+                });
 			};
+
+            $scope.editLocation = function(id) {
+                var modal = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/views/users/edit.html',
+                    controller: 'UserEditController',
+                    size: 'lg',
+                    resolve: {
+                        id: function() {
+                            return id;
+                        }
+                    }
+                });
+                modal.result.then(function ok() {
+                    // Re-load the grid
+					flnd.userList.retrieve(authService, config, $scope, messenger);
+                	messenger.showSuccessMessage($scope, 'Saved');
+                }, function dismissed() {
+                    // no action required
+                });
+            };
 
 			$scope.loading = false;
 

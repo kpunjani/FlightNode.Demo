@@ -1,7 +1,7 @@
 'use strict';
 
 flnd.login = {
-    configureSubmit: function(config, $scope, messenger, $http, authService, navigationService, $log) {
+    configureSubmit: function(config, $scope, messenger, $http, authService, navigationService, $log, $location) {
       return function () {
 
          if ($scope.loginForm.$valid) {
@@ -38,6 +38,8 @@ flnd.login = {
                     // force re-query for navigation tree
                     navigationService.resetTree();
 
+                    $location.path('/');
+
                 }, function error(response) {
                     $log.error(response);
                     messenger.displayErrorResponse($scope, response.status.toString() + ': ' + response.statusText);
@@ -61,12 +63,12 @@ flnd.login = {
  */
 angular.module('flightNodeApp')
     .controller('LoginController',
-        ['$scope', '$http', '$log', 'messenger', 'authService', 'navigationService', 'config',
-        function ($scope, $http, $log, messenger, authService, navigationService, config) {
+        ['$scope', '$http', '$log', 'messenger', 'authService', 'navigationService', 'config', '$location',
+        function ($scope, $http, $log, messenger, authService, navigationService, config, $location) {
 
         $scope.loading = true;
 
-        $scope.submit = flnd.login.configureSubmit(config, $scope, messenger, $http, authService, navigationService, $log);
+        $scope.submit = flnd.login.configureSubmit(config, $scope, messenger, $http, authService, navigationService, $log, $location);
 
         $scope.loading = false;
 

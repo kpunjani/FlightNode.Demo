@@ -1,14 +1,14 @@
 'use strict';
 
 flnd.userCreate = {
-  configureSubmit: function(config, $scope, messenger, authService) {
+  configureSubmit: function(config, $scope, messenger, authService, $uibModalInstance) {
     return function() {
         $scope.loading = true;
 
         authService.post(config.users, $scope.user)
             .then(function success() {
 
-                messenger.showSuccessMessage($scope, 'Saved');
+                $uibModalInstance.close();
 
             }, function error(response) {
 
@@ -33,8 +33,8 @@ flnd.userCreate = {
  */
 angular.module('flightNodeApp')
     .controller('UserCreateController',
-        ['$scope', '$http', '$log', '$location', 'messenger', 'roleProxy', 'authService', 'config',
-            function ($scope, $http, $log, $location, messenger, roleProxy, authService, config) {
+        ['$scope', '$http', '$log', '$location', 'messenger', 'roleProxy', 'authService', 'config', '$uibModalInstance',
+            function ($scope, $http, $log, $location, messenger, roleProxy, authService, config, $uibModalInstance) {
 
 
                 if (!(authService.isAdministrator() ||
@@ -62,10 +62,10 @@ angular.module('flightNodeApp')
                 });
 
                 $scope.cancel = function () {
-                    $location.path('/users');
+                    $uibModalInstance.dismiss('cancel');
                 };
 
-                $scope.submit = flnd.userCreate.configureSubmit(config, $scope, messenger, authService);
+                $scope.submit = flnd.userCreate.configureSubmit(config, $scope, messenger, authService, $uibModalInstance);
 
-            $scope.loading = false;
+                $scope.loading = false;
         }]);

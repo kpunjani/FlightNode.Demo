@@ -136,11 +136,3 @@ select.form-inline-small {
 }
 
 
-
-
-/*
- Alert needs more head room.
- */
-.alert {
-  margin-top: 1em;
-}

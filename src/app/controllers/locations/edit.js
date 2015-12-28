@@ -14,14 +14,14 @@ flnd.locationEdit = {
             });
     },
 
-    configureSubmit: function(url, $scope, messenger, authService){
+    configureSubmit: function(url, $scope, messenger, authService, $uibModalInstance){
         return function() {
             $scope.loading = true;
 
             authService.put(url, $scope.location)
                 .then(function success() {
 
-                    messenger.showSuccessMessage($scope, 'Saved');
+                    $uibModalInstance.close();
 
                 }, function error(response) {
 
@@ -43,8 +43,8 @@ flnd.locationEdit = {
  */
 angular.module('flightNodeApp')
     .controller('LocationEditController',
-        ['$scope', '$http', '$log', '$location', 'messenger', 'authService', '$routeParams', 'config',
-            function ($scope, $http, $log, $location, messenger, authService, $routeParams, config) {
+        ['$scope', '$http', '$log', '$location', 'messenger', 'authService', '$routeParams', 'config', 'id', '$uibModalInstance',
+            function ($scope, $http, $log, $location, messenger, authService, $routeParams, config, id, $uibModalInstance) {
 
                 if (!(authService.isAdministrator() ||
                       authService.isCoordinator())) {
@@ -55,7 +55,6 @@ angular.module('flightNodeApp')
 
                 $scope.loading = true;
 
-                var id = $routeParams.id;
                 if (!isFinite(id)) {
                     // garbage input
                     return;
@@ -66,10 +65,10 @@ angular.module('flightNodeApp')
                 flnd.locationEdit.retrieveRecord(url, $scope, messenger, authService);
 
                 $scope.cancel = function () {
-                    $location.path('/locations');
+                    $uibModalInstance.dismiss('cancel');
                 };
 
-                $scope.submit = flnd.locationEdit.configureSubmit(url, $scope, messenger, authService);
+                $scope.submit = flnd.locationEdit.configureSubmit(url, $scope, messenger, authService, $uibModalInstance);
 
                 $scope.loading = false;
             }]);

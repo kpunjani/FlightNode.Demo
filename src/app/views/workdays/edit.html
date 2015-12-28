@@ -5,16 +5,17 @@
 </div>
 <alert>
 </alert>
-<form ng-submit="submit()" name="workdayForm">
+<form ng-submit="submit()" name="workdayForm" class="form-horizontal">
     <div class="form-group">
         <div class="row">
             <div class="col-sm-8">
-                <label for="user">User</label>
-                <div class="input-group">
+                <label for="user">Person</label>
+                <p class="form-control-static">{{person}}</p>
+                <!-- <div class="input-group">
                     <input type="text" readonly name="user" class="form-control"
                     value="{{person}}">
                     </input>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

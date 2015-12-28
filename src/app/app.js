@@ -18,7 +18,8 @@ angular
     'authService',
     'angular-jwt',
     'ngCsv',
-    'navigationService'
+    'navigationService',
+    'ui.bootstrap.modal'
   ])
   .config(function ($routeProvider) {
     $routeProvider

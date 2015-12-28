@@ -27,8 +27,8 @@ flnd.locationList = {
  */
 angular.module('flightNodeApp')
     .controller('LocationListController',
-     ['$scope', '$http', '$log', 'messenger', '$location', 'authService', 'config',
-        function ($scope, $http, $log, messenger, $location, authService, config) {
+     ['$scope', '$http', '$log', 'messenger', '$location', 'authService', 'config', '$uibModal',
+        function ($scope, $http, $log, messenger, $location, authService, config, $uibModal) {
 
             // TODO: when not authorized, an error about uiGrid will
             // appear on the screen, probably because it tries to load
@@ -54,20 +54,61 @@ angular.module('flightNodeApp')
                 },
                 data: 'list',
                 columnDefs: [
-                    { name: 'description', displayName: 'Description' },
-                    { name: 'latitude', displayName: 'Latitude' },
-                    { name: 'longitude', displayName: 'Longitude' },
+                    { field: 'description', displayName: 'Description' },
+                    { field: 'latitude', displayName: 'Latitude' },
+                    { field: 'longitude', displayName: 'Longitude' },
                     {
-                        name: 'id',
+                        field: 'id',
                         displayName: '',
-                        cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a href="/#/locations/{{row.entity.id}}">Edit</a></div>' 
+                        cellTemplate: '\
+                        <div class="ui-grid-cell-contents" title="Edit">\
+                          <button class="btn btn-primary btn-xs" ng-click="grid.appScope.editLocation(\'{{row.entity.id}}\')" \
+                           aria-label="edit">\
+                              <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>\
+                          </button>\
+                        </div>',
+                        enableFiltering: false,
+                        width: '10%',
+                        enableColumnMenu: false
                     }
                 ]
             };
 
-            $scope.creatlocation = function () {
-                $location.path('/locations/new');
+            $scope.createLocation = function () {
+                var modal = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/views/locations/create.html',
+                    controller: 'LocationCreateController',
+                    size: 'lg'
+                });
+                modal.result.then(function ok() {
+                    // Re-load the grid
+                    flnd.locationList.retrieveRecords(config, $scope, messenger, authService);
+                }, function dismissed() {
+                    // no action required
+                });
             };
+
+            $scope.editLocation = function(id) {
+                var modal = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/views/locations/edit.html',
+                    controller: 'LocationEditController',
+                    size: 'lg',
+                    resolve: {
+                        id: function() {
+                            return id;
+                        }
+                    }
+                });
+                modal.result.then(function ok() {
+                    // Re-load the grid
+                    flnd.locationList.retrieveRecords(config, $scope, messenger, authService);
+                }, function dismissed() {
+                    // no action required
+                });
+            };
+
 
             $scope.loading = false;
 

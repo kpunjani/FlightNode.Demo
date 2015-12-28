@@ -1,14 +1,14 @@
 'use strict';
 
 flnd.locationCreate = {
-    configureSubmit: function($scope, config, messenger, authService) {
+    configureSubmit: function($scope, config, messenger, authService, $uibModalInstance) {
         return function() {
             $scope.loading = true;
 
             authService.post(config.locations, $scope.location)
                 .then(function success() {
 
-                    messenger.showSuccessMessage($scope, 'Saved');
+                    $uibModalInstance.close();
 
                 }, function error(response) {
 
@@ -31,8 +31,8 @@ flnd.locationCreate = {
  */
 angular.module('flightNodeApp')
     .controller('LocationCreateController',
-        ['$scope', '$http', '$log', '$location', 'messenger', 'authService', 'config',
-            function ($scope, $http, $log, $location, messenger, authService, config) {
+        ['$scope', '$http', '$log', '$location', 'messenger', 'authService', 'config', '$uibModalInstance',
+            function ($scope, $http, $log, $location, messenger, authService, config, $uibModalInstance) {
 
                 if (!(authService.isAdministrator() ||
                    authService.isCoordinator())) {
@@ -44,10 +44,10 @@ angular.module('flightNodeApp')
                 $scope.loading = true;
 
                 $scope.cancel = function () {
-                    $location.path('/locations');
+                    $uibModalInstance.dismiss('cancel');
                 };
 
-                $scope.submit = flnd.locationCreate.configureSubmit($scope, config, messenger, authService);
+                $scope.submit = flnd.locationCreate.configureSubmit($scope, config, messenger, authService, $uibModalInstance);
 
                 $scope.loading = false;
             }]);

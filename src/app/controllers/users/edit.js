@@ -1,8 +1,8 @@
 'use strict';
 
 flnd.userEdit = {
-    retrieveUser: function(config, $scope, userId, messenger, authService) {
-        authService.get(config.users + userId)
+    retrieveUser: function(url, $scope, messenger, authService) {
+        authService.get(url)
             .then(function success(response) {
 
                 $scope.user = response.data;
@@ -16,14 +16,14 @@ flnd.userEdit = {
             });
         },
 
-    configureSubmit: function(config, $scope, userId, messenger, authService) {
+    configureSubmit: function(url, $scope, messenger, authService, $uibModalInstance) {
       return function() {
         $scope.loading = true;
 
-        authService.put(config.users + userId, $scope.user)
+        authService.put(url, $scope.user)
             .then(function success() {
 
-                messenger.showSuccessMessage($scope, 'Saved');
+                $uibModalInstance.close();
 
             }, function error(response) {
 
@@ -45,8 +45,8 @@ flnd.userEdit = {
  */
 angular.module('flightNodeApp')
     .controller('UserEditController',
-        ['$scope', '$http', '$log', '$location', '$routeParams', 'messenger', 'authService', 'config',
-        function ($scope, $http, $log, $location, $routeParams, messenger, authService, config) {
+        ['$scope', '$http', '$log', '$location', '$routeParams', 'messenger', 'authService', 'config', '$uibModalInstance', 'id',
+        function ($scope, $http, $log, $location, $routeParams, messenger, authService, config, $uibModalInstance, id) {
 
             if (!(authService.isAdministrator() ||
                   authService.isCoordinator())) {
@@ -57,20 +57,20 @@ angular.module('flightNodeApp')
 
             $scope.loading = true;
 
-            var userId = $routeParams.userId;
-            if (!isFinite(userId)) {
+            if (!isFinite(id)) {
                 // garbage input
                 return;
             }
 
-            $scope.action = 'Edit';
+            var url = config.locations + id;
 
-            flnd.userEdit.retrieveUser(config, $scope, userId, messenger, authService);
+            flnd.userEdit.retrieveUser(url, $scope, messenger, authService);
 
             $scope.cancel = function () {
-                $location.path('/users');
+                $uibModalInstance.dismiss('cancel');
             };
 
-            $scope.submit = flnd.userEdit.configureSubmit(config, $scope, userId, messenger, authService);
+            $scope.submit = flnd.userEdit.configureSubmit(url, $scope, messenger, authService, $uibModalInstance);
 
+            $scope.loading = false;
         }]);
