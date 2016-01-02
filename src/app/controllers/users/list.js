@@ -58,7 +58,7 @@ angular.module('flightNodeApp')
 					{ field: 'email', displayName: 'E-mail Address' },
 					{ field: 'phone', displayName: 'Phone Number' },
 					{
-						field: 'userId',
+						field: 'id',
 						displayName: '',
                         cellTemplate: '\
                         <div class="ui-grid-cell-contents" title="Edit">\

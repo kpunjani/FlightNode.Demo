@@ -2,42 +2,45 @@
     <h2>Edit Location</h2>
     <p><span class="text-danger">*</span> indicates a required field.</p>
 </div>
-<form name="locationForm" class="modal-body form-horizontal" ng-submit="submit()">
-    <alert>
-    </alert>
-    <div class="form-group">
-        <label for="description" class="col-sm-3 control-label">Description <span class="text-danger">*</span></label>
-        <div class="col-sm-9" ng-class="{'has-error': locationForm.description.$error.required || locationForm.description.$error.maxlength}">
-            <input type="text" class="form-control" ng-model="location.description"
-            name="description" placeholder="max length 1000 characters" required ng-maxlength="1000">
+<form name="locationForm" class="form-horizontal" ng-submit="submit()">
+    <div class="modal-body">
+        <alert>
+        </alert>
+        <div class="form-group">
+            <label for="description" class="col-sm-3 control-label">Description <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': locationForm.description.$error.required || locationForm.description.$error.maxlength}">
+                <input type="text" class="form-control" ng-model="location.description"
+                name="description" placeholder="max length 1000 characters" required ng-maxlength="1000">
+            </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="locationForm.description.$error.maxlength">Max 100 characters</span>
+            </div>
         </div>
-        <div role="alert" class="col-sm-9 col-sm-offset-3">
-            <span class="error bg-danger" ng-show="locationForm.description.$error.maxlength">Max 100 characters</span>
+        <div class="form-group">
+            <label for="latitude" class="col-sm-3 control-label">Latitude <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': locationForm.latitude.$error.required || locationForm.latitude.$error.pattern}">
+                <input type="text" class="form-control" ng-model="location.latitude" name="latitude" placeholder="-90.000000 to 90.000000"
+                required ng-pattern="/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/">
+            </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="locationForm.latitude.$error.pattern">Illegal latitude</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="longitude" class="col-sm-3 control-label">Longitude <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': locationForm.longitude.$error.required || locationForm.longitude.$error.pattern}">
+                <input type="text" class="form-control" ng-model="location.longitude" name="longitude" placeholder="0.000000 to 180.000000"
+                required ng-pattern="/^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/">
+            </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="locationForm.longitude.$error.pattern">Illegal longitude</span>
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <label for="latitude" class="col-sm-3 control-label">Latitude <span class="text-danger">*</span></label>
-        <div class="col-sm-9" ng-class="{'has-error': locationForm.latitude.$error.required || locationForm.latitude.$error.pattern}">
-            <input type="text" class="form-control" ng-model="location.latitude" name="latitude" placeholder="-90.000000 to 90.000000"
-            required ng-pattern="/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/">
-        </div>
-        <div role="alert" class="col-sm-9 col-sm-offset-3">
-            <span class="error bg-danger" ng-show="locationForm.latitude.$error.pattern">Illegal latitude</span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="longitude" class="col-sm-3 control-label">Longitude <span class="text-danger">*</span></label>
-        <div class="col-sm-9" ng-class="{'has-error': locationForm.longitude.$error.required || locationForm.longitude.$error.pattern}">
-            <input type="text" class="form-control" ng-model="location.longitude" name="longitude" placeholder="0.000000 to 180.000000"
-            required ng-pattern="/^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/">
-        </div>
-        <div role="alert" class="col-sm-9 col-sm-offset-3">
-            <span class="error bg-danger" ng-show="locationForm.longitude.$error.pattern">Illegal longitude</span>
-        </div>
+    <div class="modal-footer">
+        <input type="hidden" ng-model="location.id">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-warning" ng-click="cancel()">Cancel</button>
     </div>
 </form>
-<div class="modal-footer">
-    <button type="submit" class="btn btn-primary">Save</button>
-    <button type="button" class="btn btn-warning" ng-click="cancel()">Cancel</button>
-</div>
 <loading></loading>

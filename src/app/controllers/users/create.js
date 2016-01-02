@@ -18,8 +18,6 @@ flnd.userCreate = {
             .finally(function() {
                 $scope.loading = false;
             });
-
-        $scope.loading = false;
     };
   }
 };

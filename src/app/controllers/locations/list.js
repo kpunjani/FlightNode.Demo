@@ -74,26 +74,31 @@ angular.module('flightNodeApp')
                 ]
             };
 
+            var success = function() {
+                // Re-load the grid
+                    flnd.locationList.retrieveRecords(config, $scope, messenger, authService);
+                messenger.showSuccessMessage($scope, 'Saved');
+            };
+
+            var dismissed = function() {
+                // no action required
+            };
+
             $scope.createLocation = function () {
                 var modal = $uibModal.open({
                     animation: true,
                     templateUrl: '/app/views/locations/create.html',
-                    controller: 'LocationCreateController',
+                    controller: 'WorktypeCreateController',
                     size: 'lg'
                 });
-                modal.result.then(function ok() {
-                    // Re-load the grid
-                    flnd.locationList.retrieveRecords(config, $scope, messenger, authService);
-                }, function dismissed() {
-                    // no action required
-                });
+                modal.result.then(success, dismissed);
             };
 
             $scope.editLocation = function(id) {
                 var modal = $uibModal.open({
                     animation: true,
                     templateUrl: '/app/views/locations/edit.html',
-                    controller: 'LocationEditController',
+                    controller: 'WorktypeEditController',
                     size: 'lg',
                     resolve: {
                         id: function() {
@@ -101,12 +106,7 @@ angular.module('flightNodeApp')
                         }
                     }
                 });
-                modal.result.then(function ok() {
-                    // Re-load the grid
-                    flnd.locationList.retrieveRecords(config, $scope, messenger, authService);
-                }, function dismissed() {
-                    // no action required
-                });
+                modal.result.then(success, dismissed);
             };
 
 

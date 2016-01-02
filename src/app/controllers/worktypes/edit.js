@@ -12,7 +12,7 @@ flnd.workTypeEdit = {
                 messenger.displayErrorResponse($scope, response);
             });
     },
-    configureSubmit: function(id, config, $scope, messenger, authService) {
+    configureSubmit: function(id, config, $scope, messenger, authService, $uibModalInstance) {
         return function () {
             $scope.loading = true;
 
@@ -20,8 +20,7 @@ flnd.workTypeEdit = {
             authService.put(url, $scope.worktype)
                 .then(function success() {
 
-                    messenger.showSuccessMessage($scope, 'Saved');
-                    $scope.loading = false;
+                    $uibModalInstance.close();
 
                 }, function error(response) {
                     messenger.displayErrorResponse($scope, response);
@@ -42,8 +41,8 @@ flnd.workTypeEdit = {
  */
 angular.module('flightNodeApp')
     .controller('WorktypeEditController',
-        ['$scope', '$http', '$log', '$location', 'messenger', 'authService', '$routeParams', 'config',
-            function ($scope, $http, $log, $location, messenger, authService, $routeParams, config) {
+        ['$scope', '$http', '$log', '$location', 'messenger', 'authService', '$routeParams', 'config', '$uibModalInstance', 'id',
+            function ($scope, $http, $log, $location, messenger, authService, $routeParams, config, $uibModalInstance, id) {
 
                 if (!(authService.isAdministrator() ||
                       authService.isCoordinator())) {
@@ -54,7 +53,6 @@ angular.module('flightNodeApp')
 
                 $scope.loading = true;
 
-                var id = $routeParams.id;
                 if (!isFinite(id)) {
                     // garbage input
                     return;
@@ -63,10 +61,10 @@ angular.module('flightNodeApp')
                 flnd.workTypeEdit.retrieveRecord(id, config, $scope, messenger, authService);
 
                 $scope.cancel = function () {
-                    $location.path('/worktypes');
+                $uibModalInstance.dismiss('cancel');
                 };
 
-                $scope.submit = flnd.workTypeEdit.configureSubmit(id, config, $scope, messenger, authService);
+                $scope.submit = flnd.workTypeEdit.configureSubmit(id, config, $scope, messenger, authService, $uibModalInstance);
 
                 $scope.loading = false;
             }]);

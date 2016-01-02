@@ -24,8 +24,8 @@ flnd.workTypeList = {
  */
 angular.module('flightNodeApp')
     .controller('WorktypeListController',
-     ['$scope', '$http', '$log', 'messenger', '$location', 'authService', 'config',
-        function ($scope, $http, $log, messenger, $location, authService, config) {
+     ['$scope', '$http', '$log', 'messenger', '$location', 'authService', 'config', '$uibModal',
+        function ($scope, $http, $log, messenger, $location, authService, config, $uibModal) {
 
             if (!(authService.isAdministrator() ||
                   authService.isCoordinator())) {
@@ -48,15 +48,53 @@ angular.module('flightNodeApp')
                 columnDefs: [
                     { name: 'description', displayName: 'Description' },
                     {
-                        name: 'id',
+                        field: 'id',
                         displayName: '',
-                        cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a href="/#/worktypes/{{row.entity.id}}">Edit</a></div>' 
+                        cellTemplate: '\
+                        <div class="ui-grid-cell-contents" title="Edit">\
+                          <button class="btn btn-primary btn-xs" ng-click="grid.appScope.editWorkType(\'{{row.entity.id}}\')" \
+                           aria-label="edit">\
+                              <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>\
+                          </button>\
+                        </div>',
+                        width: '10%'
                     }
                 ]
             };
 
+            var success = function() {
+                // Re-load the grid
+                flnd.workTypeList.retrieveRecord(config, $scope, messenger, authService);
+                messenger.showSuccessMessage($scope, 'Saved');
+            };
+
+            var dismissed = function() {
+                // no action required
+            };
+
             $scope.creatWorkType = function () {
-                $location.path('/worktypes/new');
+                var modal = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/views/worktypes/create.html',
+                    controller: 'WorktypeCreateController',
+                    size: 'lg'
+                });
+                modal.result.then(success, dismissed);
+            };
+
+            $scope.editWorkType = function(id) {
+                var modal = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/views/worktypes/edit.html',
+                    controller: 'WorktypeEditController',
+                    size: 'lg',
+                    resolve: {
+                        id: function() {
+                            return id;
+                        }
+                    }
+                });
+                modal.result.then(success, dismissed);
             };
 
             $scope.loading = false;

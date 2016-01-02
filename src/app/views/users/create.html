@@ -1,15 +1,16 @@
 <div class="modal-header">
     <h2>Create User</h2>
+    <p><span class="text-danger">*</span> indicates a required field.</p>
 </div>
-<form ng-submit="submit()" name="userForm">
-    <div class="modal-body form-horizontal">
+<form ng-submit="submit()" name="userForm" class="form-horizontal">
+    <div class="modal-body">
         <alert>
         </alert>
         <fieldset>
             <legend>Sign-on Information</legend>
             <div class="form-group">
                 <label for="userName" class="col-sm-3 control-label">User Name <span class="text-danger">*</span></label>
-                <div class="col-sm-9" ng-class="{'has-error': userForm.userName.$error.required}">
+                <div class="col-sm-9" ng-class="{'has-error': userForm.userName.$error.required || userForm.userName.$error.pattern}">
                     <input type="text" class="form-control" ng-model="user.userName" name="userName" placeholder="Min 6, max 256; letters numbers @ and . allowed" required ng-pattern="/^[0-9a-zA-Z@\.]{6,256}$/">
                 </div>
                 <div role="alert" class="col-sm-9 col-sm-offset-3">

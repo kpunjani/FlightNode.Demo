@@ -19,7 +19,8 @@ angular
     'angular-jwt',
     'ngCsv',
     'navigationService',
-    'ui.bootstrap.modal'
+    'ui.bootstrap.modal',
+    'ui.bootstrap.timepicker'
   ])
   .config(function ($routeProvider) {
     $routeProvider
