@@ -1,0 +1,120 @@
+<div class="row">
+    <div class="col-sm-12">
+        <h1>Workday Logging</h1>
+    </div>
+</div>
+<alert>
+</alert>
+<form ng-submit="submit()" name="workdayForm">
+    <!-- TODO: need to pull the userid from jwt -->
+    <!-- when adding time, try adding next to the Date. Just use smaller columns. -->
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-8">
+                <label for="workDate">Date</label>
+                <div class="input-group">
+                    <input type="text" name="workDate" class="form-control" uib-datepicker-popup="{{format}}" ng-model="workday.workDate" is-open="status.opened"
+                    datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="{{today}}" date />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+                <p class="clearfix">
+                    {{workday.workDate | date:'fullDate' }}
+                </p>
+            </div>
+            <div role="alert" class="validator col-sm-4">
+                <span class="error bg-danger" ng-show="workdayForm.workDate.$error.required">Required</span>
+                <span class="error bg-danger" ng-show="workdayForm.workDate.$error.date">Invalid date</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-8">
+                <label for="workHours">Total Work Time (Hours)</label>
+                <input type="text" class="form-control" ng-model="workday.workHours" required
+                ng-pattern="/^([01]?[0-9]|2[0-3])(\.[0-9]{1,2})?$/" name="workHours" placeholder="0.00">
+                <!-- TODO: this allows saving 0 hours! -->
+            </div>
+            <div role="alert" class="validator col-sm-4">
+                <span class="error bg-danger" ng-show="workdayForm.workHours.$error.required">Hours required</span>
+                <span class="error bg-danger" ng-show="workdayForm.workHours.$error.pattern">Invalid hours</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-8">
+                <label for="travelHours">Total Travel Time (Hours)</label>
+                <input type="text" class="form-control" ng-model="workday.travelHours" required
+                ng-pattern="/^([01]?[0-9]|2[0-3])(\.[0-9]{1,2})?$/" name="travelHours" placeholder="0.00">
+                <!-- TODO: this allows saving 0 hours! -->
+            </div>
+            <div role="alert" class="validator col-sm-4">
+                <span class="error bg-danger" ng-show="workdayForm.travelHours.$error.required">Hours required</span>
+                <span class="error bg-danger" ng-show="workdayForm.travelHours.$error.pattern">Invalid hours</span>
+            </div>
+        </div>
+    </div>
+    <!-- Good layout for a starting time, but this form doesn't require it. Might bring back
+    hours and minutes for the total work time and total travel time, then translate to decimal
+    on the 'back end'.
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-8">
+                <label for="timeHour">Time</label><br>
+                <input type="text" class="form-control form-inline-small" ng-model="workday.timeHour" name="timeHour" ng-pattern="/^(1[012]|[0-9])$/" required columns="2">
+                :
+                <input type="text" class="form-control form-inline-small" ng-model="workday.timeMinutes" name="timeMinutes" ng-pattern="/^[0-5][0-9]$/" required columns="2">
+                <select ng-model="workday.ampm" name="ampm" class="form-control form-inline-small" required>
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                </select>
+            </div>
+            <div role="alert" class="validator col-sm-4">
+                <span class="error bg-danger" ng-show="workdayForm.timeHour.$error.required">Hours required</span>
+                <span class="error bg-danger" ng-show="workdayForm.timeHour.$error.pattern">Invalid hours</span>
+                <span class="error bg-danger" ng-show="workdayForm.timeMinutes.$error.required">Minutes required</span>
+                <span class="error bg-danger" ng-show="workdayForm.timeMinutes.$error.pattern">Invalid minutes</span>
+                <span class="error bg-danger" ng-show="workdayForm.ampm.$error.required">AM/PM required</span>
+            </div>
+        </div>
+    </div>
+    -->
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-8">
+                <label for="location">Location</label>
+                <select class="form-control" required name="location"
+                  ng-model="workday.location"
+                  ng-options="item.id as item.value for item in data.locations">
+                </select>
+            </div>
+            <div role="alert" class="validator col-sm-4">
+                <span class="error bg-danger" ng-show="workdayForm.location.$error.required">Required</span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-8">
+                <label for="workType">Work Type</label>
+                <select class="form-control" required name="workType"
+                  ng-model="workday.workType"
+                  ng-options="item.id as item.value for item in data.worktypes">
+                </select>
+            </div>
+            <div role="alert" class="validator col-sm-4">
+                <span class="error bg-danger" ng-show="workdayForm.workType .$error.required">Required</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 text-right">
+            <button type="submit" class="btn btn-primary" ng-disabled="workdayForm.$invalid" >Save</button>
+            <button type="button" class="btn btn-secondary" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+</form>
+<loading></loading>

@@ -1,5 +1,41 @@
 'use strict';
 
+flnd.userEdit = {
+    retrieveUser: function(url, $scope, messenger, authService) {
+        authService.get(url)
+            .then(function success(response) {
+
+                $scope.user = response.data;
+
+            }, function error(response) {
+
+                messenger.displayErrorResponse($scope, response);
+            })
+            .finally(function() {
+                $scope.loading = false;
+            });
+        },
+
+    configureSubmit: function(url, $scope, messenger, authService, $uibModalInstance) {
+      return function() {
+        $scope.loading = true;
+
+        authService.put(url, $scope.user)
+            .then(function success() {
+
+                $uibModalInstance.close();
+
+            }, function error(response) {
+
+                messenger.displayErrorResponse($scope, response);
+            })
+            .finally(function() {
+                $scope.loading = false;
+            });
+      };
+    }
+};
+
 /**
  * @ngdoc function
  * @name flightNodeApp.controller:UserEditController
@@ -8,78 +44,33 @@
  * Controller for the edit user page.
  */
 angular.module('flightNodeApp')
-	.controller('UserEditController',
-		['$scope', '$http', '$log', '$location', '$routeParams', 'messenger', 'oauthRequest',
-		function ($scope, $http, $log, $location, $routeParams, messenger, oauthRequest) {
+    .controller('UserEditController',
+        ['$scope', '$http', '$log', '$location', '$routeParams', 'messenger', 'authService', 'config', '$uibModalInstance', 'id',
+        function ($scope, $http, $log, $location, $routeParams, messenger, authService, config, $uibModalInstance, id) {
 
-			if (!(oauthRequest.isAdministrator() ||
-				  oauthRequest.isCoordinator())) {
-				$log.warn('not authorized to access this path');
-				$location.path('/');
-				return;
-			}
+            if (!(authService.isAdministrator() ||
+                  authService.isCoordinator())) {
+                $log.warn('not authorized to access this path');
+                $location.path('/');
+                return;
+            }
 
-			$scope.loading = true;
+            $scope.loading = true;
 
-			var userId = $routeParams.userId;
-			if (!isFinite(userId)) {
-				// garbage input
-				return;
-			}
+            if (!isFinite(id)) {
+                // garbage input
+                return;
+            }
 
-			$scope.action = 'Edit';
+            var url = config.locations + id;
 
-			oauthRequest.get('http://localhost:50323/api/v1/user/' + userId)
-						.then(function success(response) {
+            flnd.userEdit.retrieveUser(url, $scope, messenger, authService);
 
-							$scope.user = response.data;
-							$scope.loading = false;
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
 
-						}, function error(response) {
+            $scope.submit = flnd.userEdit.configureSubmit(url, $scope, messenger, authService, $uibModalInstance);
 
-							$log.error(response);
-
-							if (response.status === 401) {
-								messenger.unauthorized($scope);
-							} else {
-								messenger.showErrorMessage($scope, { error: response });
-							}
-
-							$scope.loading = false;
-						});
-
-			$scope.cancel = function () {
-				$location.path('/users');
-			}
-
-			$scope.submit = function () {
-				$scope.loading = true;
-
-				oauthRequest.put('http://localhost:50323/api/v1/user/' + userId, $scope.user)
-						.then(function success(response) {
-							messenger.showSuccessMessage($scope, 'Saved');
-							$scope.loading = false;
-						}, function error(response) {
-							switch (response.status) {
-								case 400:
-									var messages = [{ error: response.data.message }];
-
-									if (response.data.modelState) {
-										_.forIn(response.data.modelState, function (value, key) {
-											messages.push({ error: value.toString() });
-										});
-									}
-									messenger.showErrorMessage($scope, messages);
-									break;
-								case 401:
-									messenger.unauthorized($scope);
-									break;
-								default:
-									messenger.showErrorMessage($scope, { error: response });
-							}
-							$scope.loading = false;
-						});
-			};
-
-
-		}]);
+            $scope.loading = false;
+        }]);

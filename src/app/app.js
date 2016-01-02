@@ -1,6 +1,8 @@
 /* global $ */
 'use strict';
 
+var flnd = {}; // jshint ignore:line
+
 angular
   .module('flightNodeApp', [
     'ngAnimate',
@@ -13,66 +15,105 @@ angular
     'userMessage',
     'roleProxy',
     'ui.bootstrap.datepicker',
-    'oauthRequest',
-    'angular-jwt'
+    'authService',
+    'angular-jwt',
+    'ngCsv',
+    'navigationService',
+    'ui.bootstrap.modal'
   ])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'app/views/main.html',
-        controller: 'MainController'
+        controller: 'MainController',
+        title: 'Home'
       })
       .when('/login', {
         templateUrl: 'app/views/login.html',
-        controller: 'LoginController'
+        controller: 'LoginController',
+        title: 'Login'
       })
       .when('/users', {
         templateUrl: 'app/views/users/list.html',
-        controller: 'UserListController'
+        controller: 'UserListController',
+        title: 'Users - List'
       })
       .when('/users/new', {
         templateUrl: 'app/views/users/create.html',
-        controller: 'UserCreateController'
+        controller: 'UserCreateController',
+        title: 'Users - New'
       })
       .when('/users/:userId', {
         templateUrl: 'app/views/users/edit.html',
-        controller: 'UserEditController'
+        controller: 'UserEditController',
+        title: 'Users - Edit'
       })
-      .when('/workday/create', {
-        templateUrl: 'app/views/workday/create.html',
-        controller: 'WorkdayCreateController'
+      .when('/workdays/', {
+        templateUrl: 'app/views/workdays/list.html',
+        controller: 'WorkdayListController',
+        title: 'Work Day - List'
+      })
+      .when('/workdays/new', {
+        templateUrl: 'app/views/workdays/create.html',
+        controller: 'WorkdayCreateController',
+        title: 'Work Day - New Log'
+      })
+      .when('/workdays/:id', {
+        templateUrl: 'app/views/workdays/edit.html',
+        controller: 'WorkdayEditController',
+        title: 'Work Day - Edit'
       })
       .when('/worktypes', {
-        templateUrl: 'app/views/worktype/list.html',
-        controller: 'WorktypeListController'
+        templateUrl: 'app/views/worktypes/list.html',
+        controller: 'WorktypeListController',
+        title: 'Work Types - List'
       })
       .when('/worktypes/new', {
-        templateUrl: 'app/views/worktype/create.html',
-        controller: 'WorktypeCreateController'
+        templateUrl: 'app/views/worktypes/create.html',
+        controller: 'WorktypeCreateController',
+        title: 'Work Types - New'
       })
       .when('/worktypes/:id', {
-        templateUrl: 'app/views/worktype/edit.html',
-        controller: 'WorktypeEditController'
+        templateUrl: 'app/views/worktypes/edit.html',
+        controller: 'WorktypeEditController',
+        title: 'Work Types - Edit'
       })
       .when('/locations', {
-        templateUrl: 'app/views/location/list.html',
-        controller: 'LocationListController'
+        templateUrl: 'app/views/locations/list.html',
+        controller: 'LocationListController',
+        title: 'Locations - List'
       })
       .when('/locations/new', {
-        templateUrl: 'app/views/location/create.html',
-        controller: 'LocationCreateController'
+        templateUrl: 'app/views/locations/create.html',
+        controller: 'LocationCreateController',
+        title: 'Locations - New'
       })
       .when('/locations/:id', {
-        templateUrl: 'app/views/location/edit.html',
-        controller: 'LocationEditController'
+        templateUrl: 'app/views/locations/edit.html',
+        controller: 'LocationEditController',
+        title: 'Locations - Edit'
       })
       .when('/logout', {
         templateUrl: 'app/views/main.html',
         controller: 'LogoutController'
       })
       .otherwise({
-        templateUrl: 'app/views/404.html'
+        templateUrl: 'app/views/404.html',
+        title: 'Page not found'
       });
+  })
+  .run(function(authService, $rootScope, $route, $window, $log, navigationService) {
+    var display = authService.getDisplayName();
+    if (display) {
+      $rootScope.display_name = 'Welcome, ' + display;
+    }
+
+    $rootScope.$on('$routeChangeSuccess', function() {
+      $window.document.title = ($route.current.title || '');
+    });
+
+    navigationService.buildNavigation();
+
   })
   .directive('loading', function () {
     return {
@@ -139,4 +180,10 @@ angular
         };
       }
     };
+  })
+  .filter('htmlEncode', function(){
+    return window.encodeURIComponent;
   });
+  // .constant('config', {
+  //   a: 'b'
+  // });

@@ -8,27 +8,26 @@
  * Controller that  handles user logout
  */
 angular.module('flightNodeApp')
-	.controller('LogoutController',
-		['$log', 'oauthRequest', '$location',
-		function ($log, oauthRequest, $location) {
-			oauthRequest.delete('http://localhost:50323/oauth/token')
-			.then(function success(response){
-				if (response) {
-					$log.info(response);
-				}
+    .controller('LogoutController',
+        ['$log', 'authService', '$location', 'navigationService', 'config',
+        function ($log, authService, $location, navigationService, config) {
+            authService.clearToken();
+            navigationService.resetTree();
 
-				oauthRequest.clearToken();
+            authService.delete(config.token)
+            .then(function success(response){
+                if (response) {
+                    $log.info(response);
+                }
 
-				$location.path('/');
+                $location.path('/');
 
-			}, function error(err){
-				if (err) {
-					$log.error(err);
-				}
+            }, function error(err){
+                if (err) {
+                    $log.error(err);
+                }
 
-				oauthRequest.clearToken();
-
-				$location.path('/');
-			});
-		}]
-	);
+                $location.path('/');
+            });
+        }]
+    );

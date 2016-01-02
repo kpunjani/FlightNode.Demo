@@ -1,8 +1,10 @@
 'use strict';
 
-var configureDateField = function($scope) {
-    $scope.workday = {}
-    $scope.today = moment().format("MM/DD/YY");
+flnd.workDayCreate = {
+  configureDateField: function($scope) {
+    $scope.workday = {};
+
+    $scope.today = moment().format('MM/DD/YY');
 
     $scope.clear = function () {
         $scope.workday.workDate = null;
@@ -19,7 +21,7 @@ var configureDateField = function($scope) {
     $scope.toggleMin();
     $scope.maxDate = new Date(2020, 5, 22);
 
-    $scope.open = function ($event) {
+    $scope.open = function () {
         $scope.status.opened = true;
     };
 
@@ -70,46 +72,34 @@ var configureDateField = function($scope) {
         return '';
     };
     return $scope;
-};
+  },
 
-var loadLocations = function($scope, $log, messenger, oauthRequest) {
-    oauthRequest.get('http://localhost:50323/api/v1/locations/simple')
+  loadLocations: function($scope, $log, messenger, authService) {
+    authService.get('http://localhost:50323/api/v1/locations/simple')
         .then(function success(response) {
 
             $scope.data.locations = response.data;
 
         }, function error(response) {
 
-            $log.error(response);
-
-            if (response.status === 401) {
-                messenger.unauthorized($scope);
-            } else {
-                messenger.showErrorMessage($scope, { error: response });
-            }
+            messenger.displayErrorResponse($scope, response);
         });
-}
+  },
 
-var loadWorkTypes = function($scope, $log, messenger, oauthRequest) {
-    oauthRequest.get('http://localhost:50323/api/v1/worktypes/simple')
+  loadWorkTypes: function($scope, $log, messenger, authService) {
+    authService.get('http://localhost:50323/api/v1/worktypes/simple')
         .then(function success(response) {
 
             $scope.data.worktypes = response.data;
 
         }, function error(response) {
 
-            $log.error(response);
-
-            if (response.status === 401) {
-                messenger.unauthorized($scope);
-            } else {
-                messenger.showErrorMessage($scope, { error: response });
-            }
+            messenger.displayErrorResponse($scope, response);
 
         });
-}
+  },
 
-var configureSubmit = function($scope, $log, messenger, oauthRequest) {
+  configureSubmit: function($scope, $log, messenger, authService) {
 
     $scope.submit = function() {
         $scope.loading = true;
@@ -120,36 +110,23 @@ var configureSubmit = function($scope, $log, messenger, oauthRequest) {
             workDate: $scope.workday.workDate,
             workHours: $scope.workday.workHours,
             workTypeId: $scope.workday.workType,
-            userId: 1 // need to extract from token
+            userId: authService.getUserId()
         };
 
-        oauthRequest.post('http://localhost:50323/api/v1/worklogs', msg)
-           .then(function success(response){
+        authService.post('http://localhost:50323/api/v1/worklogs', msg)
+           .then(function success(){
                 messenger.showSuccessMessage($scope, 'Saved');
-                $scope.loading = false;
            }, function error(response) {
-                switch (response.status) {
-                    case 400:
-                        var messages = [{ error: response.data.message }];
-                        if (response.data.modelState) {
-                            _.forIn(response.data.modelState, function (value, key) {
-                                messages.push({ error: value.toString() });
-                            });
-                        }
-                        messenger.showErrorMessage($scope, messages);
-                        break;
-                    case 401:
-                        messenger.unauthorized($scope);
-                        break;
-                    default:
-                        messenger.showErrorMessage($scope, { error: response });
-                }
+                messenger.displayErrorResponse($scope, response);
+           })
+           .finally(function() {
                 $scope.loading = false;
            });
-    }
+    };
 
     return $scope;
-}
+  }
+};
 
 /**
  * @ngdoc function
@@ -160,16 +137,16 @@ var configureSubmit = function($scope, $log, messenger, oauthRequest) {
  */
 angular.module('flightNodeApp')
     .controller('WorkdayCreateController',
-        ['$scope', '$location', '$http', '$log', 'messenger', 'oauthRequest',
-            function ($scope, $location, $http, $log, messenger, oauthRequest) {
+        ['$scope', '$location', '$http', '$log', 'messenger', 'authService',
+            function ($scope, $location, $http, $log, messenger, authService) {
                 $scope.loading = true;
                 $scope.data = {};
 
-                $scope = configureDateField($scope);
-                loadLocations($scope, $log, messenger, oauthRequest);
-                loadWorkTypes($scope, $log, messenger, oauthRequest);
+                $scope = flnd.workDayCreate.configureDateField($scope);
+                flnd.workDayCreate.loadWorkTypes($scope, $log, messenger, authService);
+                flnd.workDayCreate.loadLocations($scope, $log, messenger, authService);
 
-                $scope = configureSubmit($scope, $log, messenger, oauthRequest);
+                $scope = flnd.workDayCreate.configureSubmit($scope, $log, messenger, authService);
 
                 $scope.cancel = function() {
                     $location.path('/');

@@ -1,5 +1,26 @@
 'use strict';
 
+flnd.userList = {
+  retrieve: function(authService, config, $scope, messenger) {
+		authService.get(config.users)
+			.then(function success(response) {
+
+				$scope.userList = _.map(response.data, function (user) {
+					return {
+						fullName: user.givenName + ' ' + user.familyName,
+						email: user.email,
+						phone: user.primaryPhoneNumber,
+						userId: user.userId
+					};
+				});
+
+			}, function error(response) {
+
+                messenger.displayErrorResponse($scope, response);
+			});
+  }
+};
+
 /**
  * @ngdoc function
  * @name flightNodeApp.controller:UserListController
@@ -9,11 +30,11 @@
  */
 angular.module('flightNodeApp')
 	.controller('UserListController',
-	 ['$scope', '$http', '$log', 'messenger', '$location', 'oauthRequest',
-		function ($scope, $http, $log, messenger, $location, oauthRequest) {
+	 ['$scope', '$http', '$log', 'messenger', '$location', 'authService', 'config', '$uibModal',
+		function ($scope, $http, $log, messenger, $location, authService, config, $uibModal) {
 
-			if (!(oauthRequest.isAdministrator() ||
-				  oauthRequest.isCoordinator())) {
+			if (!(authService.isAdministrator() ||
+				  authService.isCoordinator())) {
 				$log.warn('not authorized to access this path');
 				$location.path('/');
 				return;
@@ -23,28 +44,7 @@ angular.module('flightNodeApp')
 
 			$scope.userList = [];
 
-			oauthRequest.get('http://localhost:50323/api/v1/user')
-						.then(function success(response) {
-
-							$scope.userList = _.map(response.data, function (user) {
-								return {
-									fullName: user.givenName + ' ' + user.familyName,
-									email: user.email,
-									phone: user.primaryPhoneNumber,
-									userId: user.userId
-								};
-							});
-
-						}, function error(response) {
-
-							$log.error(response);
-
-							if (response.status === 401) {
-								messenger.unauthorized($scope);
-							} else {
-								messenger.showErrorMessage($scope, { error: response });
-							}
-						});
+			flnd.userList.retrieve(authService, config, $scope, messenger);
 
 			$scope.gridOptions = {
 				enableFiltering: true,
@@ -54,20 +54,60 @@ angular.module('flightNodeApp')
 				},
 				data: 'userList',
 				columnDefs: [
-					{ name: 'fullName', displayName: 'Full Name' },
-					{ name: 'email', displayName: 'E-mail Address' },
-					{ name: 'phone', displayName: 'Phone Number' },
+					{ field: 'fullName', displayName: 'Full Name' },
+					{ field: 'email', displayName: 'E-mail Address' },
+					{ field: 'phone', displayName: 'Phone Number' },
 					{
-						name: 'userId',
+						field: 'userId',
 						displayName: '',
-						cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a href="/#/users/{{row.entity.userId}}">Edit</a></div>' 
+                        cellTemplate: '\
+                        <div class="ui-grid-cell-contents" title="Edit">\
+                          <button class="btn btn-primary btn-xs" ng-click="grid.appScope.editLocation(\'{{row.entity.id}}\')" \
+                           aria-label="edit">\
+                              <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>\
+                          </button>\
+                        </div>',
+                        width: '10%'
 					}
 				]
 			};
 
 			$scope.createUser = function () {
-				$location.path("/users/new");
-			}
+                var modal = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/views/users/create.html',
+                    controller: 'UserCreateController',
+                    size: 'lg'
+                });
+                modal.result.then(function ok() {
+                    // Re-load the grid
+					flnd.userList.retrieve(authService, config, $scope, messenger);
+                	messenger.showSuccessMessage($scope, 'Saved');
+                }, function dismissed() {
+                    // no action required
+                });
+			};
+
+            $scope.editLocation = function(id) {
+                var modal = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/views/users/edit.html',
+                    controller: 'UserEditController',
+                    size: 'lg',
+                    resolve: {
+                        id: function() {
+                            return id;
+                        }
+                    }
+                });
+                modal.result.then(function ok() {
+                    // Re-load the grid
+					flnd.userList.retrieve(authService, config, $scope, messenger);
+                	messenger.showSuccessMessage($scope, 'Saved');
+                }, function dismissed() {
+                    // no action required
+                });
+            };
 
 			$scope.loading = false;
 

@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('roleProxy', [])
-	.factory('roleProxy', 
-		['$http', 'oauthRequest', 
-		function ($http, oauthRequest) {
+	.factory('roleProxy',
+		['$http', 'authService', 'config', '$log',
+		function ($http, authService, config, $log) {
 		return {
 
 			getAll: function (done) {
-				oauthRequest.get('http://localhost:50323/api/v1/role')
+
+				authService.get(config.roles)
 					.then(function success(response) {
 						done(null, response);
 					}, function error(response) {
