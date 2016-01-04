@@ -62,13 +62,13 @@ angular.module('flightNodeApp')
                         displayName: '',
                         cellTemplate: '\
                         <div class="ui-grid-cell-contents" title="Edit">\
-                          <button class="btn btn-primary btn-xs" ng-click="grid.appScope.editLocation(\'{{row.entity.id}}\')" \
+                          <button class="btn btn-primary btn-xs" ng-click="grid.appScope.editLocation(row.entity.id)" \
                            aria-label="edit">\
                               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>\
                           </button>\
                         </div>',
                         enableFiltering: false,
-                        width: '10%',
+                        width: '32',
                         enableColumnMenu: false
                     }
                 ]
@@ -88,7 +88,7 @@ angular.module('flightNodeApp')
                 var modal = $uibModal.open({
                     animation: true,
                     templateUrl: '/app/views/locations/create.html',
-                    controller: 'WorktypeCreateController',
+                    controller: 'LocationCreateController',
                     size: 'lg'
                 });
                 modal.result.then(success, dismissed);
@@ -98,7 +98,7 @@ angular.module('flightNodeApp')
                 var modal = $uibModal.open({
                     animation: true,
                     templateUrl: '/app/views/locations/edit.html',
-                    controller: 'WorktypeEditController',
+                    controller: 'LocationEditController',
                     size: 'lg',
                     resolve: {
                         id: function() {

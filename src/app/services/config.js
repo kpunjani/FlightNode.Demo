@@ -11,5 +11,6 @@ angular.module('flightNodeApp')
     workTypes: 'http://localhost:50323/api/v1/worktypes/',
     token: 'http://localhost:50323/oauth/token', // should not have trailing slash
     navigation: 'http://localhost:50323/api/v1/nav',
-    roles: 'http://localhost:50323/api/v1/role'
+    roles: 'http://localhost:50323/api/v1/role', // should not have trailing slash
+    birdspecies: 'http://localhost:50323/api/v1/birdspecies/'
   });

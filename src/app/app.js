@@ -27,72 +27,87 @@ angular
       .when('/', {
         templateUrl: 'app/views/main.html',
         controller: 'MainController',
-        title: 'Home'
+        title: 'FlightNode - Home'
       })
       .when('/login', {
         templateUrl: 'app/views/login.html',
         controller: 'LoginController',
-        title: 'Login'
+        title: 'FlightNode - Login'
       })
       .when('/users', {
         templateUrl: 'app/views/users/list.html',
         controller: 'UserListController',
-        title: 'Users - List'
+        title: 'FlightNode - Users - List'
       })
       .when('/users/new', {
         templateUrl: 'app/views/users/create.html',
         controller: 'UserCreateController',
-        title: 'Users - New'
+        title: 'FlightNode - Users - New'
       })
       .when('/users/:userId', {
         templateUrl: 'app/views/users/edit.html',
         controller: 'UserEditController',
-        title: 'Users - Edit'
+        title: 'FlightNode - Users - Edit'
       })
       .when('/workdays/', {
         templateUrl: 'app/views/workdays/list.html',
         controller: 'WorkdayListController',
-        title: 'Work Day - List'
+        title: 'FlightNode - Work Day - List'
       })
       .when('/workdays/new', {
         templateUrl: 'app/views/workdays/create.html',
         controller: 'WorkdayCreateController',
-        title: 'Work Day - New Log'
+        title: 'FlightNode - Work Day - New Log'
       })
       .when('/workdays/:id', {
         templateUrl: 'app/views/workdays/edit.html',
         controller: 'WorkdayEditController',
-        title: 'Work Day - Edit'
+        title: 'FlightNode - Work Day - Edit'
       })
       .when('/worktypes', {
         templateUrl: 'app/views/worktypes/list.html',
         controller: 'WorktypeListController',
-        title: 'Work Types - List'
+        title: 'FlightNode - Work Types - List'
       })
       .when('/worktypes/new', {
         templateUrl: 'app/views/worktypes/create.html',
         controller: 'WorktypeCreateController',
-        title: 'Work Types - New'
+        title: 'FlightNode - Work Types - New'
       })
       .when('/worktypes/:id', {
         templateUrl: 'app/views/worktypes/edit.html',
         controller: 'WorktypeEditController',
-        title: 'Work Types - Edit'
+        title: 'FlightNode - FlightNode - Work Types - Edit'
       })
       .when('/locations', {
         templateUrl: 'app/views/locations/list.html',
         controller: 'LocationListController',
-        title: 'Locations - List'
+        title: 'FlightNode - Locations - List'
       })
       .when('/locations/new', {
         templateUrl: 'app/views/locations/create.html',
         controller: 'LocationCreateController',
-        title: 'Locations - New'
+        title: 'FlightNode - Locations - New'
       })
       .when('/locations/:id', {
         templateUrl: 'app/views/locations/edit.html',
         controller: 'LocationEditController',
-        title: 'Locations - Edit'
+        title: 'FlightNode - Locations - Edit'
+      })
+      .when('/species', {
+        templateUrl: 'app/views/birdspecies/list.html',
+        controller: 'BirdSpeciesListController',
+        title: 'FlightNode - Bird Species - List'
+      })
+      .when('/species/new', {
+        templateUrl: 'app/views/birdspecies/create.html',
+        controller: 'BirdSpeciesCreateController',
+        title: 'FlightNode - Bird Species - New'
+      })
+      .when('/species/:id', {
+        templateUrl: 'app/views/birdspecies/edit.html',
+        controller: 'BirdSpeciesEditController',
+        title: 'FlightNode - Bird Species - Edit'
       })
       .when('/logout', {
         templateUrl: 'app/views/main.html',
@@ -100,7 +115,7 @@ angular
       })
       .otherwise({
         templateUrl: 'app/views/404.html',
-        title: 'Page not found'
+        title: 'FlightNode - page not found'
       });
   })
   .run(function(authService, $rootScope, $route, $window, $log, navigationService) {

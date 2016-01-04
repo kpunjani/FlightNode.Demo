@@ -104,7 +104,7 @@ flnd.workDayEdit = {
       };
     },
 
-  configureSubmit: function(id, $scope, $log, messenger, authService) {
+  configureSubmit: function(id, $scope, $log, messenger, authService, $uibModalInstance) {
     var $this = this;
 
     $scope.submit = function() {
@@ -124,8 +124,11 @@ flnd.workDayEdit = {
 
         authService.put('http://localhost:50323/api/v1/worklogs/' + id, msg)
            .then(function success(){
-                messenger.showSuccessMessage($scope, 'Saved');
-                $scope.loading = false;
+                if ($uibModalInstance) {
+                    $uibModalInstance.close();
+                } else {
+                    messenger.showSuccessMessage($scope, 'Saved');
+                }
            }, function error(response) {
                 messenger.displayErrorResponse($scope, response);
            })
@@ -185,18 +188,15 @@ flnd.workDayEdit = {
  */
 angular.module('flightNodeApp')
     .controller('WorkdayEditController',
-        ['$scope', '$location', '$http', '$log', 'messenger', 'authService', '$routeParams',
-            function ($scope, $location, $http, $log, messenger, authService, $routeParams) {
+        ['$scope', '$location', '$http', '$log', 'messenger', 'authService', '$routeParams', 'id', '$uibModalInstance', 
+            function ($scope, $location, $http, $log, messenger, authService, $routeParams, id, $uibModalInstance) {
                 $scope.loading = true;
                 $scope.data = {};
 
-                var id = $routeParams.id;
                 if (!isFinite(id)) {
                     // garbage input
                     return;
                 }
-
-                $scope.person = decodeURIComponent($location.search().p);
 
                 flnd.workDayEdit.configureDateField($scope);
                 var lr = flnd.workDayEdit.loadRecord(id, $scope, $log, messenger, authService);
@@ -206,7 +206,11 @@ angular.module('flightNodeApp')
                 $scope = flnd.workDayEdit.configureSubmit(id, $scope, $log, messenger, authService);
 
                 $scope.cancel = function() {
-                    $location.path('/');
+                    if ($uibModalInstance) {
+                        $uibModalInstance.close();
+                    } else {
+                        $location.path('/');
+                    }
                 };
 
                 $scope.loading = false;

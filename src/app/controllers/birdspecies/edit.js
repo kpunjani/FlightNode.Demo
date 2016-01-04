@@ -1,23 +1,24 @@
 'use strict';
 
-flnd.workTypeEdit = {
+flnd.birdSpeciesEdit = {
     retrieveRecord: function(id, config, $scope, messenger, authService) {
-        var url =  config.workTypes +id;
+        var url =  config.birdspecies + id;
 
         authService.get(url)
             .then(function success(response) {
-                $scope.worktype = response.data;
+                $scope.birdspecies = response.data;
 
             }, function error(response) {
                 messenger.displayErrorResponse($scope, response);
             });
     },
+
     configureSubmit: function(id, config, $scope, messenger, authService, $uibModalInstance) {
         return function () {
             $scope.loading = true;
 
-            var url =  config.workTypes + id;
-            authService.put(url, $scope.worktype)
+            var url =  config.birdspecies + id;
+            authService.put(url, $scope.birdspecies)
                 .then(function success() {
 
                     $uibModalInstance.close();
@@ -34,15 +35,15 @@ flnd.workTypeEdit = {
 
 /**
  * @ngdoc function
- * @name flightNodeApp.controller.worktype:WorktypeEditController
+ * @name flightNodeApp.controller.worktype:BirdSpeciesEditController
  * @description
- * # WorktypeEditController
- * Controller for the edit work type page.
+ * # BirdSpeciesEditController
+ * Controller for the edit bird species page.
  */
 angular.module('flightNodeApp')
-    .controller('WorktypeEditController',
-        ['$scope', '$http', '$log', '$location', 'messenger', 'authService', '$routeParams', 'config', 'id', '$uibModalInstance',
-            function ($scope, $http, $log, $location, messenger, authService, $routeParams, config, id, $uibModalInstance) {
+    .controller('BirdSpeciesEditController',
+        ['$scope', '$http', '$log', '$location', 'messenger', 'authService', '$routeParams', 'config', '$uibModalInstance', 'id',
+            function ($scope, $http, $log, $location, messenger, authService, $routeParams, config, $uibModalInstance, id) {
 
                 if (!(authService.isAdministrator() ||
                       authService.isCoordinator())) {
@@ -58,13 +59,13 @@ angular.module('flightNodeApp')
                     return;
                 }
 
-                flnd.workTypeEdit.retrieveRecord(id, config, $scope, messenger, authService);
+                flnd.birdSpeciesEdit.retrieveRecord(id, config, $scope, messenger, authService);
 
                 $scope.cancel = function () {
-                    $uibModalInstance.dismiss('cancel');
+                $uibModalInstance.dismiss('cancel');
                 };
 
-                $scope.submit = flnd.workTypeEdit.configureSubmit(id, config, $scope, messenger, authService, $uibModalInstance);
+                $scope.submit = flnd.birdSpeciesEdit.configureSubmit(id, config, $scope, messenger, authService, $uibModalInstance);
 
                 $scope.loading = false;
             }]);
