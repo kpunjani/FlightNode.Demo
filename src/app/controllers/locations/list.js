@@ -62,16 +62,26 @@ angular.module('flightNodeApp')
                         displayName: '',
                         cellTemplate: '\
                         <div class="ui-grid-cell-contents" title="Edit">\
-                          <button class="btn btn-primary btn-xs" ng-click="grid.appScope.editLocation(\'{{row.entity.id}}\')" \
+                          <button class="btn btn-primary btn-xs" ng-click="grid.appScope.editLocation(row.entity.id)" \
                            aria-label="edit">\
                               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>\
                           </button>\
                         </div>',
                         enableFiltering: false,
-                        width: '10%',
+                        width: '32',
                         enableColumnMenu: false
                     }
                 ]
+            };
+
+            var success = function() {
+                // Re-load the grid
+                    flnd.locationList.retrieveRecords(config, $scope, messenger, authService);
+                messenger.showSuccessMessage($scope, 'Saved');
+            };
+
+            var dismissed = function() {
+                // no action required
             };
 
             $scope.createLocation = function () {
@@ -81,12 +91,7 @@ angular.module('flightNodeApp')
                     controller: 'LocationCreateController',
                     size: 'lg'
                 });
-                modal.result.then(function ok() {
-                    // Re-load the grid
-                    flnd.locationList.retrieveRecords(config, $scope, messenger, authService);
-                }, function dismissed() {
-                    // no action required
-                });
+                modal.result.then(success, dismissed);
             };
 
             $scope.editLocation = function(id) {
@@ -101,12 +106,7 @@ angular.module('flightNodeApp')
                         }
                     }
                 });
-                modal.result.then(function ok() {
-                    // Re-load the grid
-                    flnd.locationList.retrieveRecords(config, $scope, messenger, authService);
-                }, function dismissed() {
-                    // no action required
-                });
+                modal.result.then(success, dismissed);
             };
 
 

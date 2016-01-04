@@ -24,8 +24,8 @@ flnd.workDayList = {
  */
 angular.module('flightNodeApp')
     .controller('WorkdayListController',
-     ['$scope', '$http', '$log', 'messenger', '$location', 'authService', 'config',
-        function ($scope, $http, $log, messenger, $location, authService, config) {
+     ['$scope', '$http', '$log', 'messenger', '$location', 'authService', 'config','$uibModal',
+        function ($scope, $http, $log, messenger, $location, authService, config, $uibModal) {
 
             if (!(authService.isAdministrator() ||
                   authService.isCoordinator())) {
@@ -54,17 +54,59 @@ angular.module('flightNodeApp')
                     {
                         name: 'id',
                         displayName: '',
-                        cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a ng-href="/#/workdays/{{row.entity.id}}?p={{row.entity.person | htmlEncode}}">Edit</a></div>'
+                        cellTemplate: '\
+                        <div class="ui-grid-cell-contents" title="Edit">\
+                          <button class="btn btn-primary btn-xs" ng-click="grid.appScope.editWorkDay(row.entity.id)" \
+                           aria-label="edit">\
+                              <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>\
+                          </button>\
+                        </div>',
+                        //cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a ng-href="/#/workdays/{{row.entity.id}}?p={{row.entity.person | htmlEncode}}">Edit</a></div>',
+                        enableFiltering: false,
+                        width: '32',
+                        enableColumnMenu: false
                     }
                 ]
             };
 
-            $scope.createWorkDay = function () {
-                $location.path('/workdays/new');
-            };
 
             $scope.exportData = function() {
                 return $scope.list;
+            };
+
+            var success = function() {
+                // Re-load the grid
+                flnd.workDayList.retrieveRecord(config, $scope, messenger, authService);
+                messenger.showSuccessMessage($scope, 'Saved');
+            };
+
+            var dismissed = function() {
+                // no action required
+            };
+
+            $scope.createWorkDay = function () {
+                var modal = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/views/workdays/create.html',
+                    controller: 'WorkdayCreateController',
+                    size: 'lg'
+                });
+                modal.result.then(success, dismissed);
+            };
+
+            $scope.editWorkDay = function(id) {
+                var modal = $uibModal.open({
+                    animation: true,
+                    templateUrl: '/app/views/workdays/edit.html',
+                    controller: 'WorkdayEditController',
+                    size: 'lg',
+                    resolve: {
+                        id: function() {
+                            return id;
+                        }
+                    }
+                });
+                modal.result.then(success, dismissed);
             };
 
             $scope.getHeader = function() {

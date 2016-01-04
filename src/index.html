@@ -2,9 +2,9 @@
 <html class="no-js">
   <head>
     <meta charset="utf-8">
-    <title>FlightNode - {{page_title}}</title>
+    <title ng-bind="page_title"></title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
@@ -36,9 +36,9 @@
             </button>
             <a class="navbar-brand" href="#/">FlightNode Demo</a>
           </div>
-          <div ng-bind-html="navigation" class="collapse navbar-collapse" id="js-navbar-collapse">
+          <div role="navigation" ng-bind-html="navigation" class="collapse navbar-collapse" id="js-navbar-collapse">
           </div>
-    <div class="display-name">{{ display_name }}</div>
+    <div class="display-name" ng-bind="display_name"></div>
   </div>
 </div>
 </div>
@@ -48,7 +48,7 @@
 <div class="footer">
 <div class="container">
   <p>
-    <span class="glyphicon glyphicon-wrench"></span> made by the <a href="http://flightnode.github.io">FlightNode</a>        team. Eventually we'll have a full copyright section here. In the meantime, special thanks to <a href="http://glyphicons.com/">glyphicons</a>        for letting us use their glyphs.
+    <span class="glyphicon glyphicon-wrench"></span> made by the <a href="http://flightnode.github.io">FlightNode</a> team. Eventually we'll have a full copyright section here. In the meantime, special thanks to <a href="http://glyphicons.com/">glyphicons</a>        for letting us use their glyphs.
   </p>
 </div>
 </div>
@@ -118,6 +118,9 @@ ga('send', 'pageview');
 <script src="app/controllers/locations/list.js"></script>
 <script src="app/controllers/locations/create.js"></script>
 <script src="app/controllers/locations/edit.js"></script>
+<script src="app/controllers/birdspecies/create.js"></script>
+<script src="app/controllers/birdspecies/edit.js"></script>
+<script src="app/controllers/birdspecies/list.js"></script>
 <script src="app/controllers/logout.js"></script>
 <script src="app/services/userMessages.js"></script>
 <script src="app/services/roleProxy.js"></script>

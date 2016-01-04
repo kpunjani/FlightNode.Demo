@@ -104,24 +104,31 @@ flnd.workDayEdit = {
       };
     },
 
-  configureSubmit: function(id, $scope, $log, messenger, authService) {
+  configureSubmit: function(id, $scope, $log, messenger, authService, $uibModalInstance) {
+    var $this = this;
+
     $scope.submit = function() {
         $scope.loading = true;
 
         var msg = {
             locationId: $scope.workday.location,
-            travelTimeHours: $scope.workday.travelHours,
+            travelTimeHours: $this.dateToHours($scope.workday.travelTime),
             workDate: $scope.workday.workDate,
-            workHours: $scope.workday.workHours,
+            workHours:  $this.dateToHours($scope.workday.workTime),
             workTypeId: $scope.workday.workType,
             userId: $scope.workday.userId,
             id: $scope.workday.id
         };
 
+        $log.info(msg);
+
         authService.put('http://localhost:50323/api/v1/worklogs/' + id, msg)
            .then(function success(){
-                messenger.showSuccessMessage($scope, 'Saved');
-                $scope.loading = false;
+                if ($uibModalInstance) {
+                    $uibModalInstance.close();
+                } else {
+                    messenger.showSuccessMessage($scope, 'Saved');
+                }
            }, function error(response) {
                 messenger.displayErrorResponse($scope, response);
            })
@@ -134,24 +141,42 @@ flnd.workDayEdit = {
   },
 
   loadRecord: function(id, $scope, $log, messenger, authService) {
-      return function() {
+    var $this = this;
+
+    return function() {
         authService.get('http://localhost:50323/api/v1/worklogs/' + id)
             .then(function success(response) {
+                $scope.hstep = 1;
+                $scope.mstep = 1;
                 $scope.workday = {
                     location: response.data.locationId,
-                    travelHours: response.data.travelTimeHours,
                     workDate: response.data.workDate,
-                    workHours: response.data.workHours,
                     workType: response.data.workTypeId,
                     id: response.data.id,
-                    userId: response.data.userId
+                    userId: response.data.userId,
+                    workTime: $this.hoursToDate(response.data.workHours),
+                    travelTime: $this.hoursToDate(response.data.travelTimeHours)
                 };
 
             }, function error(response) {
                 messenger.displayErrorResponse($scope, response);
             });
-      };
-  }
+    };
+  },
+
+  dateToHours: function(input) {
+    var mom = moment(input);
+    var h = mom.format('H').toString();
+    var m = (Math.round(mom.format('m') / 0.6 )).toString();
+    return h + '.' + m;
+  },
+
+  hoursToDate: function(hours) {
+    var parts = hours.toString().split('.');
+    var toParse = { hour: parts[0], minute: 0 };
+    if(parts[1]) { toParse.minute = _.padRight(parts[1],2,'0') * 0.6 };
+    return moment(toParse).format();
+  },
 };
 
 /**
@@ -163,18 +188,15 @@ flnd.workDayEdit = {
  */
 angular.module('flightNodeApp')
     .controller('WorkdayEditController',
-        ['$scope', '$location', '$http', '$log', 'messenger', 'authService', '$routeParams',
-            function ($scope, $location, $http, $log, messenger, authService, $routeParams) {
+        ['$scope', '$location', '$http', '$log', 'messenger', 'authService', '$routeParams', 'id', '$uibModalInstance', 
+            function ($scope, $location, $http, $log, messenger, authService, $routeParams, id, $uibModalInstance) {
                 $scope.loading = true;
                 $scope.data = {};
 
-                var id = $routeParams.id;
                 if (!isFinite(id)) {
                     // garbage input
                     return;
                 }
-
-                $scope.person = decodeURIComponent($location.search().p);
 
                 flnd.workDayEdit.configureDateField($scope);
                 var lr = flnd.workDayEdit.loadRecord(id, $scope, $log, messenger, authService);
@@ -184,7 +206,11 @@ angular.module('flightNodeApp')
                 $scope = flnd.workDayEdit.configureSubmit(id, $scope, $log, messenger, authService);
 
                 $scope.cancel = function() {
-                    $location.path('/');
+                    if ($uibModalInstance) {
+                        $uibModalInstance.close();
+                    } else {
+                        $location.path('/');
+                    }
                 };
 
                 $scope.loading = false;

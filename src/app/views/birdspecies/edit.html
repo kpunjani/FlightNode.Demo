@@ -1,0 +1,92 @@
+<div class="modal-header">
+    <h2>Edit Bird Species</h2>
+    <p><span class="text-danger">*</span> indicates a required field.</p>
+</div>
+<form ng-submit="submit()" name="birdSpeciesForm" class="form-horizontal">
+    <div class="modal-body">
+        <alert>
+        </alert>
+        <div class="form-group">
+            <label for="order" class="col-sm-3 control-label">Order <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': birdSpeciesForm.order.$error.required || birdSpeciesForm.order.$error.maxlength || birdSpeciesForm.order.$error.pattern}">
+                <input type="text" class="form-control" ng-model="birdspecies.order" name="order"
+                placeholder="max length 50 characters" required ng-maxlength="50" ng-pattern="/^[A-Za-z ]+$/">
+            </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="birdSpeciesForm.order.$error.maxlength">Max 50 characters</span>
+                <span class="error bg-danger" ng-show="birdSpeciesForm.order.$error.pattern">Only letters and spaces allowed</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="family" class="col-sm-3 control-label">Family <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': birdSpeciesForm.family.$error.required || birdSpeciesForm.family.$error.maxlength || birdSpeciesForm.family.$error.pattern}">
+                <input type="text" class="form-control" ng-model="birdspecies.family" name="family"
+                placeholder="max length 50 characters" required ng-maxlength="50" ng-pattern="/^[A-Za-z ]+$/">
+            </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="birdSpeciesForm.family.$error.maxlength">Max 50 characters</span>
+                <span class="error bg-danger" ng-show="birdSpeciesForm.family.$error.pattern">Only letters and spaces allowed</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="subFamily" class="col-sm-3 control-label">Sub Family</label>
+            <div class="col-sm-9" ng-class="{'has-error': birdSpeciesForm.subFamily.$error.maxlength || birdSpeciesForm.subFamily.$error.pattern}">
+                <input type="text" class="form-control" ng-model="birdspecies.subFamily" name="subFamily"
+                placeholder="max length 50 characters" ng-maxlength="50" ng-pattern="/^[A-Za-z ]+$/">
+            </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="birdSpeciesForm.subFamily.$error.maxlength">Max 50 characters</span>
+                <span class="error bg-danger" ng-show="birdSpeciesForm.subFamily.$error.pattern">Only letters and spaces allowed</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="genus" class="col-sm-3 control-label">Genus <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': birdSpeciesForm.genus.$error.required || birdSpeciesForm.genus.$error.maxlengt || birdSpeciesForm.genus.$error.patternh}">
+                <input type="text" class="form-control" ng-model="birdspecies.genus" name="genus"
+                placeholder="max length 50 characters" required ng-maxlength="50" ng-pattern="/^[A-Za-z ]+$/">
+            </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="birdSpeciesForm.genus.$error.maxlength">Max 50 characters</span>
+                <span class="error bg-danger" ng-show="birdSpeciesForm.genus.$error.pattern">Only letters and spaces allowed</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="species" class="col-sm-3 control-label">Species <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': birdSpeciesForm.species.$error.required || birdSpeciesForm.species.$error.maxlength || birdSpeciesForm.species.$error.pattern}">
+                <input type="text" class="form-control" ng-model="birdspecies.species" name="species"
+                placeholder="max length 50 characters" required ng-maxlength="50" ng-pattern="/^[A-Za-z ]+$/">
+            </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="birdSpeciesForm.species.$error.maxlength">Max 50 characters</span>
+                <span class="error bg-danger" ng-show="birdSpeciesForm.species.$error.pattern">Only letters and spaces allowed</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="commonName" class="col-sm-3 control-label">Common Name <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': birdSpeciesForm.commonName.$error.required || birdSpeciesForm.commonName.$error.maxlength || birdSpeciesForm.commonName.$error.pattern}">
+                <input type="text" class="form-control" ng-model="birdspecies.commonName" name="commonName"
+                placeholder="max length 50 characters" required ng-maxlength="50" ng-pattern="/^[A-Za-z \-'\.]+$/">
+            </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="birdSpeciesForm.commonName.$error.maxlength">Max 50 characters</span>
+                <span class="error bg-danger" ng-show="birdSpeciesForm.commonName.$error.pattern">Only letters and spaces allowed</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="commonAlphaCode" class="col-sm-3 control-label">Common Alpha Code <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': birdSpeciesForm.commonAlphaCode.$error.required || birdSpeciesForm.commonAlphaCode.$error.pattern}">
+                <input type="text" class="form-control" ng-model="birdspecies.commonAlphaCode" name="commonAlphaCode"
+                placeholder="must be 4 upper-case letters" required ng-pattern="/[A-Z]{4}/">
+            </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="birdSpeciesForm.commonAlphaCode.$error.pattern">Must be 4 upper-case letters</span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input type="hidden" name="id" ng-model="birdspecies.id"></input>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</form>
+<loading></loading>

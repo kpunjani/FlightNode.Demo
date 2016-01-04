@@ -1,32 +1,40 @@
 'use strict';
 
-flnd.workTypeList = {
-    retrieveRecord: function(config, $scope, messenger, authService) {
+flnd.birdSpeciesList = {
+    retrieveRecords: function(config, $scope, messenger, authService) {
+
         $scope.list = [];
 
-        authService.get('http://localhost:50323/api/v1/worktypes')
+        authService.get(config.birdspecies)
             .then(function success(response) {
 
                 $scope.list = response.data;
 
             }, function error(response) {
+
                 messenger.displayErrorResponse($scope, response);
+
             });
     }
 };
 
 /**
  * @ngdoc function
- * @name flightNodeApp.controller:WorktypeListController
+ * @name flightNodeApp.controller:BirdSpeciesListController
  * @description
- * # WorktypeListController
+ * # BirdSpeciesListController
  * Controller for the user list page.
  */
 angular.module('flightNodeApp')
-    .controller('WorktypeListController',
+    .controller('BirdSpeciesListController',
      ['$scope', '$http', '$log', 'messenger', '$location', 'authService', 'config', '$uibModal',
         function ($scope, $http, $log, messenger, $location, authService, config, $uibModal) {
 
+            // TODO: when not authorized, an error about uiGrid will
+            // appear on the screen, probably because it tries to load
+            //  the view before changing the location path. Is there a
+            //  better place to put this? Perhaps something in the routing
+            //  to intercept the route and direct traffic by permission?
             if (!(authService.isAdministrator() ||
                   authService.isCoordinator())) {
                 $log.warn('not authorized to access this path');
@@ -36,7 +44,7 @@ angular.module('flightNodeApp')
 
             $scope.loading = true;
 
-            flnd.workTypeList.retrieveRecord(config, $scope, messenger, authService);
+            flnd.birdSpeciesList.retrieveRecords(config, $scope, messenger, authService);
 
             $scope.gridOptions = {
                 enableFiltering: true,
@@ -46,13 +54,22 @@ angular.module('flightNodeApp')
                 },
                 data: 'list',
                 columnDefs: [
-                    { name: 'description', displayName: 'Description' },
+                    { field: 'order', displayName: 'Order' },
+                    { field: 'family', displayName: 'Family' },
+                    { field: 'subFamily', displayName: 'Sub Family' },
+                    { field: 'genus', displayName: 'Genus' },
+                    { field: 'species', displayName: 'Species' },
+                    {
+                        field: 'commonName',
+                        displayName: 'Common Name',
+                        width: '200',
+                    },
                     {
                         field: 'id',
                         displayName: '',
                         cellTemplate: '\
                         <div class="ui-grid-cell-contents" title="Edit">\
-                          <button class="btn btn-primary btn-xs" ng-click="grid.appScope.editWorkType(row.entity.id)" \
+                          <button class="btn btn-primary btn-xs" ng-click="grid.appScope.editBirdSpecies(row.entity.id)" \
                            aria-label="edit">\
                               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>\
                           </button>\
@@ -66,7 +83,7 @@ angular.module('flightNodeApp')
 
             var success = function() {
                 // Re-load the grid
-                flnd.workTypeList.retrieveRecord(config, $scope, messenger, authService);
+                flnd.birdSpeciesList.retrieveRecords(config, $scope, messenger, authService);
                 messenger.showSuccessMessage($scope, 'Saved');
             };
 
@@ -74,21 +91,21 @@ angular.module('flightNodeApp')
                 // no action required
             };
 
-            $scope.creatWorkType = function () {
+            $scope.createBirdSpecies = function () {
                 var modal = $uibModal.open({
                     animation: true,
-                    templateUrl: '/app/views/worktypes/create.html',
-                    controller: 'WorktypeCreateController',
+                    templateUrl: '/app/views/birdspecies/create.html',
+                    controller: 'BirdSpeciesCreateController',
                     size: 'lg'
                 });
                 modal.result.then(success, dismissed);
             };
 
-            $scope.editWorkType = function(id) {
+            $scope.editBirdSpecies = function(id) {
                 var modal = $uibModal.open({
                     animation: true,
-                    templateUrl: '/app/views/worktypes/edit.html',
-                    controller: 'WorktypeEditController',
+                    templateUrl: '/app/views/birdspecies/edit.html',
+                    controller: 'BirdSpeciesEditController',
                     size: 'lg',
                     resolve: {
                         id: function() {
@@ -98,6 +115,7 @@ angular.module('flightNodeApp')
                 });
                 modal.result.then(success, dismissed);
             };
+
 
             $scope.loading = false;
 

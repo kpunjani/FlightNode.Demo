@@ -1,11 +1,11 @@
 'use strict';
 
-flnd.workTypeCreate = {
+flnd.birdSpeciesCreate = {
     configureSubmit: function(config, $scope, messenger, authService, $uibModalInstance) {
         return function () {
             $scope.loading = true;
 
-            authService.post(config.workTypes, $scope.worktype)
+            authService.post(config.birdspecies, $scope.birdspecies)
                 .then(function success() {
 
                 $uibModalInstance.close();
@@ -21,13 +21,13 @@ flnd.workTypeCreate = {
 
 /**
  * @ngdoc function
- * @name flightNodeApp.controller.worktype:WorktypeCreateController
+ * @name flightNodeApp.controller.birdspecies:BirdSpeciesCreateController
  * @description
- * # WorktypeCreateController
- * Controller for the create work type page.
+ * # BirdSpeciesCreateController
+ * Controller for the create bird species page.
  */
 angular.module('flightNodeApp')
-    .controller('WorktypeCreateController',
+    .controller('BirdSpeciesCreateController',
         ['$scope', '$http', '$log', '$location', 'messenger', 'authService', 'config', '$uibModalInstance',
             function ($scope, $http, $log, $location, messenger, authService, config, $uibModalInstance) {
 
@@ -44,7 +44,7 @@ angular.module('flightNodeApp')
                     $uibModalInstance.dismiss('cancel');
                 };
 
-                $scope.submit = flnd.workTypeCreate.configureSubmit(config, $scope, messenger, authService, $uibModalInstance);
+                $scope.submit = flnd.birdSpeciesCreate.configureSubmit(config, $scope, messenger, authService, $uibModalInstance);
 
                 $scope.loading = false;
             }]);

@@ -58,16 +58,18 @@ angular.module('flightNodeApp')
 					{ field: 'email', displayName: 'E-mail Address' },
 					{ field: 'phone', displayName: 'Phone Number' },
 					{
-						field: 'userId',
+						field: 'id',
 						displayName: '',
                         cellTemplate: '\
                         <div class="ui-grid-cell-contents" title="Edit">\
-                          <button class="btn btn-primary btn-xs" ng-click="grid.appScope.editLocation(\'{{row.entity.id}}\')" \
+                          <button class="btn btn-primary btn-xs" ng-click="grid.appScope.editUser(row.entity.id)" \
                            aria-label="edit">\
                               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>\
                           </button>\
                         </div>',
-                        width: '10%'
+                        enableFiltering: false,
+                        width: '32',
+                        enableColumnMenu: false
 					}
 				]
 			};
@@ -88,7 +90,7 @@ angular.module('flightNodeApp')
                 });
 			};
 
-            $scope.editLocation = function(id) {
+            $scope.editUser = function(id) {
                 var modal = $uibModal.open({
                     animation: true,
                     templateUrl: '/app/views/users/edit.html',

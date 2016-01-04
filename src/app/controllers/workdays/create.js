@@ -100,15 +100,16 @@ flnd.workDayCreate = {
   },
 
   configureSubmit: function($scope, $log, messenger, authService) {
+    var $this = this;
 
     $scope.submit = function() {
         $scope.loading = true;
 
         var msg = {
             locationId: $scope.workday.location,
-            travelTimeHours: $scope.workday.travelHours,
+            travelTimeHours: $this.dateToHours($scope.workday.travelTime),
             workDate: $scope.workday.workDate,
-            workHours: $scope.workday.workHours,
+            workHours:  $this.dateToHours($scope.workday.workTime),
             workTypeId: $scope.workday.workType,
             userId: authService.getUserId()
         };
@@ -125,6 +126,21 @@ flnd.workDayCreate = {
     };
 
     return $scope;
+  },
+
+  dateToHours: function(input) {
+    var mom = moment(input);
+    var h = mom.format('H').toString();
+    var m = (Math.round(mom.format('m') / 0.6 )).toString();
+    return h + '.' + m;
+  },
+
+  initializeTimeFields: function($scope) {
+    $scope.hstep = 1;
+    $scope.mstep = 1;
+    var begin = moment("1970-01-01 00:00:00.000").toDate();
+    $scope.workday.workTime = begin;
+    $scope.workday.travelTime = begin;
   }
 };
 
@@ -151,6 +167,8 @@ angular.module('flightNodeApp')
                 $scope.cancel = function() {
                     $location.path('/');
                 };
+
+                flnd.workDayCreate.initializeTimeFields($scope);
 
                 $scope.loading = false;
             }]);

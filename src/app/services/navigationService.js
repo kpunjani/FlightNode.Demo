@@ -50,7 +50,6 @@ angular.module('navigationService', [])
                           nav += ' dropdown-menu">';
                         }
 
-
                         top.forEach(function(child) {
                           var hasChildren = (_.isArray(child.children) && child.children.length > 0);
 
@@ -59,9 +58,15 @@ angular.module('navigationService', [])
                           if (hasChildren) {
                             nav += 'dropdown"><a ng-href="' + child.entry.path;
                             nav += '" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">';
-                            nav +=  child.entry.title + '</a>';
+                            nav +=  child.entry.title + ' <span class="caret"></span></a>';
                           } else {
-                            nav += '"><a href="' + child.entry.path + '">' +child.entry.title + '</a>';
+                            if (child.entry && child.entry.path && child.entry.title) {
+                              nav += '"><a href="' + child.entry.path + '">' +child.entry.title + '</a>';
+                            } else if (child.entry && child.entry.title) {
+                              nav += 'dropdown-header">' + child.entry.title;
+                            } else {
+                              nav += 'divider" role="separator">';
+                            }
                          }
 
                           if (hasChildren) {
