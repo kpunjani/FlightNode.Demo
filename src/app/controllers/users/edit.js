@@ -1,7 +1,23 @@
 'use strict';
 
 flnd.userEdit = {
-    retrieveUser: function(url, $scope, messenger, authService) {
+    retrieveRoles: function($scope, roleProxy, $log, messenger) {
+        $scope.data = {};
+
+        roleProxy.getAll( function (error, response) {
+            if (error) {
+                $log.error('Failed to retrieve roles: ', JSON.stringify(error));
+            } else {
+                if (response.status === 200) {
+                    $scope.data.roles = response.data;
+                } else {
+                    messenger.showErrorMessage($scope, 'Unable to load available roles. Please try reloading this page or returning again soon. We apologize for the inconvenience.');
+                    $log.info('Roles: ', response);
+                }
+            }
+        });
+    },
+    retrieveUser: function(url, $scope, messenger, authService, roleProxy) {
         authService.get(url)
             .then(function success(response) {
 
@@ -45,8 +61,8 @@ flnd.userEdit = {
  */
 angular.module('flightNodeApp')
     .controller('UserEditController',
-        ['$scope', '$http', '$log', '$location', '$routeParams', 'messenger', 'authService', 'config', '$uibModalInstance', 'id',
-        function ($scope, $http, $log, $location, $routeParams, messenger, authService, config, $uibModalInstance, id) {
+        ['$scope', '$http', '$log', '$location', '$routeParams', 'messenger', 'authService', 'config', '$uibModalInstance', 'id', 'roleProxy',
+        function ($scope, $http, $log, $location, $routeParams, messenger, authService, config, $uibModalInstance, id, roleProxy) {
 
             if (!(authService.isAdministrator() ||
                   authService.isCoordinator())) {
@@ -62,9 +78,11 @@ angular.module('flightNodeApp')
                 return;
             }
 
-            var url = config.locations + id;
+            flnd.userEdit.retrieveRoles($scope, roleProxy, $log, messenger);
 
-            flnd.userEdit.retrieveUser(url, $scope, messenger, authService);
+            var url = config.users + id;
+
+            flnd.userEdit.retrieveUser(url, $scope, messenger, authService, roleProxy);
 
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
