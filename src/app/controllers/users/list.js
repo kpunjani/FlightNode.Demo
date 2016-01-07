@@ -10,7 +10,7 @@ flnd.userList = {
 						fullName: user.givenName + ' ' + user.familyName,
 						email: user.email,
 						phone: user.primaryPhoneNumber,
-						userId: user.userId
+						id: user.userId
 					};
 				});
 
