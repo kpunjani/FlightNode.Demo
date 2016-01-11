@@ -42,7 +42,13 @@ flnd.login = {
 
                 }, function error(response) {
                     $log.error(response);
-                    messenger.displayErrorResponse($scope, response.status.toString() + ': ' + response.statusText);
+
+                    if (response.data &&
+                        response.data.error_description) {
+                        messenger.displayErrorResponse($scope, response.data.error_description);
+                    } else {
+                        messenger.displayErrorResponse($scope, response.status.toString() + ': ' + response.statusText);
+                    }
                 })
                 .finally(function () {
                     $scope.loading = false;

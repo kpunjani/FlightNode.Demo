@@ -1,7 +1,6 @@
 'use strict';
 
-flnd.workDayCreate = {
-    // TODO: remove some code duplication in here, createForuser, and edit
+flnd.workDayCreateForUser = {
   configureDateField: function($scope) {
     $scope.workday = {};
 
@@ -100,6 +99,19 @@ flnd.workDayCreate = {
         });
   },
 
+  loadUsers: function($scope, $log, messenger, authService, config) {
+    authService.get(config.usersSimpleList)
+        .then(function success(response) {
+
+            $scope.data.users = response.data;
+
+        }, function error(response) {
+
+            messenger.displayErrorResponse($scope, response);
+
+        });
+  },
+
   configureSubmit: function($scope, $log, messenger, authService, $uibModalInstance, config) {
     var $this = this;
 
@@ -112,11 +124,12 @@ flnd.workDayCreate = {
             workDate: $scope.workday.workDate,
             workHours:  $this.dateToHours($scope.workday.workTime),
             workTypeId: $scope.workday.workType,
-            userId: authService.getUserId()
+            userId: $scope.workday.userId
         };
 
         authService.post(config.workLogs, msg)
            .then(function success(){
+
                 if ($uibModalInstance) {
                     $uibModalInstance.close();
                 } else {
@@ -124,6 +137,7 @@ flnd.workDayCreate = {
                 }
                 
            }, function error(response) {
+
                 messenger.displayErrorResponse($scope, response);
            })
            .finally(function() {
@@ -152,23 +166,24 @@ flnd.workDayCreate = {
 
 /**
  * @ngdoc function
- * @name flightNodeApp.controller:WorkdayCreateController
+ * @name flightNodeApp.controller:WorkdayCreateForUserController
  * @description
- * # WorkdayController
+ * # WorkdayCreateForUserController
  * Controller for the workday logging page.
  */
 angular.module('flightNodeApp')
-    .controller('WorkdayCreateController',
+    .controller('WorkdayCreateForUserController',
         ['$scope', '$location', '$http', '$log', 'messenger', 'authService', '$uibModalInstance', 'config',
             function ($scope, $location, $http, $log, messenger, authService, $uibModalInstance, config) {
                 $scope.loading = true;
                 $scope.data = {};
 
-                $scope = flnd.workDayCreate.configureDateField($scope);
-                flnd.workDayCreate.loadWorkTypes($scope, $log, messenger, authService, config);
-                flnd.workDayCreate.loadLocations($scope, $log, messenger, authService, config);
+                $scope = flnd.workDayCreateForUser.configureDateField($scope);
+                flnd.workDayCreateForUser.loadWorkTypes($scope, $log, messenger, authService, config);
+                flnd.workDayCreateForUser.loadLocations($scope, $log, messenger, authService, config);
+                flnd.workDayCreateForUser.loadUsers($scope, $log, messenger, authService, config);
 
-                $scope = flnd.workDayCreate.configureSubmit($scope, $log, messenger, authService, $uibModalInstance, config);
+                $scope = flnd.workDayCreateForUser.configureSubmit($scope, $log, messenger, authService, $uibModalInstance, config);
 
                 $scope.cancel = function() {
                     if ($uibModalInstance) {
@@ -178,7 +193,7 @@ angular.module('flightNodeApp')
                     }
                 };
 
-                flnd.workDayCreate.initializeTimeFields($scope);
+                flnd.workDayCreateForUser.initializeTimeFields($scope);
 
                 $scope.loading = false;
             }]);
