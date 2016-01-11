@@ -59,6 +59,16 @@ angular
         controller: 'WorkdayCreateController',
         title: 'FlightNode - Work Day - New Log'
       })
+      .when('/workdays/newforuser', {
+        templateUrl: 'app/views/workdays/createForUser.html',
+        controller: 'WorkdayCreateForUserController',
+        title: 'FlightNode - Work Day - New Log for Another Person'
+      })
+      .when('/workdays/mylist', {
+        templateUrl: 'app/views/workdays/mylist.html',
+        controller: 'WorkdayMyListController',
+        title: 'FlightNode - User\'s Work Days'
+      })
       .when('/workdays/:id', {
         templateUrl: 'app/views/workdays/edit.html',
         controller: 'WorkdayEditController',

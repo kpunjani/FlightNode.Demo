@@ -85,24 +85,28 @@ angular.module('authService', [])
 
             get: function(url) {
                 var $this = this;
+                $log.info('GET ', url);
 
                 return $this._request(url, 'GET');
             },
 
             post: function(url, data) {
                 var $this = this;
+                $log.info('POST ', url);
 
                 return $this._request(url, 'POST', data);
             },
 
             put: function(url, data) {
                 var $this = this;
+                $log.info('PUT ', url);
 
                 return $this._request(url, 'PUT', data);
             },
 
             delete: function(url) {
                 var $this = this;
+                $log.info('DELETE ', url);
 
                 return $this._request(url, 'DELETE');
             },
@@ -152,6 +156,18 @@ angular.module('authService', [])
                 var $this = this;
 
                 return _.includes($this._getRoles(), 'Coordinator');
+            },
+
+            isTeamLead: function() {
+                var $this = this;
+
+                return _.includes($this._getRoles(), 'Lead');                
+            },
+
+            isReporter: function() {
+                var $this = this;
+
+                return _.includes($this._getRoles(), 'Reporter');                
             }
 
         };

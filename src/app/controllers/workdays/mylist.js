@@ -1,10 +1,14 @@
+//WorkdayMyListController
+
 'use strict';
 
-flnd.workDayList = {
+flnd.myWorkDayList = {
     retrieveRecords: function(config, $scope, messenger, authService) {
         $scope.list = [];
 
-        authService.get(config.exportWorkLogs)
+        // Todo: retrieve the locations, or load them in the data model server side.
+
+        authService.get(config.workLogsForUser)
             .then(function success(response) {
                 $scope.list = response.data;
 
@@ -17,26 +21,19 @@ flnd.workDayList = {
 
 /**
  * @ngdoc function
- * @name flightNodeApp.controller:WorkdayListController
+ * @name flightNodeApp.controller:WorkdayMyListController
  * @description
- * # WorkdayListController
+ * # WorkdayMyListController
  * Controller for the user list page.
  */
 angular.module('flightNodeApp')
-    .controller('WorkdayListController',
+    .controller('WorkdayMyListController',
      ['$scope', '$http', '$log', 'messenger', '$location', 'authService', 'config','$uibModal',
         function ($scope, $http, $log, messenger, $location, authService, config, $uibModal) {
 
-            if (!(authService.isAdministrator() ||
-                  authService.isCoordinator())) {
-                $log.warn('not authorized to access this path');
-                $location.path('/');
-                return;
-            }
-
             $scope.loading = true;
 
-            flnd.workDayList.retrieveRecords(config, $scope, messenger, authService);
+            flnd.myWorkDayList.retrieveRecords(config, $scope, messenger, authService);
 
             $scope.gridOptions = {
                 enableFiltering: true,
@@ -46,13 +43,17 @@ angular.module('flightNodeApp')
                 },
                 data: 'list',
                 columnDefs: [
-                    { name: 'locationName', displayName: 'Location' },
-                    { name: 'workDate', display: 'Date' },
-                    { name: 'person', displayName: 'Person' },
-                    { name: 'workHours', displayName: 'Work Hours' },
-                    { name: 'travelTimeHours', displayName: 'Travel Hours' },
+                    // { 
+                    //   field: 'workMonth',
+                    //   displayName: 'Month'
+                    // },
+                    { field: 'workDate', display: 'Date' },
+                    { field: 'locationName', displayName: 'Location' },
+                    { field: 'workHours', displayName: 'Work Hours' },
+                    { field: 'travelTimeHours', displayName: 'Travel Hours' },
+                    { field: 'workType', displayName: 'Work Type' },
                     {
-                        name: 'id',
+                        field: 'id',
                         displayName: '',
                         cellTemplate: '\
                         <div class="ui-grid-cell-contents" title="Edit">\
@@ -61,7 +62,6 @@ angular.module('flightNodeApp')
                               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>\
                           </button>\
                         </div>',
-                        //cellTemplate: '<div class="ui-grid-cell-contents" title="Edit"><a ng-href="/#/workdays/{{row.entity.id}}?p={{row.entity.person | htmlEncode}}">Edit</a></div>',
                         enableFiltering: false,
                         width: '32',
                         enableColumnMenu: false
@@ -76,7 +76,7 @@ angular.module('flightNodeApp')
 
             var success = function() {
                 // Re-load the grid
-                flnd.workDayList.retrieveRecords(config, $scope, messenger, authService);
+                flnd.myWorkDayList.retrieveRecords(config, $scope, messenger, authService);
                 messenger.showSuccessMessage($scope, 'Saved');
             };
 
@@ -87,8 +87,8 @@ angular.module('flightNodeApp')
             $scope.createWorkDay = function () {
                 var modal = $uibModal.open({
                     animation: true,
-                    templateUrl: '/app/views/workdays/createForUser.html',
-                    controller: 'WorkdayCreateForUserController',
+                    templateUrl: '/app/views/workdays/create.html',
+                    controller: 'WorkdayCreateController',
                     size: 'lg'
                 });
                 modal.result.then(success, dismissed);
@@ -110,7 +110,7 @@ angular.module('flightNodeApp')
             };
 
             $scope.getHeader = function() {
-                return [ 'Id', 'WorkDate', 'WorkHours', 'TravelTimeHours', 'WorkTypeId', 'WorkType', 'LocationId', 'Location', 'Longitude', 'Latitude', 'UserId', 'Person' ];
+                return [ 'Id', 'Month', 'WorkDate', 'WorkHours', 'TravelTimeHours', 'WorkType', 'Location' ];
             };
 
             $scope.loading = false;

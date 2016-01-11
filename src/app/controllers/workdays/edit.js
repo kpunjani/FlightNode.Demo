@@ -74,37 +74,29 @@ flnd.workDayEdit = {
     return $scope;
   },
 
-  loadLocations: function($scope, $log, messenger, authService, next) {
-      return function() {
-        authService.get('http://localhost:50323/api/v1/locations/simple')
+  loadLocations: function($scope, $log, messenger, authService, config) {
+    authService.get(config.locationsSimpleList)
             .then(function success(response) {
 
                 $scope.data.locations = response.data;
 
-                next();
-
             }, function error(response) {
                 messenger.displayErrorResponse($scope, response);
             });
-      };
     },
 
-  loadWorkTypes: function($scope, $log, messenger, authService, next) {
-      return function() {
-        authService.get('http://localhost:50323/api/v1/worktypes/simple')
+  loadWorkTypes: function($scope, $log, messenger, authService, config) {
+    authService.get(config.workTypesSimpleList)
             .then(function success(response) {
 
                 $scope.data.worktypes = response.data;
 
-                next();
-
             }, function error(response) {
                 messenger.displayErrorResponse($scope, response);
             });
-      };
     },
 
-  configureSubmit: function(id, $scope, $log, messenger, authService, $uibModalInstance) {
+  configureSubmit: function(id, $scope, $log, messenger, authService, $uibModalInstance, config) {
     var $this = this;
 
     $scope.submit = function() {
@@ -120,9 +112,7 @@ flnd.workDayEdit = {
             id: $scope.workday.id
         };
 
-        $log.info(msg);
-
-        authService.put('http://localhost:50323/api/v1/worklogs/' + id, msg)
+        authService.put(config.workLogs + id, msg)
            .then(function success(){
                 if ($uibModalInstance) {
                     $uibModalInstance.close();
@@ -140,28 +130,26 @@ flnd.workDayEdit = {
     return $scope;
   },
 
-  loadRecord: function(id, $scope, $log, messenger, authService) {
+  loadRecord: function(id, $scope, $log, messenger, authService, config) {
     var $this = this;
 
-    return function() {
-        authService.get('http://localhost:50323/api/v1/worklogs/' + id)
-            .then(function success(response) {
-                $scope.hstep = 1;
-                $scope.mstep = 1;
-                $scope.workday = {
-                    location: response.data.locationId,
-                    workDate: response.data.workDate,
-                    workType: response.data.workTypeId,
-                    id: response.data.id,
-                    userId: response.data.userId,
-                    workTime: $this.hoursToDate(response.data.workHours),
-                    travelTime: $this.hoursToDate(response.data.travelTimeHours)
-                };
+    authService.get(config.workLogs + id)
+        .then(function success(response) {
+            $scope.hstep = 1;
+            $scope.mstep = 1;
+            $scope.workday = {
+                location: response.data.locationId,
+                workDate: response.data.workDate,
+                workType: response.data.workTypeId,
+                id: response.data.id,
+                userId: response.data.userId,
+                workTime: $this.hoursToDate(response.data.workHours),
+                travelTime: $this.hoursToDate(response.data.travelTimeHours)
+            };
 
-            }, function error(response) {
-                messenger.displayErrorResponse($scope, response);
-            });
-    };
+        }, function error(response) {
+            messenger.displayErrorResponse($scope, response);
+        });
   },
 
   dateToHours: function(input) {
@@ -188,8 +176,8 @@ flnd.workDayEdit = {
  */
 angular.module('flightNodeApp')
     .controller('WorkdayEditController',
-        ['$scope', '$location', '$http', '$log', 'messenger', 'authService', '$routeParams', 'id', '$uibModalInstance', 
-            function ($scope, $location, $http, $log, messenger, authService, $routeParams, id, $uibModalInstance) {
+        ['$scope', '$location', '$http', '$log', 'messenger', 'authService', '$routeParams', 'id', '$uibModalInstance', 'config',
+            function ($scope, $location, $http, $log, messenger, authService, $routeParams, id, $uibModalInstance, config) {
                 $scope.loading = true;
                 $scope.data = {};
 
@@ -198,18 +186,32 @@ angular.module('flightNodeApp')
                     return;
                 }
 
-                flnd.workDayEdit.configureDateField($scope);
-                var lr = flnd.workDayEdit.loadRecord(id, $scope, $log, messenger, authService);
-                var ll = flnd.workDayEdit.loadLocations($scope, $log, messenger, authService, lr);
-                flnd.workDayEdit.loadWorkTypes($scope, $log, messenger, authService, ll)();
 
-                $scope = flnd.workDayEdit.configureSubmit(id, $scope, $log, messenger, authService);
+                flnd.workDayEdit.configureDateField($scope);
+                flnd.workDayEdit.loadRecord(id, $scope, $log, messenger, authService, config);
+                flnd.workDayEdit.loadLocations($scope, $log, messenger, authService, config);
+                flnd.workDayEdit.loadWorkTypes($scope, $log, messenger, authService, config);
+
+
+                if (!(authService.isAdministrator() ||
+                      authService.isCoordinator())) {
+
+                    // Non-administrative users must be reporters and can only edit their own data
+                    if(!authService.isReporter() || $scope.workday.userId != authService.getUserId()) {
+
+                        $log.warn('not authorized to access this path');
+                        $location.path('/');
+                        return;
+                    }
+                }
+
+                $scope = flnd.workDayEdit.configureSubmit(id, $scope, $log, messenger, authService, $uibModalInstance, config);
 
                 $scope.cancel = function() {
                     if ($uibModalInstance) {
                         $uibModalInstance.close();
                     } else {
-                        $location.path('/');
+                        $location.path('/workdays');
                     }
                 };
 
