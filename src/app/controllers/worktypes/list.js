@@ -4,7 +4,7 @@ flnd.workTypeList = {
     retrieveRecord: function(config, $scope, messenger, authService) {
         $scope.list = [];
 
-        authService.get('http://localhost:50323/api/v1/worktypes')
+        authService.get(config.workTypes)
             .then(function success(response) {
 
                 $scope.list = response.data;
