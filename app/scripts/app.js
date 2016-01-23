@@ -33,6 +33,10 @@ angular
           templateUrl: 'views/users/list.html',
           controller: 'UserController'
       })
+      .when('/census', {
+          templateUrl: 'views/census.html',
+          controller: 'CensusController'
+      })
       .otherwise({
         redirectTo: '/'
       });

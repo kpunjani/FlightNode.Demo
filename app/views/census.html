@@ -1,0 +1,171 @@
+<div class="container">
+    <div class="well row" >
+        <h4>Census participants please be as complete as possible:</h4>
+        <ul>
+            <li>Review form guidelines prior to census.</li>
+            <li>Fill in/check box for all information in top section side one.</li>
+            <li>Always provide "number of adults and juveniles" data for species.</li>
+            <li>Always observe birds from at least 50 yards away.</li>
+        </ul>
+    </div>
+                
+    <form class="form-horizontal" role="form"> 
+        <div class="form-group panel panel-primary">
+            <div class="panel-heading">Section One</div>
+            <div class="panel-body">              
+            <div class="form-group">
+                <label class="control-label col-md-3" for="colonyCode">Colony Code:</label>
+                <div class="col-md-3">
+                <input type="text" class="form-control" id="colonyCode" placeholder="Enter Colony Code">
+                </div>    
+            </div> 
+            <div class="form-group">
+                <label class="control-label col-md-3" for="colonyName">Colony Name:</label>
+                <div class="col-md-9">
+                <input type="text" class="form-control" id="colonyName" placeholder="Enter Colony Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-3" for="surveyDate">Survey Date:</label>
+                <div class="col-md-4">
+                <input type="date" class="form-control" id="surveyDate" placeholder="Enter Survey Date">
+                </div>
+            </div>   
+            <div class="form-group">
+                <label class="control-label col-md-3" for="timeStart">Time Start:</label>
+                <div class="col-md-3">
+                <input type="time" class="form-control" id="timeStart" placeholder="Enter Survey Date">
+                </div>
+                <label class="control-label col-md-3" for="timeEnd">Time End:</label>
+                <div class="col-md-3">
+                <input type="time" class="form-control" id="timeEnd" placeholder="Enter Survey Date">
+                </div>
+            </div>   
+            <div class="form-group">
+                <label class="control-label col-md-3" for="latitude">Latitude:</label>
+                <div class="col-md-3">
+                <input type="text" class="form-control" id="latitude" placeholder="Enter Latitude">
+                </div>    
+            </div> 
+            <div class="form-group">
+                <label class="control-label col-md-3" for="longitude">Longitude:</label>
+                <div class="col-md-3">
+                <input type="text" class="form-control" id="longitude" placeholder="Enter Longitude">
+                </div>    
+            </div> 
+            <div class="form-group">
+                <label class="control-label col-md-3">Site Type:</label>
+                <div class="col-md-9">
+                <div class="checkbox">
+                    <label ng-repeat="siteType in siteTypeInfo"><input type="checkbox" value="{{siteType.Id}}"> {{ siteType.Description }} &nbsp;</label>        
+                </div>
+                </div>    
+            </div>  
+            <div class="form-group">
+                <label class="control-label col-md-3">Tides:</label>
+                <div class="col-md-9">      
+                <div class="checkbox">
+                    <label ng-repeat="tide in tideInfo"><input type="checkbox" value="{{tide.Id}}"> {{ tide.Description }} &nbsp;</label>        
+                </div>
+                </div>    
+            </div>  
+            <div class="form-group">
+                <label class="control-label col-md-3">Weather:</label>
+                <div class="col-md-9">
+                <div class="checkbox">
+                    <label ng-repeat="weather in weatherInfo"><input type="checkbox" value="{{weather.Id}}"> {{ weather.Description }} &nbsp;</label>      
+                </div>
+                </div>    
+            </div> 
+            <div class="form-group">
+                <label class="control-label col-md-3" for="observers">Observer(s):</label>
+                <div class="col-md-7">
+                <input type="text" class="form-control" id="observers" placeholder="Enter Observer(s) Name(s)">
+                </div>    
+            </div> 
+            <div class="form-group">
+                <label class="control-label col-md-3">Survey Vantage Point:</label>
+                <div class="col-md-9">
+                <div class="checkbox">
+                    <label ng-repeat="vantagePoint in vantagePointInfo"><input type="checkbox" value="{{vantagePoint.Id}}"> {{vantagePoint.Description}} &nbsp; </label>
+                </div>
+                </div>    
+            </div> 
+            <div class="form-group">
+                <label class="control-label col-md-3">Survey Access Point:</label>
+                <div class="col-md-9">
+                <div class="checkbox">
+                    <label ng-repeat="accessPoint in accessPointInfo"><input type="checkbox" value="{{accessPoint.Id}}"> {{accessPoint.Description}} &nbsp;</label>       
+                </div>
+                </div>    
+            </div>       
+            <div class="form-group">        
+                <div class="col-md-12">
+                <!--<div class="form-group panel panel-primary">
+                    <div class="panel-heading"></div>
+                    <div class="panel-body">-->
+                
+                <table class="table table-condensed">
+                    <thead>
+                    <tr class="info">
+                        <th>Species Name</th>
+                        <th>No. of Adults</th>
+                        <th>No. of Juvenile</th>
+                        <th>Behavior: Primary Activity</th>
+                        <th>Behavior: Secondary Activity</th>
+                        <th>Location/ Habitat Type</th>
+                        <th>% Feeding Success Rate</th>
+                        <th></th><th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><input type="text" class="form-control" placeholder="Species Name"></td>
+                        <td><input type="text" class="form-control" placeholder="No. of Adults"></td>
+                        <td><input type="text" class="form-control" placeholder="No. of Juvenile"></td>
+                        <td><input type="text" class="form-control" placeholder="Primary Activity"></td>
+                        <td><input type="text" class="form-control" placeholder="Secondary Activity"></td>
+                        <td><select id="habitatData" class="form-control" >
+                            <option ng-repeat="habitat in habitatInfo" value="{{habitat.Id}}">{{habitat.Description}}</option>
+                        </select></td>
+                        <td><select id="feedingSuccess" class="form-control" >
+                        <option ng-repeat="feed in feedingRateInfo" value="{{feed.Id}}">{{feed.Description}}</option>                  
+                        </select></td>
+                        <td><span class="glyphicon glyphicon-edit"></span></td>
+                        <td><span class="glyphicon glyphicon-trash"></span></td>
+                    </tr>        
+                    <tr>
+                        <td colspan="9">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="glyphicon glyphicon-plus"></i> Add More
+                        </button>
+                        </td>
+                    </tr>             
+                    
+                    </tbody>
+                </table>
+        <!--             
+                    </div>
+                </div>-->
+                </div>    
+            </div>  
+            <div class="form-group">
+                <label class="control-label col-md-3" for="comments">Comments:</label>
+                <div class="col-md-9">
+                <textarea type="text" class="form-control" rows="5" id="comments" placeholder="Enter Comments"></textarea>
+                </div>    
+            </div>          
+            </div>    
+            <div class="panel-footer">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary col-md-offset-1 col-md-2" value="&laquo; Step Back" disabled >           
+                <div class="col-md-offset-4 col-md-5">          
+                <input type="submit" class="btn btn-primary" value="Save & Exit">
+                <input type="button" class="btn btn-primary" value="Proceed Further &raquo;">
+                </div>    
+            </div>  
+            </div>
+        </div>  
+    
+    </form>
+</div>

@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc function
- * @name flightNodeDemo.controller:LoginController
+ * @name flightNodeDemo.controller:UserController
  * @description
- * # LoginController
+ * # UserController
  * Controller for the login page
  */
 angular.module('flightNodeDemo')
