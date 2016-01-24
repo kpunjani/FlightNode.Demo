@@ -210,6 +210,3 @@ angular
   .filter('htmlEncode', function(){
     return window.encodeURIComponent;
   });
-  // .constant('config', {
-  //   a: 'b'
-  // });
