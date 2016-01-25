@@ -1,0 +1,70 @@
+<div class="modal-header">
+    <h2>Create Workday Log</h2>
+    <p><span class="text-danger">*</span> indicates a required field.</p>
+</div>
+<form ng-submit="submit()" name="workdayForm" class="form-horizontal">
+    <div class="modal-body">
+        <alert>
+        </alert>
+        <div class="form-group">
+            <label for="workDate" class="col-sm-3 control-label">Date <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': workdayForm.workDate.$error.required || workdayForm.workDate.$error.date}">
+                <div class="input-group">
+                    <input type="text" name="workDate" class="form-control" uib-datepicker-popup="{{format}}"
+                    ng-model="workday.workDate" is-open="status.opened"
+                    datepicker-options="dateOptions" ng-required="true" close-text="Close" placeholder="{{today}}" date />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+                <p class="form-control-static">
+                    {{workday.workDate | date:'fullDate' }}
+                </p>
+            </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="workdayForm.workDate.$error.date">Invalid date</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="workHours" class="col-sm-3 control-label">Total Work Time (Hours) <span class="text-danger">*</span></label>
+            <div class="col-sm-9">
+                <uib-timepicker ng-model="workday.workTime" hour-step="hstep" minute-step="mstep" show-meridian="false"></uib-timepicker>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="travelHours" class="col-sm-3 control-label">Total Travel Time (Hours) <span class="text-danger">*</span></label>
+            <div class="col-sm-9">
+                <uib-timepicker ng-model="workday.travelTime" hour-step="hstep" minute-step="mstep" show-meridian="false"></uib-timepicker>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="location" class="col-sm-3 control-label">Location <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': workdayForm.location.$error.required}">
+                <select class="form-control" required name="location"
+                    ng-model="workday.location"
+                    ng-options="item.id as item.value for item in data.locations">
+                </select>
+            </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="workdayForm.location.$error.required">Required</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="workType" class="col-sm-3 control-label">Work Type <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': workdayForm.workType.$error.required}">
+                <select class="form-control" required name="workType"
+                    ng-model="workday.workType"
+                    ng-options="item.id as item.value for item in data.worktypes">
+                </select>
+            </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="workdayForm.workType.$error.required">Required</span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" ng-disabled="workdayForm.$invalid" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" ng-click="cancel()">Cancel</button>
+    </div>
+</form>
+<loading></loading>

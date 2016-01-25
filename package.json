@@ -1,5 +1,6 @@
 {
-  "name": "flightnodedemo",
+  "private": true,
+  "name": "flightnode-app",
   "version": "0.0.0",
   "dependencies": {},
   "repository": {},
@@ -35,6 +36,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
+    "start": "grunt serve",
     "test": "grunt test"
   }
 }
