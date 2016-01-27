@@ -9,8 +9,8 @@
  */
 angular.module('authService', [])
     .factory('authService',
-        ['$cookies', '$http', 'jwtHelper', '$log', '$rootScope',
-         function ($cookies, $http, jwtHelper, $log, $rootScope) {
+        ['$cookies', '$http', 'jwtHelper', '$log', '$rootScope', '$location',
+         function ($cookies, $http, jwtHelper, $log, $rootScope, $location) {
 
         var TOKEN_KEY = 'org.flightnode.jwt';
         var roles;
@@ -20,6 +20,7 @@ angular.module('authService', [])
         var payload;
 
         return {
+
             getToken: function() {
                 return $cookies.get(TOKEN_KEY);
             },

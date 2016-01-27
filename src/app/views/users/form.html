@@ -26,7 +26,7 @@
                     <span class="error bg-danger" ng-show="userForm.password.$error.pattern">Must contain at least one digit and be 6 to 50 characters </span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-show="{{showRoles}}">
                 <label for="roles" class="col-sm-3 control-label">Roles <span class="text-danger">*</span></label>
                 <div class="col-sm-9" ng-class="{'has-error': userForm.roles.$error.required}">
                     <select name="roles" class="form-control" ng-model="user.roles" required multiple

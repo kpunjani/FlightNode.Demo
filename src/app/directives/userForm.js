@@ -17,6 +17,7 @@
       templateUrl: 'app/views/users/form.html',
       link: function (scope, element, attributes) {
         scope.formTitle = attributes.formTitle;
+        scope.showRoles = attributes.showRoles || true;
       }
     };
   }]);
