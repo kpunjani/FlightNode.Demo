@@ -16,39 +16,6 @@ flnd.userEdit = {
                 }
             }
         });
-    },
-    retrieveUser: function(url, $scope, messenger, authService, roleProxy) {
-        authService.get(url)
-            .then(function success(response) {
-
-                $scope.user = response.data;
-
-            }, function error(response) {
-
-                messenger.displayErrorResponse($scope, response);
-            })
-            .finally(function() {
-                $scope.loading = false;
-            });
-        },
-
-    configureSubmit: function(url, $scope, messenger, authService, $uibModalInstance) {
-      return function() {
-        $scope.loading = true;
-
-        authService.put(url, $scope.user)
-            .then(function success() {
-
-                $uibModalInstance.close();
-
-            }, function error(response) {
-
-                messenger.displayErrorResponse($scope, response);
-            })
-            .finally(function() {
-                $scope.loading = false;
-            });
-      };
     }
 };
 
@@ -61,8 +28,8 @@ flnd.userEdit = {
  */
 angular.module('flightNodeApp')
     .controller('UserEditController',
-        ['$scope', '$http', '$log', '$location', '$routeParams', 'messenger', 'authService', 'config', '$uibModalInstance', 'id', 'roleProxy',
-        function ($scope, $http, $log, $location, $routeParams, messenger, authService, config, $uibModalInstance, id, roleProxy) {
+        ['$scope', '$log', '$location', 'messenger', 'authService', '$uibModalInstance', 'id', 'roleProxy', 'userProxy',
+        function ($scope, $log, $location, messenger, authService, $uibModalInstance, id, roleProxy, userProxy) {
 
             if (!(authService.isAdministrator() ||
                   authService.isCoordinator())) {
@@ -80,15 +47,13 @@ angular.module('flightNodeApp')
 
             flnd.userEdit.retrieveRoles($scope, roleProxy, $log, messenger);
 
-            var url = config.users + id;
-
-            flnd.userEdit.retrieveUser(url, $scope, messenger, authService, roleProxy);
+            userProxy.findOne($scope, id)();
 
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
 
-            $scope.submit = flnd.userEdit.configureSubmit(url, $scope, messenger, authService, $uibModalInstance);
+            $scope.submit = userProxy.update($scope, $uibModalInstance, id);
 
             $scope.loading = false;
         }]);

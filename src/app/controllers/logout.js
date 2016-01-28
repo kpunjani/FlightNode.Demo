@@ -13,21 +13,8 @@ angular.module('flightNodeApp')
         function ($log, authService, $location, navigationService, config) {
             authService.clearToken();
             navigationService.resetTree();
+        
+            $location.path('/');
 
-            authService.delete(config.token)
-            .then(function success(response){
-                if (response) {
-                    $log.info(response);
-                }
-
-                $location.path('/');
-
-            }, function error(err){
-                if (err) {
-                    $log.error(err);
-                }
-
-                $location.path('/');
-            });
         }]
     );

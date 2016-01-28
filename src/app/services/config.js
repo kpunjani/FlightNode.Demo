@@ -7,6 +7,7 @@ angular.module('flightNodeApp')
     locations: 'http://localhost:50323/api/v1/locations/',
     locationsSimpleList: 'http://localhost:50323/api/v1/locations/simple',
     users: 'http://localhost:50323/api/v1/users/',
+    usersRegister: 'http://localhost:50323/api/v1/users/register',
     usersSimpleList: 'http://localhost:50323/api/v1/users/simplelist',
     workLogs: 'http://localhost:50323/api/v1/worklogs/',
     workLogsForUser: 'http://localhost:50323/api/v1/worklogs/my',
