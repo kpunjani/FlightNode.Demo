@@ -1,7 +1,7 @@
 'use strict';
 
 flnd.login = {
-    configureSubmit: function(config, $scope, messenger, $http, authService, navigationService, $log, $location) {
+    configureSubmit: function(config, $scope, messenger, $http, authService, navigationService, $log, $location, $rootScope) {
       return function () {
 
          if ($scope.loginForm.$valid) {
@@ -14,7 +14,6 @@ flnd.login = {
             };
 
             $http({
-                // TODO: move this string into a config file
                 url: config.token,
                 method: 'POST',
                 transformRequest: function (obj) {
@@ -37,6 +36,11 @@ flnd.login = {
 
                     // force re-query for navigation tree
                     navigationService.resetTree();
+
+                    var display = authService.getDisplayName();
+                    if (display) {
+                      $rootScope.display_name = 'Welcome, ' + display;
+                    }
 
                     $location.path('/');
 
@@ -69,12 +73,12 @@ flnd.login = {
  */
 angular.module('flightNodeApp')
     .controller('LoginController',
-        ['$scope', '$http', '$log', 'messenger', 'authService', 'navigationService', 'config', '$location',
-        function ($scope, $http, $log, messenger, authService, navigationService, config, $location) {
+        ['$scope', '$http', '$log', 'messenger', 'authService', 'navigationService', 'config', '$location', '$rootScope',
+        function ($scope, $http, $log, messenger, authService, navigationService, config, $location, $rootScope) {
 
         $scope.loading = true;
 
-        $scope.submit = flnd.login.configureSubmit(config, $scope, messenger, $http, authService, navigationService, $log, $location);
+        $scope.submit = flnd.login.configureSubmit(config, $scope, messenger, $http, authService, navigationService, $log, $location, $rootScope);
 
         $scope.loading = false;
 

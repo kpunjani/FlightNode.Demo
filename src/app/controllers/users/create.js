@@ -1,27 +1,5 @@
 'use strict';
 
-flnd.userCreate = {
-  configureSubmit: function(config, $scope, messenger, authService, $uibModalInstance) {
-    return function() {
-        $scope.loading = true;
-
-        authService.post(config.users, $scope.user)
-            .then(function success() {
-
-                $uibModalInstance.close();
-
-            }, function error(response) {
-
-                messenger.displayErrorResponse($scope, response);
-
-            })
-            .finally(function() {
-                $scope.loading = false;
-            });
-    };
-  }
-};
-
 /**
  * @ngdoc function
  * @name flightNodeApp.controller:UserCreateController
@@ -31,14 +9,14 @@ flnd.userCreate = {
  */
 angular.module('flightNodeApp')
     .controller('UserCreateController',
-        ['$scope', '$http', '$log', '$location', 'messenger', 'roleProxy', 'authService', 'config', '$uibModalInstance',
-            function ($scope, $http, $log, $location, messenger, roleProxy, authService, config, $uibModalInstance) {
+        ['$scope', '$log', 'messenger', 'roleProxy', 'authService', '$uibModalInstance', 'userProxy',
+            function ($scope, $log, messenger, roleProxy, authService, $uibModalInstance, userProxy) {
 
 
                 if (!(authService.isAdministrator() ||
                       authService.isCoordinator())) {
                     $log.warn('not authorized to access this path');
-                    $location.path('/');
+                    $uibModalInstance.dismiss('cancel');
                     return;
                 }
 
@@ -63,7 +41,7 @@ angular.module('flightNodeApp')
                     $uibModalInstance.dismiss('cancel');
                 };
 
-                $scope.submit = flnd.userCreate.configureSubmit(config, $scope, messenger, authService, $uibModalInstance);
+                $scope.submit = userProxy.insert($scope, $uibModalInstance);
 
                 $scope.loading = false;
         }]);
