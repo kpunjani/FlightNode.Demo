@@ -21,6 +21,7 @@ angular.module('flightNodeApp')
 
             $scope.loading = true;
             $scope.data = {};
+            $scope.showRoles = false;
 
             var id = authService.getUserId();
 

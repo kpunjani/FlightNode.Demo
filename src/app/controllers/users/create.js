@@ -22,6 +22,7 @@ angular.module('flightNodeApp')
 
                 $scope.loading = true;
                 $scope.data = {};
+                $scope.showRoles = true;
 
 
                 roleProxy.getAll( function (error, response) {
