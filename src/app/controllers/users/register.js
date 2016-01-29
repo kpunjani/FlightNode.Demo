@@ -12,6 +12,7 @@ angular.module('flightNodeApp')
         function($scope, $log, messenger, roleProxy, authService, $location, userProxy) {
 
             $scope.loading = true;
+            $scope.showRoles = false;
 
             $scope.data = {
                 roles : [ { name: 'Reporter', description: 'Reporter' }]

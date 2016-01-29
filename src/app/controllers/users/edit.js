@@ -39,6 +39,7 @@ angular.module('flightNodeApp')
             }
 
             $scope.loading = true;
+            $scope.showRoles = true;
 
             if (!isFinite(id)) {
                 // garbage input
