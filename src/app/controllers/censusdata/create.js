@@ -2,13 +2,15 @@
 
 /**
  * @ngdoc function
- * @name flightNodeDemo.controller:CensusController
+ * @name flightNodeApp.controller:CensusDataCreateController
  * @description
- * # CensusController
- * Controller of the flightNodeDemo
+ * # CensusDataCreateController
+ * Controller for the create census form.
  */
-angular.module('flightNodeDemo')
-    .controller('CensusController', function ($scope) {
+angular.module('flightNodeApp')
+    .controller('CensusDataCreateController', 
+    ['$scope',
+    function ($scope) {
 		$scope.loading = true;
       
         //TODO: Get all this data from DB through API calls. Since it is all lookup data, we may cache it through out the application's lifetime.
@@ -71,4 +73,4 @@ angular.module('flightNodeDemo')
         ];
         
         $scope.loading = false;
-  });
+  }]);
