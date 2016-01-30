@@ -39,7 +39,6 @@ angular.module('flightNodeApp')
                         authService.post(config.usersRegister, $scope.user)
                             .then(function success() {
 
-                                $location.path('/');
                                 messenger.showSuccessMessage('Your new account has been created with activation pending. You will receive an e-mail once your account has been approved.');
 
                             }, function error(response) {
@@ -71,7 +70,28 @@ angular.module('flightNodeApp')
                             .finally(function() {
                                 $scope.loading = false;
                             });
-                    }
+                    };
+                },
+
+                profile: function($scope, id) {
+                    return function() {
+
+                        $scope.loading = true;
+                        var url = config.users + id + "/profile";
+
+                        authService.put(url, $scope.user)
+                            .then(function success() {
+
+                                messenger.showSuccessMessage('Your account profile has been saved.');
+
+                            }, function error(response) {
+
+                                messenger.displayErrorResponse($scope, response);
+                            })
+                            .finally(function() {
+                                $scope.loading = false;
+                            });
+                    };
                 },
 
                 findOne: function($scope, id) {
@@ -87,7 +107,7 @@ angular.module('flightNodeApp')
 
                                 messenger.displayErrorResponse($scope, response);
                             });
-                    }
+                    };
                 }
             };
         }

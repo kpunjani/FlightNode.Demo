@@ -49,6 +49,11 @@ angular
         controller: 'UserRegisterController',
         title: 'FlightNode - Register New Account'
       })
+      .when('/users/profile', {
+        templateUrl: 'app/views/users/profile.html',
+        controller: 'UserProfileController',
+        title: 'FlightNode - My Profile'
+      })
       .when('/users/:userId', {
         templateUrl: 'app/views/users/edit.html',
         controller: 'UserEditController',
