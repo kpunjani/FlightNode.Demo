@@ -8,8 +8,8 @@
  * Controller for the create user page.
  */
 angular.module('flightNodeApp')
-    .factory('userProxy', ['$http', '$log', 'authService', 'config', 'messenger', '$location',
-        function($http, $log, authService, config, messenger, $location) {
+    .factory('userProxy', ['$http', '$log', 'authService', 'config', 'messenger',
+        function($http, $log, authService, config, messenger) {
             return {
                 insert: function($scope, $uibModalInstance) {
                     return function() {
@@ -77,7 +77,7 @@ angular.module('flightNodeApp')
                     return function() {
 
                         $scope.loading = true;
-                        var url = config.users + id + "/profile";
+                        var url = config.users + id + '/profile';
 
                         authService.put(url, $scope.user)
                             .then(function success() {
@@ -108,6 +108,39 @@ angular.module('flightNodeApp')
                                 messenger.displayErrorResponse($scope, response);
                             });
                     };
+                },
+
+                pending: function($scope) {
+                    var url = config.usersPending;
+
+                    authService.get(url)
+                        .then(function success(response) {
+
+                            $scope.users = response.data;
+
+                        }, function error(response) {
+
+                            messenger.displayErrorResponse($scope, response);
+                        });
+                },
+
+                approve: function($scope, ids, msg) {
+                    $scope.loading = true;
+                    var url  = config.usersPending;
+
+                    var data = {
+                        ids: ids
+                    };
+
+                    authService.post(url, ids)
+                        .then(function success(response) {
+                            messenger.showSuccessMessage(msg);
+                        }, function error(response) {
+                            messenger.displayErrorResponse($scope, response);
+                        })
+                        .finally(function() {
+                            $scope.loading = false;
+                        });
                 }
             };
         }

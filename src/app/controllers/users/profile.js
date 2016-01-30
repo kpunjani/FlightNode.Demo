@@ -8,8 +8,8 @@
  * Controller for the create user page.
  */
 angular.module('flightNodeApp')
-    .controller('UserProfileController', ['$scope', '$log', 'messenger', 'roleProxy', 'authService', 'userProxy',
-        function($scope, $log, messenger, roleProxy, authService, userProxy) {
+    .controller('UserProfileController', ['$scope', '$log', 'messenger', 'roleProxy', 'authService', 'userProxy', '$location',
+        function($scope, $log, messenger, roleProxy, authService, userProxy, $location) {
 
 
             if (!(authService.isAdministrator() ||

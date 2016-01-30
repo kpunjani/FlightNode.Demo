@@ -144,7 +144,7 @@ flnd.workDayCreate = {
   initializeTimeFields: function($scope) {
     $scope.hstep = 1;
     $scope.mstep = 1;
-    var begin = moment("1970-01-01 00:00:00.000").toDate();
+    var begin = moment('1970-01-01 00:00:00.000').toDate();
     $scope.workday.workTime = begin;
     $scope.workday.travelTime = begin;
   }

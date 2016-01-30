@@ -162,7 +162,7 @@ flnd.workDayEdit = {
   hoursToDate: function(hours) {
     var parts = hours.toString().split('.');
     var toParse = { hour: parts[0], minute: 0 };
-    if(parts[1]) { toParse.minute = _.padRight(parts[1],2,'0') * 0.6 };
+    if(parts[1]) { toParse.minute = _.padRight(parts[1],2,'0') * 0.6; }
     return moment(toParse).format();
   },
 };
@@ -197,7 +197,7 @@ angular.module('flightNodeApp')
                       authService.isCoordinator())) {
 
                     // Non-administrative users must be reporters and can only edit their own data
-                    if(!authService.isReporter() || $scope.workday.userId != authService.getUserId()) {
+                    if(!authService.isReporter() || $scope.workday.userId !== authService.getUserId()) {
 
                         $log.warn('not authorized to access this path');
                         $location.path('/');
