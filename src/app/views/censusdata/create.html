@@ -3,7 +3,6 @@
         <h4>Census participants please be as complete as possible:</h4>
         <ul>
             <li>Review form guidelines prior to census.</li>
-            <li>Fill in/check box for all information in top section side one.</li>
             <li>Always provide "number of adults and juveniles" data for species.</li>
             <li>Always observe birds from at least 50 yards away.</li>
         </ul>
@@ -11,53 +10,53 @@
                 
     <form class="form-horizontal" role="form"> 
         <div class="form-group panel panel-primary">
-            <div class="panel-heading">Section One</div>
+            <div class="panel-heading">Site Information: Section One<span style="float:right;">Report violations to 1-800-792-4263</span></div>
             <div class="panel-body">              
             <div class="form-group">
-                <label class="control-label col-md-3" for="colonyCode">Colony Code:</label>
+                <label class="control-label col-md-3" for="siteCode">Site Code:</label>
                 <div class="col-md-3">
-                <input type="text" class="form-control" id="colonyCode" placeholder="Enter Colony Code">
+                <input type="text" class="form-control" id="siteCode" placeholder="Enter Site Code" ng-model="censusForm.siteCode">
                 </div>    
             </div> 
             <div class="form-group">
-                <label class="control-label col-md-3" for="colonyName">Colony Name:</label>
+                <label class="control-label col-md-3" for="siteName">Site Name:</label>
                 <div class="col-md-9">
-                <input type="text" class="form-control" id="colonyName" placeholder="Enter Colony Name">
+                <input type="text" class="form-control" id="siteName" placeholder="Enter Site Name" ng-model="censusForm.siteName">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-3" for="surveyDate">Survey Date:</label>
                 <div class="col-md-4">
-                <input type="date" class="form-control" id="surveyDate" placeholder="Enter Survey Date">
+                <input type="date" class="form-control" id="surveyDate" placeholder="Enter Survey Date" ng-model="censusForm.surveyDate">
                 </div>
             </div>   
             <div class="form-group">
                 <label class="control-label col-md-3" for="timeStart">Time Start:</label>
                 <div class="col-md-3">
-                <input type="time" class="form-control" id="timeStart" placeholder="Enter Survey Date">
+                <input type="time" class="form-control" id="timeStart" placeholder="Enter Start Time" ng-model="censusForm.timeStart">
                 </div>
                 <label class="control-label col-md-3" for="timeEnd">Time End:</label>
                 <div class="col-md-3">
-                <input type="time" class="form-control" id="timeEnd" placeholder="Enter Survey Date">
+                <input type="time" class="form-control" id="timeEnd" placeholder="Enter End Time" ng-model="censusForm.timeEnd">
                 </div>
             </div>   
             <div class="form-group">
                 <label class="control-label col-md-3" for="latitude">Latitude:</label>
                 <div class="col-md-3">
-                <input type="text" class="form-control" id="latitude" placeholder="Enter Latitude">
+                <input type="text" class="form-control" id="latitude" placeholder="Enter Latitude" ng-model="censusForm.latitude">
                 </div>    
             </div> 
             <div class="form-group">
                 <label class="control-label col-md-3" for="longitude">Longitude:</label>
                 <div class="col-md-3">
-                <input type="text" class="form-control" id="longitude" placeholder="Enter Longitude">
+                <input type="text" class="form-control" id="longitude" placeholder="Enter Longitude" ng-model="censusForm.longitude">
                 </div>    
             </div> 
             <div class="form-group">
                 <label class="control-label col-md-3">Site Type:</label>
                 <div class="col-md-9">
                 <div class="checkbox">
-                    <label ng-repeat="siteType in siteTypeInfo"><input type="checkbox" value="{{siteType.Id}}"> {{ siteType.Description }} &nbsp;</label>        
+                    <label ng-repeat="siteType in data.siteTypeInfo"><input type="radio" name="siteType" ng-model="censusForm.siteType" value="{{siteType.Id}}"> {{ siteType.Description }} &nbsp;</label>        
                 </div>
                 </div>    
             </div>  
@@ -65,7 +64,7 @@
                 <label class="control-label col-md-3">Tides:</label>
                 <div class="col-md-9">      
                 <div class="checkbox">
-                    <label ng-repeat="tide in tideInfo"><input type="checkbox" value="{{tide.Id}}"> {{ tide.Description }} &nbsp;</label>        
+                    <label ng-repeat="tide in data.tideInfo"><input type="radio" name="tideInfo" ng-model="censusForm.tideInfo" value="{{tide.Id}}"> {{ tide.Description }} &nbsp;</label>        
                 </div>
                 </div>    
             </div>  
@@ -73,21 +72,21 @@
                 <label class="control-label col-md-3">Weather:</label>
                 <div class="col-md-9">
                 <div class="checkbox">
-                    <label ng-repeat="weather in weatherInfo"><input type="checkbox" value="{{weather.Id}}"> {{ weather.Description }} &nbsp;</label>      
+                    <label ng-repeat="weather in data.weatherInfo"><input type="radio" name="weatherInfo" ng-model="censusForm.weatherInfo" value="{{weather.Id}}"> {{ weather.Description }} &nbsp;</label>      
                 </div>
                 </div>    
             </div> 
             <div class="form-group">
                 <label class="control-label col-md-3" for="observers">Observer(s):</label>
                 <div class="col-md-7">
-                <input type="text" class="form-control" id="observers" placeholder="Enter Observer(s) Name(s)">
+                <input type="text" class="form-control" id="observers" placeholder="Enter Observer(s) Name(s)" ng-model="censusForm.observer">
                 </div>    
             </div> 
             <div class="form-group">
                 <label class="control-label col-md-3">Survey Vantage Point:</label>
                 <div class="col-md-9">
                 <div class="checkbox">
-                    <label ng-repeat="vantagePoint in vantagePointInfo"><input type="checkbox" value="{{vantagePoint.Id}}"> {{vantagePoint.Description}} &nbsp; </label>
+                    <label ng-repeat="vantagePoint in data.vantagePointInfo"><input type="radio" name="vantagePointInfo" ng-model="censusForm.vantagePointInfo" value="{{vantagePoint.Id}}"> {{vantagePoint.Description}} &nbsp; </label>
                 </div>
                 </div>    
             </div> 
@@ -95,7 +94,7 @@
                 <label class="control-label col-md-3">Survey Access Point:</label>
                 <div class="col-md-9">
                 <div class="checkbox">
-                    <label ng-repeat="accessPoint in accessPointInfo"><input type="checkbox" value="{{accessPoint.Id}}"> {{accessPoint.Description}} &nbsp;</label>       
+                    <label ng-repeat="accessPoint in data.accessPointInfo"><input type="radio" name="accessPointInfo" ng-model="censusForm.accessPointInfo" value="{{accessPoint.Id}}"> {{accessPoint.Description}} &nbsp;</label>       
                 </div>
                 </div>    
             </div>       
@@ -152,7 +151,7 @@
             <div class="form-group">
                 <label class="control-label col-md-3" for="comments">Comments:</label>
                 <div class="col-md-9">
-                <textarea type="text" class="form-control" rows="5" id="comments" placeholder="Enter Comments"></textarea>
+                <textarea type="text" class="form-control" rows="5" id="comments" placeholder="Enter Comments" ng-model="censusForm.comments"></textarea>
                 </div>    
             </div>          
             </div>    
