@@ -25,7 +25,9 @@ angular.module('flightNodeApp')
                 $location.path('/');
             };
 
-            $scope.submit = userProxy.register($scope);
+            $scope.submit = userProxy.register($scope, function() {
+                $scope.alreadySaved = true;
+            });
 
             $scope.loading = false;
         }

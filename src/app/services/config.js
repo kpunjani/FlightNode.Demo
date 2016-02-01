@@ -10,6 +10,7 @@ angular.module('flightNodeApp')
     usersRegister: 'http://localhost:50323/api/v1/users/register',
     usersPending: 'http://localhost:50323/api/v1/users/pending',
     usersSimpleList: 'http://localhost:50323/api/v1/users/simplelist',
+    usersProfile: 'http://localhost:50323/api/v1/users/profile',
     workLogs: 'http://localhost:50323/api/v1/worklogs/',
     workLogsForUser: 'http://localhost:50323/api/v1/worklogs/my',
     exportWorkLogs: 'http://localhost:50323/api/v1/worklogs/export/',

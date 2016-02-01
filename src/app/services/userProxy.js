@@ -31,7 +31,7 @@ angular.module('flightNodeApp')
                     };
                 },
 
-                register: function($scope) {
+                register: function($scope, done) {
                     return function() {
                         $log.info('submit registration');
                         $scope.loading = true;
@@ -39,7 +39,8 @@ angular.module('flightNodeApp')
                         authService.post(config.usersRegister, $scope.user)
                             .then(function success() {
 
-                                messenger.showSuccessMessage('Your new account has been created with activation pending. You will receive an e-mail once your account has been approved.');
+                                messenger.showSuccessMessage($scope, 'Your new account has been created with activation pending. You will receive an e-mail once your account has been approved.');
+                                done();
 
                             }, function error(response) {
 
@@ -73,16 +74,16 @@ angular.module('flightNodeApp')
                     };
                 },
 
-                profile: function($scope, id) {
+                putProfile: function($scope, id) {
                     return function() {
 
                         $scope.loading = true;
-                        var url = config.users + id + '/profile';
+                        var url = config.usersProfile + '/' + id;
 
                         authService.put(url, $scope.user)
                             .then(function success() {
 
-                                messenger.showSuccessMessage('Your account profile has been saved.');
+                                messenger.showSuccessMessage($scope, 'Your account profile has been saved.');
 
                             }, function error(response) {
 
@@ -92,6 +93,20 @@ angular.module('flightNodeApp')
                                 $scope.loading = false;
                             });
                     };
+                },
+
+                getProfile: function($scope) {
+                    var url = config.usersProfile;
+
+                    authService.get(url)
+                        .then(function success(response) {
+
+                            $scope.user = response.data;
+
+                        }, function error(response) {
+
+                            messenger.displayErrorResponse($scope, response);
+                        });
                 },
 
                 findOne: function($scope, id) {
@@ -124,7 +139,7 @@ angular.module('flightNodeApp')
                         });
                 },
 
-                approve: function($scope, ids, msg) {
+                approve: function($scope, ids, msg, done) {
                     $scope.loading = true;
                     var url  = config.usersPending;
 
@@ -134,7 +149,8 @@ angular.module('flightNodeApp')
 
                     authService.post(url, ids)
                         .then(function success(response) {
-                            messenger.showSuccessMessage(msg);
+                            messenger.showSuccessMessage($scope, msg);
+                            done();
                         }, function error(response) {
                             messenger.displayErrorResponse($scope, response);
                         })

@@ -11,21 +11,13 @@ angular.module('flightNodeApp')
     .controller('UserProfileController', ['$scope', '$log', 'messenger', 'roleProxy', 'authService', 'userProxy', '$location',
         function($scope, $log, messenger, roleProxy, authService, userProxy, $location) {
 
-
-            if (!(authService.isAdministrator() ||
-                authService.isCoordinator())) {
-                $log.warn('not authorized to access this path');
-                $location.path('/');
-                return;
-            }
-
             $scope.loading = true;
             $scope.data = {};
             $scope.showRoles = false;
 
             var id = authService.getUserId();
 
-            userProxy.findOne($scope, id)();
+            userProxy.getProfile($scope);
 
             roleProxy.getAll(function(error, response) {
                 if (error) {
@@ -44,7 +36,7 @@ angular.module('flightNodeApp')
                 $location.path('/');
             };
 
-            $scope.submit = userProxy.profile($scope, id);
+            $scope.submit = userProxy.putProfile($scope, id);
 
             $scope.loading = false;
         }

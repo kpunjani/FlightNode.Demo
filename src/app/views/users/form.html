@@ -6,7 +6,7 @@
     <div class="modal-body">
         <alert>
         </alert>
-        <fieldset>
+        <fieldset ng-disabled="alreadySaved">
             <legend>Sign-on Information</legend>
             <div class="form-group">
                 <label for="userName" class="col-sm-3 control-label">User Name <span class="text-danger">*</span></label>
@@ -34,8 +34,14 @@
                     </select>
                 </div>
             </div>
+            <div class="form-group" ng-show="{{showActiveStatus}}">
+                <label for="active" class="col-sm-3 control-label">Active</label>
+                <div class="col-sm-9">
+                    <input type="checkbox" ng-model="user.active" name="active">
+                </div>
+            </div>
         </fieldset>
-        <fieldset>
+        <fieldset ng-disabled="alreadySaved">
             <legend>Name</legend>
             <div class="form-group">
                 <label for="givenName" class="col-sm-3 control-label">Given / First Name <span class="text-danger">*</span></label>
@@ -58,53 +64,52 @@
                 </div>
             </div>
         </fieldset>
-        <fieldset>
-            <legend>Contact Information</legend>
-            <div class="form-group">
-                <label for="email" class="col-sm-3 control-label">E-mail Address <span class="text-danger">*</span></label>
-                <div class="col-sm-9" ng-class="{'has-error': userForm.email.$error.required || userForm.email.$error.pattern || userForm.email.$error.email}">
-                    <div class="input-group">
-                        <span class="input-group-addon">@</span>
-                        <input type="email" ng-model="user.email" class="form-control" name="email" placeholder="Max 256 characters" ng-maxlength="256"
-                        required>
-                    </div>
-                </div>
-                <div role="alert" class="col-sm-9 col-sm-offset-3">
-                    <span class="error bg-danger" ng-show="userForm.email.$error.email">Invalid e-mail address</span>
-                    <span class="error bg-danger" ng-show="userForm.email.$error.maxlength">Max 256 characters</span>
+        <fieldse ng-disabled="alreadySaved">
+        <legend>Contact Information</legend>
+        <div class="form-group">
+            <label for="email" class="col-sm-3 control-label">E-mail Address <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': userForm.email.$error.required || userForm.email.$error.pattern}">
+                <div class="input-group">
+                    <span class="input-group-addon">@</span>
+                    <input type="email" ng-model="user.email" class="form-control" name="email" placeholder="Max 256 characters" ng-maxlength="256" ng-pattern="/.+@.+\..+/"  required>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="primaryPhoneNumber" class="col-sm-3 control-label">Primary Phone Number <span class="text-danger">*</span></label>
-                <div class="col-sm-9" ng-class="{'has-error': userForm.primaryPhoneNumber.$error.required || userForm.primaryPhoneNumber.$error.pattern}">
-                    <div class="input-group">
-                        <span class="input-group-addon">#</span>
-                        <input type="text" ng-model="user.primaryPhoneNumber" class="form-control" name="primaryPhoneNumber" placeholder="(555) 555-5555  or 555-555-5555 or 5555555555"
-                        ng-pattern="/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/" required>
-                    </div>
-                </div>
-                <div role="alert" class="col-sm-9 col-sm-offset-3">
-                    <span class="error bg-danger" ng-show="userForm.primaryPhoneNumber.$error.pattern">Invalid phone number</span>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="userForm.email.$error.maxlength">Max 256 characters</span>
+                <span class="error bg-danger" ng-show="userForm.email.$error.pattern">Does not look like an e-mail address</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="primaryPhoneNumber" class="col-sm-3 control-label">Primary Phone Number <span class="text-danger">*</span></label>
+            <div class="col-sm-9" ng-class="{'has-error': userForm.primaryPhoneNumber.$error.required || userForm.primaryPhoneNumber.$error.pattern}">
+                <div class="input-group">
+                    <span class="input-group-addon">#</span>
+                    <input type="text" ng-model="user.primaryPhoneNumber" class="form-control" name="primaryPhoneNumber" placeholder="(555) 555-5555  or 555-555-5555 or 5555555555"
+                    ng-pattern="/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/" required>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="secondaryPhoneNumber" class="col-sm-3 control-label">Secondary Phone Number</label>
-                <div class="col-sm-9" ng-class="{'has-error': userForm.secondaryPhoneNumber.$error.pattern}">
-                    <div class="input-group">
-                        <span class="input-group-addon">#</span>
-                        <input type="text" ng-model="user.secondaryPhoneNumber" class="form-control" name="secondaryPhoneNumber" placeholder="(555) 555-5555  or 555-555-5555 or 5555555555"
-                        ng-pattern="/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/">
-                    </div>
-                </div>
-                <div role="alert" class="col-sm-9 col-sm-offset-3">
-                    <span class="error bg-danger" ng-show="userForm.secondaryPhoneNumber.$error.pattern">Invalid phone number</span>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="userForm.primaryPhoneNumber.$error.pattern">Invalid phone number</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="secondaryPhoneNumber" class="col-sm-3 control-label">Secondary Phone Number</label>
+            <div class="col-sm-9" ng-class="{'has-error': userForm.secondaryPhoneNumber.$error.pattern}">
+                <div class="input-group">
+                    <span class="input-group-addon">#</span>
+                    <input type="text" ng-model="user.secondaryPhoneNumber" class="form-control" name="secondaryPhoneNumber" placeholder="(555) 555-5555  or 555-555-5555 or 5555555555"
+                    ng-pattern="/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/">
                 </div>
             </div>
-        </fieldset>
-    </div>
-    <div class="modal-footer">
-        <button type="submit" ng-disabled="userForm.$invalid" class="btn btn-primary">Save</button>
-        <button type="button" class="btn btn-warning" ng-click="cancel()">Cancel</button>
-    </div>
+            <div role="alert" class="col-sm-9 col-sm-offset-3">
+                <span class="error bg-danger" ng-show="userForm.secondaryPhoneNumber.$error.pattern">Invalid phone number</span>
+            </div>
+        </div>
+    </fieldset>
+</div>
+<div class="modal-footer">
+    <button type="submit" ng-disabled="userForm.$invalid || alreadySaved" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>
 </form>
 <loading></loading>

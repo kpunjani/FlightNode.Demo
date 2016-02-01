@@ -21,9 +21,10 @@ angular.module('flightNodeApp')
 
             $scope.loading = true;
 
+            // Load the data grid
             userProxy.pending($scope);
 
-            $scope.selected = [];
+
 
             $scope.gridOptions = {
                 enableRowSelection: true,
@@ -35,15 +36,6 @@ angular.module('flightNodeApp')
                 rowTemplate: 'app/views/row.html',
                 onRegisterApi: function (gridApi) {
                     $scope.gridApi = gridApi;
-                    gridApi.selection.on.rowSelectionChanged($scope,function(row){
-                      var msg = 'row selected ' + row.isSelected;
-                      $log.log(row.entity.userId);
-                    });
-
-                    gridApi.selection.on.rowSelectionChangedBatch($scope,function(rows){
-                      var msg = 'rows changed ' + rows.length;
-                      $log.log(msg);
-                    });
                 },
                 data: 'users',
                 columnDefs: [
@@ -68,14 +60,17 @@ angular.module('flightNodeApp')
                     return row.userId;
                 });
 
-                var msg = 'The following new users have been activated: <ul>';
+                var msg = 'The following new users have been activated: ';
                 _.forEach(rows, function(row) {
-                    msg += '<li>' + row.displayName + '</li>';
+                    msg +=  row.displayName + ', ';
                 });
-                msg += '</ul>';
+                msg = msg.substring(0, msg.length - 2);
 
-                $log.info(ids);
-                userProxy.approve($scope, ids, msg)
+                userProxy.approve($scope, ids, msg, function() {
+                    // reload the data grid
+                    userProxy.pending($scope);
+                });
+
             };
 
             $scope.loading = false;
