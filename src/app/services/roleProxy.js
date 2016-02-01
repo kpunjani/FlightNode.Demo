@@ -2,8 +2,8 @@
 
 angular.module('roleProxy', [])
 	.factory('roleProxy',
-		['$http', 'authService', 'config', '$log',
-		function ($http, authService, config, $log) {
+		['$http', 'authService', 'config',
+		function ($http, authService, config) {
 		return {
 
 			getAll: function (done) {
