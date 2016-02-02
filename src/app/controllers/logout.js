@@ -9,11 +9,11 @@
  */
 angular.module('flightNodeApp')
     .controller('LogoutController',
-        ['$log', 'authService', '$location', 'navigationService', 'config',
-        function ($log, authService, $location, navigationService, config) {
+        ['$log', 'authService', '$location', 'navigationService',
+        function ($log, authService, $location, navigationService) {
             authService.clearToken();
             navigationService.resetTree();
-        
+
             $location.path('/');
 
         }]

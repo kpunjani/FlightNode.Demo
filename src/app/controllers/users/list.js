@@ -55,7 +55,14 @@ angular.module('flightNodeApp')
 				data: 'userList',
 				columnDefs: [
 					{ field: 'fullName', displayName: 'Full Name' },
-					{ field: 'email', displayName: 'E-mail Address' },
+                    {
+                        field: 'email',
+                        displayName: 'E-mail Address',
+                        cellTemplate: '\
+                        <div class="ui-grid-cell-contents" title="Edit">\
+                          <a href="mailto:{{row.entity.email}}">{{row.entity.email}}</a> \
+                        </div>',
+                    },
 					{ field: 'phone', displayName: 'Phone Number' },
 					{
 						field: 'id',

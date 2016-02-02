@@ -20,7 +20,8 @@ angular
     'ngCsv',
     'navigationService',
     'ui.bootstrap.modal',
-    'ui.bootstrap.timepicker'
+    'ui.bootstrap.timepicker',
+    'ui.grid.selection'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -38,6 +39,11 @@ angular
         templateUrl: 'app/views/users/list.html',
         controller: 'UserListController',
         title: 'FlightNode - Users - List'
+      })
+      .when('/users/pending', {
+        templateUrl: 'app/views/users/pending.html',
+        controller: 'UserPendingController',
+        title: 'FlightNode - Pending Users'
       })
       .when('/users/new', {
         templateUrl: 'app/views/users/create.html',
