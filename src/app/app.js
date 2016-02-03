@@ -139,6 +139,16 @@ angular
         templateUrl: 'app/views/main.html',
         controller: 'LogoutController'
       })
+      .when('/censusdata/', {
+        templateUrl: 'app/views/censusdata/create.html',
+        controller: 'CensusDataCreateController',
+        title: 'FlightNode - Census Data - New'
+      })
+      .when('/censusdata/create', {
+        templateUrl: 'app/views/censusdata/create.html',
+        controller: 'CensusDataCreateController',
+        title: 'FlightNode - Census Data - New'
+      })
       .otherwise({
         templateUrl: 'app/views/404.html',
         title: 'FlightNode - page not found'
