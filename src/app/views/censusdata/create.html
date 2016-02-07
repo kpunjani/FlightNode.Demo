@@ -1,29 +1,18 @@
 <div class="container">
-    <div class="well row" >
-        <h4>Census participants please be as complete as possible:</h4>
-        <ul>
-            <li>Review form guidelines prior to census.</li>
-            <li>Always provide "number of adults and juveniles" data for species.</li>
-            <li>Always observe birds from at least 50 yards away.</li>
-        </ul>
-    </div>
     <div ng-include="'/app/views/censusdata/progressBar.html'"></div>
     {{censusForm.step = 1}}
+
     <form class="form-horizontal" role="form"> 
         <div class="form-group panel panel-primary">
             <div class="panel-heading">Site Information<span style="float:right;">Report violations to 1-800-792-4263</span></div>
             <div class="panel-body">
                 {{ 2/2 }}            
             <div class="form-group">
-                <label class="control-label col-md-3" for="siteCode">Site Code:</label>
-                <div class="col-md-3">
-                <input type="text" class="form-control" id="siteCode" placeholder="Enter Site Code" ng-model="censusForm.siteCode">
-                </div>    
-            </div> 
-            <div class="form-group">
-                <label class="control-label col-md-3" for="siteName">Site Name:</label>
+                <label class="control-label col-md-3" for="location">Location:</label>
                 <div class="col-md-9">
-                <input type="text" class="form-control" id="siteName" placeholder="Enter Site Name" ng-model="censusForm.siteName">
+                 <select name="location"  class="form-control" id="location" ng-model="censusForm.locationId">
+                    <option ng-repeat="loc in list" value="{{loc.id}}">{{loc.siteCode}} | {{loc.siteName}} | {{loc.description}}</option>
+                </select>
                 </div>
             </div>
             <div class="form-group">
@@ -41,24 +30,12 @@
                 <div class="col-md-3">
                 <input type="time" class="form-control" id="timeEnd" placeholder="Enter End Time" ng-model="censusForm.timeEnd">
                 </div>
-            </div>   
-            <div class="form-group">
-                <label class="control-label col-md-3" for="latitude">Latitude:</label>
-                <div class="col-md-3">
-                <input type="text" class="form-control" id="latitude" placeholder="Enter Latitude" ng-model="censusForm.latitude">
-                </div>    
-            </div> 
-            <div class="form-group">
-                <label class="control-label col-md-3" for="longitude">Longitude:</label>
-                <div class="col-md-3">
-                <input type="text" class="form-control" id="longitude" placeholder="Enter Longitude" ng-model="censusForm.longitude">
-                </div>    
-            </div> 
+            </div>
             <div class="form-group">
                 <label class="control-label col-md-3">Site Type:</label>
                 <div class="col-md-9">
                 <div class="checkbox">
-                    <label ng-repeat="siteType in data.siteTypeInfo"><input type="radio" name="siteType" ng-model="censusForm.siteType" value="{{siteType.Id}}"> {{ siteType.Description }} &nbsp;</label>        
+                    <label ng-repeat="siteType in data.siteTypeInfo"><input type="radio" name="siteType" ng-model="censusForm.siteTypeId" value="{{siteType.Id}}"> {{ siteType.Description }} &nbsp;</label>        
                 </div>
                 </div>    
             </div>  
@@ -66,7 +43,7 @@
                 <label class="control-label col-md-3">Tides:</label>
                 <div class="col-md-9">      
                 <div class="checkbox">
-                    <label ng-repeat="tide in data.tideInfo"><input type="radio" name="tideInfo" ng-model="censusForm.tideInfo" value="{{tide.Id}}"> {{ tide.Description }} &nbsp;</label>        
+                    <label ng-repeat="tide in data.tideInfo"><input type="radio" name="tideInfo" ng-model="censusForm.tideInfoId" value="{{tide.Id}}"> {{ tide.Description }} &nbsp;</label>        
                 </div>
                 </div>    
             </div>  
@@ -74,7 +51,7 @@
                 <label class="control-label col-md-3">Weather:</label>
                 <div class="col-md-9">
                 <div class="checkbox">
-                    <label ng-repeat="weather in data.weatherInfo"><input type="radio" name="weatherInfo" ng-model="censusForm.weatherInfo" value="{{weather.Id}}"> {{ weather.Description }} &nbsp;</label>      
+                    <label ng-repeat="weather in data.weatherInfo"><input type="radio" name="weatherInfo" ng-model="censusForm.weatherInfoId" value="{{weather.Id}}"> {{ weather.Description }} &nbsp;</label>      
                 </div>
                 </div>    
             </div> 
@@ -88,7 +65,7 @@
                 <label class="control-label col-md-3">Survey Vantage Point:</label>
                 <div class="col-md-9">
                 <div class="checkbox">
-                    <label ng-repeat="vantagePoint in data.vantagePointInfo"><input type="radio" name="vantagePointInfo" ng-model="censusForm.vantagePointInfo" value="{{vantagePoint.Id}}"> {{vantagePoint.Description}} &nbsp; </label>
+                    <label ng-repeat="vantagePoint in data.vantagePointInfo"><input type="radio" name="vantagePointInfo" ng-model="censusForm.vantagePointInfoId" value="{{vantagePoint.Id}}"> {{vantagePoint.Description}} &nbsp; </label>
                 </div>
                 </div>    
             </div> 
@@ -96,7 +73,7 @@
                 <label class="control-label col-md-3">Survey Access Point:</label>
                 <div class="col-md-9">
                 <div class="checkbox">
-                    <label ng-repeat="accessPoint in data.accessPointInfo"><input type="radio" name="accessPointInfo" ng-model="censusForm.accessPointInfo" value="{{accessPoint.Id}}"> {{accessPoint.Description}} &nbsp;</label>       
+                    <label ng-repeat="accessPoint in data.accessPointInfo"><input type="radio" name="accessPointInfo" ng-model="censusForm.accessPointInfoId" value="{{accessPoint.Id}}"> {{accessPoint.Description}} &nbsp;</label>       
                 </div>
                 </div>    
             </div>       

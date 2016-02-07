@@ -33,9 +33,13 @@ angular.module('flightNodeApp')
 		$scope.loading = true;
         $scope.data = {};
         flnd.birdSpeciesList.retrieveRecords(config, $scope, messenger, authService);
+        flnd.locationList.retrieveRecords(config, $scope, messenger, authService);
         
         //main payload which will be delivered to api for persistence.
         $scope.censusForm = censusFormService.censusForm;
+        //$scope.censusForm.spottedBirdsInfo = {};
+        //$scope.censusForm.spottedBirdsInfo.birdId = 0;
+        
         //Lookup data coming from hard coded arrays.
         $scope.data.tideInfo = censusFormService.tideInfo;         
         $scope.data.weatherInfo = censusFormService.weatherInfo;
@@ -44,6 +48,8 @@ angular.module('flightNodeApp')
         $scope.data.siteTypeInfo = censusFormService.siteTypeInfo;        
         $scope.data.feedingRateInfo = censusFormService.feedingRateInfo;
         $scope.data.habitatInfo = censusFormService.habitatInfo;
+        $scope.data.behaviourTypeInfo = censusFormService.behaviourTypeInfo;
+        
         
         $scope.loading = false;
   }]);

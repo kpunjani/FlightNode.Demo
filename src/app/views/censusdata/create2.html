@@ -1,59 +1,58 @@
 <div class="container">
-    <div class="well row" >
-        <h4>Census participants please be as complete as possible:</h4>
-        <ul>
-            <li>Review form guidelines prior to census.</li>
-            <li>Always provide "number of adults and juveniles" data for species.</li>
-            <li>Always observe birds from at least 50 yards away.</li>
-        </ul>
-    </div>
     <div ng-include="'/app/views/censusdata/progressBar.html'"></div>
     {{censusForm.step = 2}}
     <form class="form-horizontal" role="form"> 
         <div class="form-group panel panel-primary">
             <div class="panel-heading">Waterbird Survey<span style="float:right;">Report violations to 1-800-792-4263</span></div>
             <div class="panel-body">
-                <div>{{ 4/2 }}</div>
-           
-            <div class="form-group">   
-                <div class="col-md-offset-9 col-md-3">
-                    <div  style="display:inline">
-                        <input type="text" class="form-control" id="searchByCommonName" ng-model="censusForm.searchByCommonName" placeholder="Search a bird..." />
-                        <!--<span class="glyphicon glyphicon-search" style="float:right"></span>-->
-                    </div>
-                </div>
-            </div>
+            <div>{{ 4/2 }}</div>
             <div class="form-group">   
                 <div class="col-md-12">                
                 <!--<table class="table table-condensed">-->
                 <table class="table table-striped">
                     <thead>
                     <tr class="info">
-                        <th></th>
+                        <th><input type="text" class="form-control" id="searchByCommonName" ng-model="censusForm.searchByCommonName" placeholder="Pull your bird..." /></th>
                         <th>No. of Adults</th>
                         <th>No. of Juvenile</th>
-                        <th>Behavior: Primary Activity</th>
-                        <th>Behavior: Secondary Activity</th>
+                        <th>Primary Activity</th>
+                        <th>Secondary Activity</th>
                         <th>Location/ Habitat Type</th>
                         <th>% Feeding Success Rate</th>
-                        <th></th><th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="bird in birdSpeciesList | limitTo:10 | filter:censusForm.searchByCommonName">
-                        <td>{{bird.commonName}}</td>
-                        <td><input type="text" class="form-control" placeholder="No. of Adults"></td>
-                        <td><input type="text" class="form-control" placeholder="No. of Juvenile"></td>
-                        <td><input type="text" class="form-control" placeholder="Primary Activity"></td>
-                        <td><input type="text" class="form-control" placeholder="Secondary Activity"></td>
-                        <td><select id="habitatData" class="form-control" >
-                            <option ng-repeat="habitat in habitatInfo" value="{{habitat.Id}}">{{habitat.Description}}</option>
+                    <!--<tr ng-repeat="(i, bird) in birdSpeciesList track by $index | limitTo:10 | filter:censusForm.searchByCommonName">
+                        <td>
+                            <input type="text" class="form-control" ng-model="censusForm.spottedBirdsInfo[i]" placeholder="No. of Adults">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" ng-model="censusForm.spottedBirdsInfo[i]" placeholder="No. of juv">
+                        </td>
+                    </tr>-->
+                    <tr ng-repeat="bird in birdSpeciesList track by $index | limitTo:10 | filter:censusForm.searchByCommonName">
+                        <td>{{bird.commonName}}
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" ng-model="censusForm.spottedBirdsInfo.NoOfAdults" placeholder="No. of Adults">
+                        </td>
+                        <td><input type="text" class="form-control" ng-model="censusForm.spottedBirdsInfo.NoOfJuvenile" placeholder="No. of Juvenile"></td>
+                        <td>
+                            <select name="primaryActivitySelect"  class="form-control" id="secondaryActivitySelect" ng-model="censusForm.spottedBirdsInfo.primaryActivityId">
+                                <option ng-repeat="behaviourType in data.behaviourTypeInfo" value="{{behaviourType.Id}}">{{behaviourType.Description}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="secondaryActivitySelect" class="form-control" id="secondaryActivitySelect" ng-model="censusForm.spottedBirdsInfo.secondaryActivityId">
+                                <option ng-repeat="behaviourType in data.behaviourTypeInfo" value="{{behaviourType.Id}}">{{behaviourType.Description}}</option>
+                            </select>
+                        </td>
+                        <td><select name="habitatInfo" id="habitatInfo" class="form-control" ng-model="censusForm.spottedBirdsInfo.habitatId">
+                            <option ng-repeat="habitat in data.habitatInfo" value="{{habitat.Id}}">{{habitat.Description}}</option>
                         </select></td>
-                        <td><select id="feedingSuccess" class="form-control" >
-                        <option ng-repeat="feed in feedingRateInfo" value="{{feed.Id}}">{{feed.Description}}</option>                  
+                        <td><select name="feedingSuccess" id="feedingSuccess" class="form-control" ng-model="censusForm.spottedBirdsInfo.feedingId">
+                        <option ng-repeat="feed in data.feedingRateInfo" value="{{feed.Id}}">{{feed.Description}}</option>                  
                         </select></td>
-                        <!--<td><span class="glyphicon glyphicon-edit"></span></td>-->
-                        <!--<td><span class="glyphicon glyphicon-trash"></span></td>-->
                     </tr>
                     </tbody>
                 </table>
