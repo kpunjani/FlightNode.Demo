@@ -9,52 +9,36 @@
             <div class="form-group">        
                 <div class="col-md-12">
                     <div>{{ 6/2 }}</div>
-                
-                <table class="table table-condensed">
-                    <thead>
-                    <tr class="info">
-                        <th>Species Name</th>
-                        <th>No. of Adults</th>
-                        <th>No. of Juvenile</th>
-                        <th>Behavior: Primary Activity</th>
-                        <th>Behavior: Secondary Activity</th>
-                        <th>Location/ Habitat Type</th>
-                        <th>% Feeding Success Rate</th>
-                        <th></th><th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td><input type="text" class="form-control" placeholder="Species Name"></td>
-                        <td><input type="text" class="form-control" placeholder="No. of Adults"></td>
-                        <td><input type="text" class="form-control" placeholder="No. of Juvenile"></td>
-                        <td><input type="text" class="form-control" placeholder="Primary Activity"></td>
-                        <td><input type="text" class="form-control" placeholder="Secondary Activity"></td>
-                        <td><select id="habitatData" class="form-control" >
-                            <option ng-repeat="habitat in habitatInfo" value="{{habitat.Id}}">{{habitat.Description}}</option>
-                        </select></td>
-                        <td><select id="feedingSuccess" class="form-control" >
-                        <option ng-repeat="feed in feedingRateInfo" value="{{feed.Id}}">{{feed.Description}}</option>                  
-                        </select></td>
-                        <td><span class="glyphicon glyphicon-edit"></span></td>
-                        <td><span class="glyphicon glyphicon-trash"></span></td>
-                    </tr>        
-                    <tr>
-                        <td colspan="9">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="glyphicon glyphicon-plus"></i> Add More
-                        </button>
-                        </td>
-                    </tr>             
-                    
-                    </tbody>
-                </table>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="info">
+                                <th>Types</th>
+                                <th>Quantity</th>
+                                <th>Duration (nearest 5 minutes)</th>
+                                <th>Result or Affect (observed behavior)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!--<tr ng-repeat="disturbance in data.disturbanceTypeInfo">
+                                <td>{{disturbance.Description}}</td>
+                                <td><input type="text" class="form-control" placeholder="Quantity" ng-model="censusForm.disturbanceData.Quantity"></td>
+                                <td><input type="text" class="form-control" placeholder="Duration" ng-model="censusForm.disturbanceData.Duration"></td>
+                                <td><input type="text" class="form-control" placeholder="Behaviour" ng-model="censusForm.disturbanceData.Behaviour"></td>
+                            </tr>        -->
+                            <tr ng-repeat="(i, disturbance) in data.disturbanceTypeInfo track by $index ">
+                                <td>{{disturbance.Description}}</td>
+                                <td><input type="text" class="form-control" placeholder="Quantity" ng-model="censusForm.disturbanceData[i].Quantity"></td>
+                                <td><input type="text" class="form-control" placeholder="Duration" ng-model="censusForm.disturbanceData[i].Duration"></td>
+                                <td><input type="text" class="form-control" placeholder="Behaviour" ng-model="censusForm.disturbanceData[i].Behaviour"></td>
+                            </tr>          
+                        </tbody>
+                    </table>
                 </div>    
             </div>  
             <div class="form-group">
-                <label class="control-label col-md-3" for="comments">Comments:</label>
+                <label class="control-label col-md-3" for="disturbanceComments">Comments:</label>
                 <div class="col-md-9">
-                <textarea type="text" class="form-control" rows="5" id="comments" placeholder="Enter Comments" ng-model="censusForm.comments"></textarea>
+                    <textarea type="text" class="form-control" rows="5" id="disturbanceComments" placeholder="Enter Comments" ng-model="censusForm.disturbanceComments"></textarea>
                 </div>    
             </div>          
             </div>    
@@ -67,6 +51,5 @@
             </div>  
             </div>
         </div>  
-    
     </form>
 </div>

@@ -49,6 +49,7 @@ angular.module('flightNodeApp')
         $scope.data.feedingRateInfo = censusFormService.feedingRateInfo;
         $scope.data.habitatInfo = censusFormService.habitatInfo;
         $scope.data.behaviourTypeInfo = censusFormService.behaviourTypeInfo;
+        $scope.data.disturbanceTypeInfo = censusFormService.disturbanceTypeInfo;
         
         
         $scope.loading = false;

@@ -4,7 +4,10 @@ angular.module('censusFormService', [])
     .factory('censusFormService', function(){        
         //Empty global object, acts as container of entire data model
         var censusForm = {};
+        censusForm.spottedBirdsInfo = [];
+        censusForm.disturbanceData = [];
         
+        //This data could be moved to a json file on disk and loaded it usig http service. But I chose to do it this way for simplicity.
         var tideInfo = [
                 { Id: 1, Description: "Water level appears high" },
                 { Id: 2, Description: "Water level appears low" },
@@ -62,6 +65,16 @@ angular.module('censusFormService', [])
             {Id: 3, Description: "Loafing"},
             {Id: 4, Description: "Fly Over"},
         ];    
+        var disturbanceTypeInfo = [
+            {Id: 1, Description: "Kayakers"},
+            {Id: 2, Description: "Fishermen (wade)"},
+            {Id: 3, Description: "Stationary boats"},
+            {Id: 4, Description: "Moving boats"},
+            {Id: 5, Description: "Personal watercraft (jetski, windsurfer)"},
+            {Id: 6, Description: "Humans on foot"},
+            {Id: 7, Description: "Noise (specify source)"},
+            {Id: 8, Description: "Other: (list)"}
+        ];
         
         return {
             censusForm: censusForm,
@@ -72,6 +85,7 @@ angular.module('censusFormService', [])
             siteTypeInfo: siteTypeInfo,
             feedingRateInfo: feedingRateInfo,
             habitatInfo: habitatInfo, 
-            behaviourTypeInfo: behaviourTypeInfo    
+            behaviourTypeInfo: behaviourTypeInfo,
+            disturbanceTypeInfo: disturbanceTypeInfo   
         };    
     });
