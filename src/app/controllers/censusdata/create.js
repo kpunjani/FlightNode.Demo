@@ -37,8 +37,6 @@ angular.module('flightNodeApp')
         
         //main payload which will be delivered to api for persistence.
         $scope.censusForm = censusFormService.censusForm;
-        //$scope.censusForm.spottedBirdsInfo = {};
-        //$scope.censusForm.spottedBirdsInfo.birdId = 0;
         
         //Lookup data coming from hard coded arrays.
         $scope.data.tideInfo = censusFormService.tideInfo;         
@@ -51,6 +49,14 @@ angular.module('flightNodeApp')
         $scope.data.behaviourTypeInfo = censusFormService.behaviourTypeInfo;
         $scope.data.disturbanceTypeInfo = censusFormService.disturbanceTypeInfo;
         
+        //Method to set the birdSpeciesId from the UI.
+        $scope.setBirdId = function(index, birdSpeciesId){
+            censusFormService.censusForm.spottedBirdsInfo[index].birdSpeciesId = birdSpeciesId;
+        };
         
+        //Method to set the disturbanceTypeId from the UI.
+        $scope.setDisturbanceTypeId = function(index, disturbanceTypeId){
+            censusFormService.censusForm.disturbanceData[index].disturbanceTypeId = disturbanceTypeId;
+        };
         $scope.loading = false;
   }]);

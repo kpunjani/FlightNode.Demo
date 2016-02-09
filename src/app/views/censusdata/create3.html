@@ -8,7 +8,7 @@
             
             <div class="form-group">        
                 <div class="col-md-12">
-                    <div>{{ 6/2 }}</div>
+                    <!--<div>{{ 6/2 }}</div>-->
                     <table class="table table-striped">
                         <thead>
                             <tr class="info">
@@ -19,15 +19,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!--<tr ng-repeat="disturbance in data.disturbanceTypeInfo">
-                                <td>{{disturbance.Description}}</td>
-                                <td><input type="text" class="form-control" placeholder="Quantity" ng-model="censusForm.disturbanceData.Quantity"></td>
-                                <td><input type="text" class="form-control" placeholder="Duration" ng-model="censusForm.disturbanceData.Duration"></td>
-                                <td><input type="text" class="form-control" placeholder="Behaviour" ng-model="censusForm.disturbanceData.Behaviour"></td>
-                            </tr>        -->
                             <tr ng-repeat="(i, disturbance) in data.disturbanceTypeInfo track by $index ">
                                 <td>{{disturbance.Description}}</td>
-                                <td><input type="text" class="form-control" placeholder="Quantity" ng-model="censusForm.disturbanceData[i].Quantity"></td>
+                                <td><input type="text" class="form-control" placeholder="Quantity" ng-model="censusForm.disturbanceData[i].Quantity" ng-change="setDisturbanceTypeId(i, disturbance.Id)"></td>
                                 <td><input type="text" class="form-control" placeholder="Duration" ng-model="censusForm.disturbanceData[i].Duration"></td>
                                 <td><input type="text" class="form-control" placeholder="Behaviour" ng-model="censusForm.disturbanceData[i].Behaviour"></td>
                             </tr>          

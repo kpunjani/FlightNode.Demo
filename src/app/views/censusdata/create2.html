@@ -5,14 +5,15 @@
         <div class="form-group panel panel-primary">
             <div class="panel-heading">Waterbird Survey<span style="float:right;">Report violations to 1-800-792-4263</span></div>
             <div class="panel-body">
-            <div>{{ 4/2 }}</div>
+            <!--<div>{{ 4/2 }}</div>-->
             <div class="form-group">   
                 <div class="col-md-12">        
                     <!--<table class="table table-condensed">-->
                     <table class="table table-striped">
                         <thead>
                         <tr class="info">
-                            <th><input type="text" class="form-control" id="searchByCommonName" ng-model="censusForm.searchByCommonName" placeholder="Pull your bird..." /></th>
+                            <th>
+                            </th>
                             <th>No. of Adults</th>
                             <th>No. of Juvenile</th>
                             <th>Primary Activity</th>
@@ -23,11 +24,11 @@
                         </thead>
                         <tbody>
                        <!--TODO: Once birdSpicies/GetBySurveyId is there limitTo filter will be removed.-->
-                        <tr ng-repeat="(i, bird) in birdSpeciesList  | limitTo:5 | filter:censusForm.searchByCommonName  track by $index">
+                        <tr ng-repeat="(i, bird) in birdSpeciesList  | limitTo:10  track by $index">
                             <td>{{bird.commonName}}
                             </td>
                             <td>
-                                <input type="text" class="form-control" ng-model="censusForm.spottedBirdsInfo[i].NoOfAdults" placeholder="No. of Adults">
+                                <input type="text" class="form-control" ng-model="censusForm.spottedBirdsInfo[i].NoOfAdults" ng-change="setBirdId(i, bird.id)" placeholder="No. of Adults">
                             </td>
                             <td><input type="text" class="form-control" ng-model="censusForm.spottedBirdsInfo[i].NoOfJuvenile" placeholder="No. of Juvenile"></td>
                             <td>
