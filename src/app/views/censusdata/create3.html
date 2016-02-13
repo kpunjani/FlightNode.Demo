@@ -3,12 +3,11 @@
     {{censusForm.step = 3}}
     <form class="form-horizontal" role="form"> 
         <div class="form-group panel panel-primary">
-            <div class="panel-heading">Disturbance<span style="float:right;">Report violations to 1-800-792-4263</span></div>
+            <div class="panel-heading">Disturbance</div>
             <div class="panel-body">                          
             
             <div class="form-group">        
                 <div class="col-md-12">
-                    <!--<div>{{ 6/2 }}</div>-->
                     <table class="table table-striped">
                         <thead>
                             <tr class="info">
@@ -21,9 +20,9 @@
                         <tbody>
                             <tr ng-repeat="(i, disturbance) in data.disturbanceTypeInfo track by $index ">
                                 <td>{{disturbance.Description}}</td>
-                                <td><input type="text" class="form-control" placeholder="Quantity" ng-model="censusForm.disturbanceData[i].Quantity" ng-change="setDisturbanceTypeId(i, disturbance.Id)"></td>
-                                <td><input type="text" class="form-control" placeholder="Duration" ng-model="censusForm.disturbanceData[i].Duration"></td>
-                                <td><input type="text" class="form-control" placeholder="Behaviour" ng-model="censusForm.disturbanceData[i].Behaviour"></td>
+                                <td><input type="number" class="form-control" placeholder="Quantity" ng-model="censusForm.disturbances[i].quantity" ng-change="setDisturbanceTypeId(i, disturbance.Id)"></td>
+                                <td><input type="number" class="form-control" placeholder="Duration" ng-model="censusForm.disturbances[i].durationMinutes"></td>
+                                <td><input type="text" class="form-control" placeholder="Behavior" ng-model="censusForm.disturbances[i].behavior"></td>
                             </tr>          
                         </tbody>
                     </table>

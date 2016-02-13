@@ -3,16 +3,14 @@
     {{censusForm.step = 2}}
     <form class="form-horizontal" role="form"> 
         <div class="form-group panel panel-primary">
-            <div class="panel-heading">Waterbird Survey<span style="float:right;">Report violations to 1-800-792-4263</span></div>
+            <div class="panel-heading">Waterbird Survey</div>
             <div class="panel-body">
-            <!--<div>{{ 4/2 }}</div>-->
             <div class="form-group">   
                 <div class="col-md-12">        
-                    <!--<table class="table table-condensed">-->
                     <table class="table table-striped">
                         <thead>
                         <tr class="info">
-                            <th>
+                            <th>Species
                             </th>
                             <th>No. of Adults</th>
                             <th>No. of Juvenile</th>
@@ -23,28 +21,29 @@
                         </tr>
                         </thead>
                         <tbody>
-                       <!--TODO: Once birdSpicies/GetBySurveyId is there limitTo filter will be removed.-->
-                        <tr ng-repeat="(i, bird) in birdSpeciesList  | limitTo:10  track by $index">
+                            <!--<pre>{{birdSpeciesList.count()}}</pre>-->
+                        <tr ng-repeat="(i, bird) in birdSpeciesList | orderBy: 'commonName' track by $index">
                             <td>{{bird.commonName}}
                             </td>
                             <td>
-                                <input type="text" class="form-control" ng-model="censusForm.spottedBirdsInfo[i].NoOfAdults" ng-change="setBirdId(i, bird.id)" placeholder="No. of Adults">
+                                <input type="number" class="form-control" ng-model="censusForm.observations[i].adults" ng-change="setBirdId(i, bird.id)" placeholder="No. of Adults">
                             </td>
-                            <td><input type="text" class="form-control" ng-model="censusForm.spottedBirdsInfo[i].NoOfJuvenile" placeholder="No. of Juvenile"></td>
                             <td>
-                                <select name="primaryActivitySelect"  class="form-control" id="secondaryActivitySelect" ng-model="censusForm.spottedBirdsInfo[i].primaryActivityId">
-                                    <option ng-repeat="behaviourType in data.behaviourTypeInfo" value="{{behaviourType.Id}}">{{behaviourType.Description}}</option>
+                                <input type="number" class="form-control" ng-model="censusForm.observations[i].juvenile" placeholder="No. of Juvenile"></td>
+                            <td>
+                                <select name="primaryActivitySelect"  class="form-control" id="secondaryActivitySelect" ng-model="censusForm.observations[i].primaryActivityId">
+                                    <option ng-repeat="behaviorType in data.behaviorTypeInfo" value="{{behaviorType.Id}}">{{behaviorType.Description}}</option>
                                 </select>
                             </td>
                             <td>
-                                <select name="secondaryActivitySelect" class="form-control" id="secondaryActivitySelect" ng-model="censusForm.spottedBirdsInfo[i].secondaryActivityId">
-                                    <option ng-repeat="behaviourType in data.behaviourTypeInfo" value="{{behaviourType.Id}}">{{behaviourType.Description}}</option>
+                                <select name="secondaryActivitySelect" class="form-control" id="secondaryActivitySelect" ng-model="censusForm.observations[i].secondaryActivityId">
+                                    <option ng-repeat="behaviorType in data.behaviorTypeInfo" value="{{behaviorType.Id}}">{{behaviorType.Description}}</option>
                                 </select>
                             </td>
-                            <td><select name="habitatInfo" id="habitatInfo" class="form-control" ng-model="censusForm.spottedBirdsInfo[i].habitatId">
+                            <td><select name="habitatInfo" id="habitatInfo" class="form-control" ng-model="censusForm.observations[i].habitatId">
                                 <option ng-repeat="habitat in data.habitatInfo" value="{{habitat.Id}}">{{habitat.Description}}</option>
                             </select></td>
-                            <td><select name="feedingSuccess" id="feedingSuccess" class="form-control" ng-model="censusForm.spottedBirdsInfo[i].feedingId">
+                            <td><select name="feedingSuccess" id="feedingSuccess" class="form-control" ng-model="censusForm.observations[i].feedingId">
                             <option ng-repeat="feed in data.feedingRateInfo" value="{{feed.Id}}">{{feed.Description}}</option>                  
                             </select></td>
                         </tr>
@@ -63,8 +62,8 @@
             <div class="form-group">
                 <a role="button" class="btn btn-primary col-md-2" href="#/censusdata/create">&laquo; Step Back</a>             
                 <div class="col-md-9">     
-                <input type="submit" class="btn btn-primary" value="Save & Exit">
-                <a role="button" class="btn btn-primary" href="#/censusdata/create3">Proceed Further &raquo;</a>
+                <input type="submit" class="btn btn-primary" value="Save &amp; Exit">
+                <a role="button" class="btn btn-primary" href="#/censusdata/create3">Next &raquo;</a>
                 </div>    
             </div>  
             </div>

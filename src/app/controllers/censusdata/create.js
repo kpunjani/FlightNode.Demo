@@ -5,7 +5,8 @@ flnd.birdSpeciesList = {
 
         $scope.birdSpeciesList = {};
 
-        authService.get(config.birdspecies)
+        authService.get(config.birdspeciesBySurveyType)        
+        //authService._request(config.birdspeciesBySurveyType,'GET',{surveyTypeId:1})
             .then(function success(response) {
 
                 $scope.birdSpeciesList = response.data;
@@ -28,13 +29,21 @@ flnd.birdSpeciesList = {
  */
 angular.module('flightNodeApp')
     .controller('CensusDataCreateController', 
-    ['$scope', 'authService', 'config', 'messenger', 'censusFormService',
-    function ($scope, authService, config, messenger, censusFormService) {
+    ['$scope', 'authService', 'config', 'messenger', 'censusFormService','$filter',
+    function ($scope, authService, config, messenger, censusFormService, $filter) {
 		$scope.loading = true;
         $scope.data = {};
+        
         flnd.birdSpeciesList.retrieveRecords(config, $scope, messenger, authService);
         flnd.locationList.retrieveRecords(config, $scope, messenger, authService);
         
+        censusFormService.censusForm.surveyDate = new Date();
+        censusFormService.censusForm.departTime = censusFormService.censusForm.surveyDate.toTimeString().slice(0, 5);
+        
+        // censusFormService.censusForm.surveyDate = Date.parse(censusFormService.censusForm.surveyDate);
+       // censusFormService.censusForm.surveyDate = (censusFormService.censusForm.surveyDate | date:'yyyy-MM-dd HH:mm:ss Z');
+        
+
         //main payload which will be delivered to api for persistence.
         $scope.censusForm = censusFormService.censusForm;
         
@@ -46,17 +55,17 @@ angular.module('flightNodeApp')
         $scope.data.siteTypeInfo = censusFormService.siteTypeInfo;        
         $scope.data.feedingRateInfo = censusFormService.feedingRateInfo;
         $scope.data.habitatInfo = censusFormService.habitatInfo;
-        $scope.data.behaviourTypeInfo = censusFormService.behaviourTypeInfo;
+        $scope.data.behaviorTypeInfo = censusFormService.behaviorTypeInfo;
         $scope.data.disturbanceTypeInfo = censusFormService.disturbanceTypeInfo;
         
         //Method to set the birdSpeciesId from the UI.
         $scope.setBirdId = function(index, birdSpeciesId){
-            censusFormService.censusForm.spottedBirdsInfo[index].birdSpeciesId = birdSpeciesId;
+            censusFormService.censusForm.observations[index].birdSpeciesId = birdSpeciesId;
         };
         
         //Method to set the disturbanceTypeId from the UI.
         $scope.setDisturbanceTypeId = function(index, disturbanceTypeId){
-            censusFormService.censusForm.disturbanceData[index].disturbanceTypeId = disturbanceTypeId;
+            censusFormService.censusForm.disturbances[index].disturbanceTypeId = disturbanceTypeId;
         };
         $scope.loading = false;
   }]);
