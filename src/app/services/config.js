@@ -20,6 +20,5 @@ angular.module('flightNodeApp')
     navigation: 'http://localhost:50323/api/v1/nav',
     roles: 'http://localhost:50323/api/v1/roles/',
     birdspecies: 'http://localhost:50323/api/v1/birdspecies/',
-    birdspeciesBySurveyType: 'http://localhost:50323/api/v1/birdspecies/GetBirdSpeciesBySurveyTypeId/1'
-    //birdspeciesBySurveyType: 'http://localhost:50323/api/v1/birdspecies/GetBirdSpeciesBySurveyTypeId/'
+    birdspeciesBySurveyType: 'http://localhost:50323/api/v1/birdspecies/surveytype/2'
   });

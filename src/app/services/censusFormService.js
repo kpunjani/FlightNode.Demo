@@ -4,7 +4,7 @@ angular.module('censusFormService', [])
     .factory('censusFormService', function(){        
         //Empty global object, acts as container of entire data model
         var censusForm = {};
-        censusForm.surveyIdentifer = 'yet to be added'; //TODO: place hold for guid, will be assigned a new value to every object.
+        censusForm.surveyIdentifer = ''; //TODO: Load with a GUID that will come from server upon first POST.
         censusForm.observations = [];
         censusForm.disturbances = [];
         
@@ -61,21 +61,21 @@ angular.module('censusFormService', [])
                 { Id: 14, Description: "Pond"},
             ];
         var behaviorTypeInfo = [
-            {Id: 1, Description: "Feeding"},
-            {Id: 2, Description: "Preening"},
-            {Id: 3, Description: "Loafing"},
-            {Id: 4, Description: "Fly Over"},
-        ];    
+                {Id: 1, Description: "Feeding"},
+                {Id: 2, Description: "Preening"},
+                {Id: 3, Description: "Loafing"},
+                {Id: 4, Description: "Fly Over"},
+            ];    
         var disturbanceTypeInfo = [
-            {Id: 1, Description: "Kayakers"},
-            {Id: 2, Description: "Fishermen (wade)"},
-            {Id: 3, Description: "Stationary boats"},
-            {Id: 4, Description: "Moving boats"},
-            {Id: 5, Description: "Personal watercraft (jetski, windsurfer)"},
-            {Id: 6, Description: "Humans on foot"},
-            {Id: 7, Description: "Noise (specify source)"},
-            {Id: 8, Description: "Other: (list)"}
-        ];
+                {Id: 1, Description: "Kayakers"},
+                {Id: 2, Description: "Fishermen (wade)"},
+                {Id: 3, Description: "Stationary boats"},
+                {Id: 4, Description: "Moving boats"},
+                {Id: 5, Description: "Personal watercraft (jetski, windsurfer)"},
+                {Id: 6, Description: "Humans on foot"},
+                {Id: 7, Description: "Noise (specify source)"},
+                {Id: 8, Description: "Other: (list)"}
+            ];
         
         return {
             censusForm: censusForm,

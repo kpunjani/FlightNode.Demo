@@ -6,7 +6,6 @@ flnd.birdSpeciesList = {
         $scope.birdSpeciesList = {};
 
         authService.get(config.birdspeciesBySurveyType)        
-        //authService._request(config.birdspeciesBySurveyType,'GET',{surveyTypeId:1})
             .then(function success(response) {
 
                 $scope.birdSpeciesList = response.data;
