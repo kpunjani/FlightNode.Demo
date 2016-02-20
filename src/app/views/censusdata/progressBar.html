@@ -8,7 +8,11 @@
 </div>
 <pre>{{censusForm | json }}</pre>
 <!--<div>{{birdSpeciesList | limitTo: 1 | json }}</div>-->
-<!--TODO: need to improve further, instead of hardcodig steps-->
+<!--TODO: need to improve further, instead of hardcodiNg steps-->
+<div class="alert alert-success row" ng-show="saveForLater">        
+    <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    Partial survey results have been saved. You must click the Finish button for the survey to be completed and included in reports.
+</div>
 <div class="row" ng-show="censusForm.step === 1">
     <div class="col-md-4" style="border-top:3px solid #f0ad4e"><span class="label label-warning">1</span><span> Site Information</span></div>
     <div class="col-md-4" style="border-top:3px solid grey"><span class="label label-default">2</span><span> Waterbird Survey</span></div>

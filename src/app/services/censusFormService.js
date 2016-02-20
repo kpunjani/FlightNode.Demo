@@ -4,9 +4,10 @@ angular.module('censusFormService', [])
     .factory('censusFormService', function(){        
         //Empty global object, acts as container of entire data model
         var censusForm = {};
-        censusForm.surveyIdentifer = ''; //TODO: Load with a GUID that will come from server upon first POST.
+        // censusForm.surveyIdentifer = ''; //TODO: Load with a GUID that will come from server upon first POST.
         censusForm.observations = [];
         censusForm.disturbances = [];
+        censusForm.saveAndMoveNext = false;
         
         //This data could be moved to a json file on disk and loaded back up using http service. But I chose to do it this way for simplicity.
         var tideInfo = [

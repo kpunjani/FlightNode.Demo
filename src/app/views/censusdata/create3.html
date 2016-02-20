@@ -1,7 +1,7 @@
 <div class="container">
     <div ng-include="'/app/views/censusdata/progressBar.html'"></div>
     {{censusForm.step = 3}}
-    <form class="form-horizontal" role="form"> 
+    <form class="form-horizontal" ng-submit="submit()" role="form"> 
         <div class="form-group panel panel-primary">
             <div class="panel-heading">Disturbance</div>
                 <div class="panel-body">
