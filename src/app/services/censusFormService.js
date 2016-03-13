@@ -11,6 +11,11 @@ angular.module('censusFormService', [])
         censusForm.saveAndMoveNext = false;
         censusForm.saveAndFinish = false;
         
+        //TODO: For now added them to make the UI compatible with the WEB API service.
+        //With this, save/update call now works end to end.
+        censusForm.startDate = new Date(2015,2,25,11,11,11,11);
+        censusForm.endDate = new Date(2015,2,25,12,12,11,11);
+        
         //This data could be moved to a json file on disk and loaded back up using http service. But I chose to do it this way for simplicity.
         var tideInfo = [
                 { Id: 1, Description: "Water level appears high" },
@@ -35,12 +40,20 @@ angular.module('censusFormService', [])
                 { Id: 2, Description: "Vessel (motor)"},
                 { Id: 3, Description: "Kayak/ Canoe"}
             ];
+        // var siteTypeInfo = [
+        //         { Id: 1, Description: "New Colony"},
+        //         { Id: 2, Description: "Surveyed, Inactive"},
+        //         { Id: 3, Description: "Prev. Known Colony (Count only)"},
+        //         { Id: 4, Description: "Surveyed, Active"},
+        //         { Id: 5, Description: "Prev. Known Colony (Count and Description Update)"},
+        //     ];
         var siteTypeInfo = [
                 { Id: 1, Description: "New Colony"},
-                { Id: 2, Description: "Surveyed, Inactive"},
-                { Id: 3, Description: "Prev. Known Colony (Count only)"},
-                { Id: 4, Description: "Surveyed, Active"},
-                { Id: 5, Description: "Prev. Known Colony (Count and Description Update)"},
+                { Id: 2, Description: "Previously Known Colony"},
+            ];
+        var siteTypeActivityInfo = [
+                { Id: 1, Description: "Active"},
+                { Id: 2, Description: "Inactive"},
             ];
         var feedingRateInfo = [
                 { Id: 1, Description: "Low Success"},
@@ -87,6 +100,7 @@ angular.module('censusFormService', [])
             vantagePointInfo: vantagePointInfo,
             accessPointInfo: accessPointInfo,
             siteTypeInfo: siteTypeInfo,
+            siteTypeActivityInfo: siteTypeActivityInfo,
             feedingRateInfo: feedingRateInfo,
             habitatInfo: habitatInfo, 
             behaviorTypeInfo: behaviorTypeInfo,

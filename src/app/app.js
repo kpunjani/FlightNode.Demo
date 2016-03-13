@@ -140,34 +140,34 @@ angular
         templateUrl: 'app/views/main.html',
         controller: 'LogoutController'
       })
-      .when('/censusdata/', {
+      .when('/foraging/', {
         templateUrl: 'app/views/censusdata/create.html',
         controller: 'CensusDataCreateController',
-        title: 'FlightNode - Census Data - New'
+        title: 'Waterbird Foraging Survey - New'
       })
-      .when('/censusdata/create', {
+      .when('/foraging/create', {
         templateUrl: 'app/views/censusdata/create.html',
         //TODO: Will think about should conroller be seperated out for each of these views.
         controller: 'CensusDataCreateController',
-        title: 'FlightNode - Census Data - New'
+        title: 'Waterbird Foraging Survey - New'
       })
-      .when('/censusdata/create2', {
+      .when('/foraging/create2', {
         templateUrl: 'app/views/censusdata/create2.html',
         //TODO: Will think about should conroller be seperated out for each of these views.
         controller: 'CensusDataCreateController',
-        title: 'FlightNode - Census Data - New'
+        title: 'Waterbird Foraging Survey - New'
       })
-      .when('/censusdata/create3', {
+      .when('/foraging/create3', {
         templateUrl: 'app/views/censusdata/create3.html',
         //TODO: Will think about should conroller be seperated out for each of these views.
         controller: 'CensusDataCreateController',
-        title: 'FlightNode - Census Data - New'
+        title: 'Waterbird Foraging Survey - New'
       })
-      .when('/censusdata/create4', {
+      .when('/foraging/create4', {
         templateUrl: 'app/views/censusdata/create4.html',
         //TODO: Will think about should conroller be seperated out for each of these views.
         controller: 'CensusDataCreateController',
-        title: 'FlightNode - Census Data - Finished'
+        title: 'Waterbird Foraging Survey - Finished'
       })
       .otherwise({
         templateUrl: 'app/views/404.html',
