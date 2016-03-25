@@ -45,7 +45,7 @@
             <legend>Name</legend>
             <div class="form-group">
                 <label for="givenName" class="col-sm-3 control-label">Given / First Name <span class="text-danger">*</span></label>
-                <div class="col-sm-9" ng-class="{'has-error': userForm.givenName.$error.required || userForm.givenName.$error.pattern}">
+                <div class="col-sm-9" ng-class="{'has-error': userForm.givenName.$error.required || userForm.givenName.$error.maxlength}">
                     <input type="text" ng-model="user.givenName" class="form-control" name="givenName" placeholder="Max 50 characters" ng-maxlength="50"
                     required>
                 </div>
@@ -55,7 +55,7 @@
             </div>
             <div class="form-group">
                 <label for="familyName" class="col-sm-3 control-label">Family / Last Name <span class="text-danger">*</span></label>
-                <div class="col-sm-9" ng-class="{'has-error': userForm.familyName.$error.required || userForm.familyName.$error.pattern}">
+                <div class="col-sm-9" ng-class="{'has-error': userForm.familyName.$error.required || userForm.familyName.$error.maxlength}">
                     <input type="text" ng-model="user.familyName" class="form-control" name="familyName" placeholder="Max 50 characters" ng-maxlength="50"
                     required>
                 </div>
