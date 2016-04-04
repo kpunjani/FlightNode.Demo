@@ -1,7 +1,7 @@
 'use strict';
 
-flnd.birdSpeciesList = {
-    retrieveRecords: function(config, $scope, messenger, authService) {
+flnd.censusDataCreate = {
+    retrieveBirds: function(config, $scope, messenger, authService) {
 
         $scope.birdSpeciesList = {};
 
@@ -15,10 +15,7 @@ flnd.birdSpeciesList = {
                 messenger.displayErrorResponse($scope, response);
 
             });
-    }
-};
-
-flnd.censusDataCreate = {
+    },
     configureSubmit: function($scope, config, messenger, authService, censusFormService, $location){
         return function(){
             $scope.loading = true;
@@ -105,7 +102,7 @@ angular.module('flightNodeApp')
         $scope.saveForLater=false;
         $scope.data = {};
         
-        flnd.birdSpeciesList.retrieveRecords(config, $scope, messenger, authService);
+        flnd.censusDataCreate.retrieveBirds(config, $scope, messenger, authService);
         flnd.locationList.retrieveRecords(config, $scope, messenger, authService);
         
         //Lookup data coming from hard coded arrays.
