@@ -23,7 +23,7 @@ angular
     'ui.bootstrap.timepicker',
     'ui.grid.selection',
     'censusFormService',
-    'toggle-switch',
+    'uiSwitch',
     'surveyTypeService'
   ])
   .config(function ($routeProvider) {
