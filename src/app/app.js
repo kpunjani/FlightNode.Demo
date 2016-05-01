@@ -22,7 +22,9 @@ angular
     'ui.bootstrap.modal',
     'ui.bootstrap.timepicker',
     'ui.grid.selection',
-    'censusFormService'
+    'censusFormService',
+    'uiSwitch',
+    'surveyTypeService'
   ])
   .config(function ($routeProvider) {
     $routeProvider

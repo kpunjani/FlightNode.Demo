@@ -5,7 +5,7 @@ flnd.censusDataCreate = {
 
         $scope.birdSpeciesList = {};
 
-        authService.get(config.birdspeciesBySurveyType)        
+        authService.get(config.birdspecies + '?surveyTypeId=2')        
             .then(function success(response) {
 
                 $scope.birdSpeciesList = response.data;
@@ -16,7 +16,7 @@ flnd.censusDataCreate = {
 
             });
     },
-    configureSubmit: function($scope, config, messenger, authService, censusFormService, $location){
+    configureSubmit: function($scope, config, messenger, authService, censusFormService, $location, $log){
         return function(){
             $scope.loading = true;
             //TODO: This function further needs tidying up. Mainly focusing upon upon integration with backend. Once basic flow start to work, will clean it.
@@ -30,7 +30,7 @@ flnd.censusDataCreate = {
                             var saveForLater = censusFormService.censusForm.saveForLater;
                             //Load the response data from the API back into scope.
                             $scope.censusForm = response.data;
-                            $scope.censusForm.PutUrl = config.waterbirdForagingSurvey + response.data.surveyIdentifier
+                            $scope.censusForm.PutUrl = config.waterbirdForagingSurvey + response.data.surveyIdentifier;
                             $scope.censusForm.step = currentStep;
                             $scope.censusForm.saveForLater = saveForLater;
                             censusFormService.censusForm = $scope.censusForm;
@@ -55,6 +55,7 @@ flnd.censusDataCreate = {
                     censusFormService.censusForm.step = 4;
                     $scope.censusForm.step = 4;
                 }
+
                 var putUrl = config.waterbirdForagingSurvey + $scope.censusForm.surveyIdentifier
                 authService.put(putUrl, $scope.censusForm)
                     .then(function success(response){
@@ -64,14 +65,14 @@ flnd.censusDataCreate = {
                             //Load the response data from the API back into scope.
                             $scope.censusForm = response.data;
                             $scope.censusForm.step = currentStep;
-                            $scope.censusForm.saveForLater = saveForLater;
-                            
+                            $scope.censusForm.saveForLater = saveForLater;                            
                             censusFormService.censusForm = $scope.censusForm
-                            if (toFinish){
+                            if (toFinish)
                                 $location.path('/foraging/create4');
-                            }
-                            else if (toMoveNext && censusFormService.censusForm.step === 1){
-                                $location.path('/foraging/create2');                
+                           
+                            censusFormService.censusForm = $scope.censusForm;
+                            if (toMoveNext && censusFormService.censusForm.step === 1){
+                                $location.path('/censusdata/create2');                
                             }
                             else if (toMoveNext && censusFormService.censusForm.step === 2){
                                 $location.path('/foraging/create3');                
@@ -96,8 +97,8 @@ flnd.censusDataCreate = {
  */
 angular.module('flightNodeApp')
     .controller('CensusDataCreateController', 
-    ['$scope', 'authService', 'config', 'messenger', 'censusFormService','$filter','$location',
-    function ($scope, authService, config, messenger, censusFormService, $filter, $location) {
+    ['$scope', 'authService', 'config', 'messenger', 'censusFormService','$filter','$location', '$log',
+    function ($scope, authService, config, messenger, censusFormService, $filter, $location, $log) {
 		$scope.loading = true;
         $scope.saveForLater=false;
         $scope.data = {};
@@ -128,7 +129,7 @@ angular.module('flightNodeApp')
         };
         
         //main payload which will be delivered to api for persistence.
-        $scope.censusForm = censusFormService.censusForm;
-        $scope.submit = flnd.censusDataCreate.configureSubmit($scope, config, messenger, authService, censusFormService, $location);
+        $scope.censusForm = censusFormService.censusForm;        
+        $scope.submit = flnd.censusDataCreate.configureSubmit($scope, config, messenger, authService, censusFormService, $location, $log);
         $scope.loading = false;
   }]);

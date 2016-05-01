@@ -113,6 +113,13 @@ angular.module('authService', [])
                 return $this._request(url, 'DELETE');
             },
 
+            patch: function(url) {
+                var $this = this;
+                $log.info('PATCH ', url);
+
+                return $this._request(url, 'PATCH');
+            },
+
             // There is a good argument that this service is not doing "just one thing"...
             // 1) parsing data from the token, and 2) mediating requests
             //  Long term, consider splitting this in two or moving the request handling
@@ -172,11 +179,11 @@ angular.module('authService', [])
                 return _.includes($this._getRoles(), 'Reporter');                
             },
 
-	    isAnonymous: function() {
-	        var $this = this;
+            isAnonymous: function() {
+                var $this = this;
 
-		return ($this.userId || 0) === 0;
-	    }
+                return ($this.userId || 0) === 0;
+            }
 
         };
     }]);
