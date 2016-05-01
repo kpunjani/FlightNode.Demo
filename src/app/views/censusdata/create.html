@@ -9,6 +9,14 @@
             <div class="panel-heading">Site Information</div>
                 <div class="panel-body">
                     <div class="form-group">
+                        <label class="control-label col-md-3">Site Type:</label>
+                        <div class="col-md-9">
+                            <div class="checkbox">
+                                <label ng-repeat="siteType in data.siteTypeInfo"><input type="radio" name="siteType" ng-model="censusForm.siteTypeId" value="{{siteType.Id}}"> {{ siteType.Description }} &nbsp;</label>        
+                            </div>
+                        </div>    
+                    </div>  
+                    <div class="form-group" ng-show="censusForm.siteTypeId === '2'">
                         <label class="control-label col-md-3" for="location">Location:</label>
                         <div class="col-md-9">
                             <select name="location"  class="form-control" id="location" ng-model="censusForm.locationId">
@@ -33,13 +41,21 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label col-md-3">Site Activity:</label>
+                        <div class="col-md-9">
+                            <div class="checkbox">
+                                <label ng-repeat="siteTypeActivity in data.siteTypeActivityInfo"><input type="radio" name="siteTypeActivity" ng-model="censusForm.siteTypeActivityId" value="{{siteTypeActivity.Id}}"> {{ siteTypeActivity.Description }} &nbsp;</label>        
+                            </div>
+                        </div>    
+                    </div>  
+                    <!--<div class="form-group">
                         <label class="control-label col-md-3">Site Type:</label>
                         <div class="col-md-9">
                             <div class="checkbox">
                                 <label ng-repeat="siteType in data.siteTypeInfo"><input type="radio" name="siteType" ng-model="censusForm.siteTypeId" value="{{siteType.Id}}"> {{ siteType.Description }} &nbsp;</label>        
                             </div>
                         </div>    
-                    </div>  
+                    </div>  -->
                     <div class="form-group">
                         <label class="control-label col-md-3">Temprature (F):</label>
                         <div class="col-md-3">      
