@@ -40,14 +40,8 @@ angular.module('censusFormService', [])
                 { Id: 2, Description: 'Vessel (motor)'},
                 { Id: 3, Description: 'Kayak/ Canoe'}
             ];
-        // var siteTypeInfo = [
-        //         { Id: 1, Description: "New Colony"},
-        //         { Id: 2, Description: "Surveyed, Inactive"},
-        //         { Id: 3, Description: "Prev. Known Colony (Count only)"},
-        //         { Id: 4, Description: "Surveyed, Active"},
-        //         { Id: 5, Description: "Prev. Known Colony (Count and Description Update)"},
-        //     ];
         var siteTypeInfo = [
+<<<<<<< HEAD
                 { Id: 1, Description: "New Colony"},
                 { Id: 2, Description: "Previously Known Colony"},
             ];
@@ -57,6 +51,14 @@ angular.module('censusFormService', [])
                 { Id: 3, Description: 'Prev. Known Colony (Count only)'},
                 { Id: 4, Description: 'Surveyed, Active'},
                 { Id: 5, Description: 'Prev. Known Colony (Count and Description Update)'},
+=======
+                { Id: 1, Description: 'New Colony'},
+                { Id: 2, Description: 'Previously Known Colony'}
+            ];
+        var siteTypeActivityInfo = [
+                { Id: 1, Description: 'Active' },
+                { Id: 2, Description: 'Inactive' }
+>>>>>>> 4e6a54b5ed5384f08bd0d81fc4bcd0ed9f26b00a
             ];
         var feedingRateInfo = [
                 { Id: 1, Description: 'Low Success'},

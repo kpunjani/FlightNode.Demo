@@ -55,8 +55,9 @@ flnd.censusDataCreate = {
                     censusFormService.censusForm.step = 4;
                     $scope.censusForm.step = 4;
                 }
-
+                
                 var putUrl = config.waterbirdForagingSurvey + $scope.censusForm.surveyIdentifier
+
                 authService.put(putUrl, $scope.censusForm)
                     .then(function success(response){
                             var currentStep = censusFormService.censusForm.step;
@@ -70,7 +71,6 @@ flnd.censusDataCreate = {
                             if (toFinish)
                                 $location.path('/foraging/create4');
                            
-                            censusFormService.censusForm = $scope.censusForm;
                             if (toMoveNext && censusFormService.censusForm.step === 1){
                                 $location.path('/censusdata/create2');                
                             }
