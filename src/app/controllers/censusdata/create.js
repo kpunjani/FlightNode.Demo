@@ -5,6 +5,7 @@ flnd.censusDataCreate = {
 
         $scope.birdSpeciesList = {};
 
+        //SurveyType 2 is for Waterbird Foraging Survey.
         authService.get(config.birdspecies + '?surveyTypeId=2')        
             .then(function success(response) {
 
